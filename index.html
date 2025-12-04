@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -80,14 +81,19 @@
         .interactive-card:hover::before { opacity: 0.15; }
         .interactive-card > * { position: relative; z-index: 2; }
 
-        /* SPLASH */
+        /* --- SPLASH (Fixed Animation) --- */
         #splash-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-color); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease-out, visibility 0.8s; padding: 20px; }
         .splash-text { font-size: 4rem; font-weight: 800; color: var(--text-main); margin-bottom: 30px; letter-spacing: -2px;}
+        .splash-text span { display: inline-block; opacity: 0; filter: blur(10px); transform: scale(1.1); animation: blurIn 0.8s forwards ease-in-out; }
+        
         .quote-container { margin-top: 20px; max-width: 600px; text-align: center; opacity: 0; transform: translateY(20px); animation: floatUp 1s ease-out forwards; animation-delay: 0.8s; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); }
         .quote-en { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: var(--text-main); margin-bottom: 8px; }
         .quote-id { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; }
         .quote-author { font-size: 0.85rem; font-weight: 700; color: var(--accent-glow); text-transform: uppercase; }
         .quote-author::before { content: '— '; }
+        
+        /* RESTORED ANIMATION KEYFRAMES */
+        @keyframes blurIn { to { opacity: 1; filter: blur(0); transform: scale(1); } }
         @keyframes floatUp { to { opacity: 1; transform: translateY(0); } }
 
         .acrylic-panel { background: var(--glass-surface); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-top: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 30px rgba(0,0,0,0.1); border-radius: 20px; }
@@ -216,7 +222,7 @@
 <body class="no-scroll">
 
     <div id="splash-screen">
-        <h1 class="splash-text">Lumina</h1>
+        <h1 class="splash-text"></h1>
         <div class="quote-container">
             <p id="quote-en" class="quote-en">"Innovation distinguishes between a leader and a follower."</p>
             <p id="quote-id" class="quote-id">Inovasi membedakan antara seorang pemimpin dan pengikut.</p>
@@ -287,7 +293,7 @@
             <div style="display:flex; justify-content: space-between; align-items:center;">
                 <h2 class="section-header" style="margin-bottom:0; border-bottom:0;">
                     Activity Hub 
-                    <span id="api-status-badge" class="api-status"></span> <!-- API STATUS INDICATOR -->
+                    <span id="api-status-badge" class="api-status"></span>
                 </h2>
                 <i class="fas fa-cog" id="gh-config-btn" onclick="configureGithub()" style="display:none; color:var(--text-muted); cursor:pointer;"></i>
             </div>
@@ -321,8 +327,8 @@
             <div class="timeline" id="changelog-list">
                 <!-- Fallback History -->
                 <div class="timeline-item">
-                    <div><span class="version-badge">v2.4</span><span class="category-badge cat-feature">FEATURE</span><span class="version-date">Today</span></div>
-                    <p class="version-desc">Robust API Handling: If GitHub data is unavailable/rate-limited, the graph will now cleanly show an "Unavailable" state (blank) instead of fake simulation. Added Visual API Status indicator.</p>
+                    <div><span class="version-badge">v2.4</span><span class="category-badge cat-fix">FIX</span><span class="version-date">Today</span></div>
+                    <p class="version-desc">Fixed animation glitch on Splash Screen (staggered text reveal restored). API health indicator & graph fallback optimized.</p>
                 </div>
                 <div class="timeline-item">
                     <div><span class="version-badge">v2.3</span><span class="category-badge cat-fix">FIX</span><span class="version-date">Yesterday</span></div>
@@ -364,28 +370,8 @@
         </div>
     </div>
 
-    <!-- PIN MODAL -->
-    <div class="modal-overlay" id="login-modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('login-modal')">&times;</span>
-            <h3>Admin Access</h3>
-            <input type="password" id="pin-input" class="pin-field" placeholder="••••" maxlength="4" inputmode="numeric">
-            <button onclick="checkPin()" class="app-visit-btn" style="width:100%; background:var(--accent-glow); border:none; color:#fff; cursor:pointer;">UNLOCK</button>
-        </div>
-    </div>
-
-    <!-- CROPPER MODAL -->
-    <div class="modal-overlay" id="cropper-modal">
-        <div class="modal-content" style="max-width:500px;">
-            <span class="close-modal" onclick="closeModal('cropper-modal')">&times;</span>
-            <h3>Update Profile</h3>
-            <input type="file" id="image-upload" accept="image/*" style="margin:20px 0;">
-            <div style="height:350px; background:#000; border-radius:10px; overflow:hidden; margin-bottom:15px;"><img id="image-to-crop" style="display:block; max-width:100%;" src=""></div>
-            <div style="display:flex; gap:10px; justify-content:center;">
-                <button onclick="applyCrop()" class="app-visit-btn" style="background:var(--success); border:none; color:#fff; cursor:pointer;">Save</button>
-            </div>
-        </div>
-    </div>
+    <div class="modal-overlay" id="login-modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('login-modal')">&times;</span><h3>Admin Access</h3><input type="password" id="pin-input" class="pin-field" placeholder="••••" maxlength="4" inputmode="numeric"><button onclick="checkPin()" class="app-visit-btn" style="width:100%; background:var(--accent-glow); border:none; color:#fff; cursor:pointer;">UNLOCK</button></div></div>
+    <div class="modal-overlay" id="cropper-modal"><div class="modal-content" style="max-width:500px;"><span class="close-modal" onclick="closeModal('cropper-modal')">&times;</span><h3>Update Profile</h3><input type="file" id="image-upload" accept="image/*" style="margin:20px 0;"><div style="height:350px; background:#000; border-radius:10px; overflow:hidden; margin-bottom:15px;"><img id="image-to-crop" style="display:block; max-width:100%;" src=""></div><div style="display:flex; gap:10px; justify-content:center;"><button onclick="applyCrop()" class="app-visit-btn" style="background:var(--success); border:none; color:#fff; cursor:pointer;">Save</button></div></div></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -393,9 +379,9 @@
 
         // === CONFIG ===
         const CURRENT_VERSION = 'v2.4';
-        const UPDATE_MSG = 'Implemented "API Health Check" visualizer. Contribution graph now gracefully handles rate-limits/errors by clearing the view and notifying status, instead of simulation.';
+        const UPDATE_MSG = 'Updated Code Logic: Splash screen text animation restored & enhanced API failure handling.';
 
-       const firebaseConfig = {
+        const firebaseConfig = {
   apiKey: "AIzaSyDfpLYr8g8ltUpdV_1HuN-S_m8vnMqqtYI",
   authDomain: "lumina-portofolio.firebaseapp.com",
   projectId: "lumina-portofolio",
@@ -414,7 +400,6 @@
         const quoteDB = [
             { en: "Stay hungry, stay foolish.", id: "Tetaplah lapar, tetaplah bodoh.", author: "Steve Jobs" },
             { en: "The only way to do great work is to love what you do.", id: "Satu-satunya cara melakukan pekerjaan hebat adalah mencintai apa yang Anda lakukan.", author: "Steve Jobs" },
-            { en: "Life is what happens when you're busy making other plans.", id: "Hidup adalah apa yang terjadi saat Anda sibuk membuat rencana lain.", author: "John Lennon" },
             { en: "Code is like humor. When you have to explain it, it’s bad.", id: "Kode itu seperti lelucon. Jika Anda harus menjelaskannya, berarti itu buruk.", author: "Cory House" }
         ];
 
@@ -424,8 +409,8 @@
         window.scrollTo(0,0);
 
         window.addEventListener('DOMContentLoaded', () => {
-            generateQuote(); 
             splashEffect();
+            generateQuote(); 
             loadFromDB(); 
             initTheme(); 
             initAccentColor();
@@ -435,24 +420,19 @@
             window.addEventListener('resize', () => { const u=localStorage.getItem('gh_user'); if(u) loadGithubData(u); });
         });
 
-        // --- NEW: API HANDLING LOGIC ---
         window.loadGithubData = async (user) => {
             const grid = document.getElementById('contribution-grid');
             const feed = document.getElementById('github-feed');
             const statusBadge = document.getElementById('api-status-badge');
             
-            // RESET VISUALS
             grid.innerHTML = '';
             document.getElementById('total-contributions').innerText = "Connecting to GitHub...";
             statusBadge.className = 'api-status'; 
             statusBadge.innerHTML = '';
 
             try {
-                // ATTEMPT FETCH
                 const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${user}?y=last`);
-                
                 if (res.ok) {
-                    // --- SUCCESS STATE ---
                     statusBadge.innerHTML = '<div class="dot-status"></div> API Online';
                     statusBadge.classList.add('show', 'online');
                     
@@ -470,18 +450,15 @@
                         grid.appendChild(dDiv);
                     });
                 } else {
-                    throw new Error("API Limit/Error");
+                    throw new Error("API Limit");
                 }
             } catch(e) {
-                // --- ERROR / EMPTY STATE ---
-                console.warn("GitHub API Unavailable:", e);
-                statusBadge.innerHTML = '<div class="dot-status"></div> API Offline/Limit';
+                statusBadge.innerHTML = '<div class="dot-status"></div> API Offline';
                 statusBadge.classList.add('show', 'offline');
-                document.getElementById('total-contributions').innerText = `Data Unavailable (Rate Limited or Down)`;
-                grid.innerHTML = '<div class="empty-state-graph">Chart Unavailable.<br>Try again later.</div>';
+                document.getElementById('total-contributions').innerText = `Data Unavailable`;
+                grid.innerHTML = '<div class="empty-state-graph">Chart Unavailable.</div>';
             }
 
-            // EVENTS (Keep Attempting)
             try {
                 const evt = await fetch(`https://api.github.com/users/${user}/events/public?per_page=100`);
                 if(evt.ok) {
@@ -499,14 +476,12 @@
             } catch(e){ console.log("Event Err"); }
         }
 
-        // --- CORE DB LOGIC (Unchanged) ---
         async function loadFromDB() {
             try {
                 const snap = await getDoc(docRef);
                 const data = snap.exists() ? snap.data() : {};
                 const list = document.getElementById('changelog-list');
                 
-                // Logic auto changelog
                 let currentHtml = data.changelogHtml;
                 if (currentHtml && currentHtml.length > 50) { 
                     if (!currentHtml.includes(CURRENT_VERSION)) {
@@ -522,7 +497,6 @@
                     document.getElementById('legend-2').innerText = data.legendTexts.l2 || "Med";
                     document.getElementById('legend-3').innerText = data.legendTexts.l3 || "On Fire!";
                 }
-                
                 if(data.name) document.getElementById('user-name').innerText = data.name;
                 if(data.bio) document.getElementById('user-bio').innerText = data.bio;
                 if(data.links) {
@@ -552,10 +526,8 @@
             if(localStorage.getItem('lumina_perf') !== 'true') setup3DInteractions();
         }
 
-        async function logToFirebase(action) {
-            try { await addDoc(collection(db, "lumina_logs"), { action: action, timestamp: new Date() }); } catch(e) { console.error(e); }
-        }
-
+        async function logToFirebase(action) { try { await addDoc(collection(db, "lumina_logs"), { action: action, timestamp: new Date() }); } catch(e){} }
+        
         function setupActivityListener() {
             const q = query(collection(db, "lumina_logs"), orderBy("timestamp", "desc"), limit(5));
             onSnapshot(q, (snapshot) => {
@@ -575,10 +547,10 @@
             if(!confirm("Simpan & Kunci?")) return;
             document.body.style.cursor = 'wait';
             
-            if(confirm("Tambah log manual ke Changelog?")) {
-                const ver = prompt("Versi (cth: v2.7):");
+            if(confirm("Tambah Manual Log?")) {
+                const ver = prompt("Versi:");
                 const catInput = prompt("Kategori? (feature/fix/style/core)").toLowerCase();
-                const desc = prompt("Keterangan:");
+                const desc = prompt("Ket:");
                 if(ver && desc) {
                     const d = new Date().toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
                     let catClass='cat-core', catLabel='CORE';
@@ -625,7 +597,7 @@
                 await setDoc(docRef, payload, { merge: true });
                 await logToFirebase("Update Profile");
                 window.location.reload(); 
-            } catch(e) { alert("Err: " + e.message); document.body.style.cursor = 'default'; }
+            } catch(e) { alert(e.message); document.body.style.cursor='default'; }
         };
 
         window.handleEditAuth = function() { if(isEditing) window.saveAndLock(); else openModal('login-modal'); };
@@ -653,51 +625,53 @@
             document.querySelectorAll('.social-icon').forEach(i => i.classList.add('editing'));
         }
 
-        window.addApp = () => {
-            const name = prompt("Nama Aplikasi:"); if(!name)return;
-            const div = document.createElement('div'); div.className='app-item editing interactive-card';
-            div.innerHTML = `<h4 class="app-name" contenteditable="true">${name}</h4><p class="app-desc" contenteditable="true">Deskripsi...</p><button class="delete-btn" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button><a href="#" class="app-visit-btn" onclick="editLinkAttr(event,this)">Visit</a>`;
-            document.getElementById('apps-list').appendChild(div);
-            if(localStorage.getItem('lumina_perf') !== 'true') setup3DInteractions();
-        };
+        window.addApp = () => { const name = prompt("Nama Aplikasi:"); if(!name)return; const div = document.createElement('div'); div.className='app-item editing interactive-card'; div.innerHTML = `<h4 class="app-name" contenteditable="true">${name}</h4><p class="app-desc" contenteditable="true">Deskripsi...</p><button class="delete-btn" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button><a href="#" class="app-visit-btn" onclick="editLinkAttr(event,this)">Visit</a>`; document.getElementById('apps-list').appendChild(div); if(localStorage.getItem('lumina_perf')!=='true')setup3DInteractions(); };
+        window.updateAccent = (c) => { document.documentElement.style.setProperty('--accent-glow', c); localStorage.setItem('lumina_accent', c); document.getElementById('accent-picker').value=c; };
+        function initAccentColor() { const c=localStorage.getItem('lumina_accent'); if(c){document.documentElement.style.setProperty('--accent-glow',c);document.getElementById('accent-picker').value=c;}else document.getElementById('accent-picker').value='#38bdf8'; }
+        window.editLink=(e,el)=>{if(isEditing){e.preventDefault();const n=prompt("Link:",el.getAttribute('href'));if(n)el.setAttribute('href',n);}};
+        window.editLinkAttr=(e,el)=>{if(isEditing){e.preventDefault();const n=prompt("App URL:",el.getAttribute('href'));if(n)el.setAttribute('href',n);}};
+        window.configureGithub=()=>{if(isEditing){const n=prompt("Github User:");if(n){localStorage.setItem('gh_user',n);loadGithubData(n);}}};
+        window.handleProfileClick=()=>{if(isEditing)openModal('cropper-modal');};
+        window.applyCrop=()=>{if(cropper){document.getElementById('hero-img').src=cropper.getCroppedCanvas({width:300,height:300}).toDataURL();closeModal('cropper-modal');}};
+        document.getElementById('image-upload').addEventListener('change',e=>{if(e.target.files.length){const r=new FileReader();r.onload=v=>{document.getElementById('image-to-crop').src=v.target.result;if(cropper)cropper.destroy();cropper=new Cropper(document.getElementById('image-to-crop'),{aspectRatio:1,viewMode:1});};r.readAsDataURL(e.target.files[0]);}});
+        window.openModal=id=>{document.getElementById(id).classList.add('active');if(id=='login-modal')setTimeout(()=>document.getElementById('pin-input').focus(),100);};
+        window.closeModal=id=>{document.getElementById(id).classList.remove('active');};
         
-        window.updateAccent = function(color) { document.documentElement.style.setProperty('--accent-glow', color); localStorage.setItem('lumina_accent', color); document.getElementById('accent-picker').value = color; }
-        function initAccentColor() { const c = localStorage.getItem('lumina_accent'); if(c){document.documentElement.style.setProperty('--accent-glow', c); document.getElementById('accent-picker').value=c;} else document.getElementById('accent-picker').value='#38bdf8'; }
-
-        window.editLink = (e,el) => { if(isEditing){ e.preventDefault(); const n=prompt("Link:", el.getAttribute('href')); if(n) el.setAttribute('href',n); } };
-        window.editLinkAttr = (e,el) => { if(isEditing){ e.preventDefault(); const n=prompt("App URL:", el.getAttribute('href')); if(n) el.setAttribute('href',n); } };
-        window.configureGithub = () => { if(isEditing){ const n=prompt("Github User:"); if(n){localStorage.setItem('gh_user',n); loadGithubData(n);} }};
-        window.handleProfileClick = () => { if(isEditing) openModal('cropper-modal'); }
-        window.applyCrop = () => { if(cropper){ document.getElementById('hero-img').src=cropper.getCroppedCanvas({width:300,height:300}).toDataURL(); closeModal('cropper-modal'); }};
-        document.getElementById('image-upload').addEventListener('change',e=>{ if(e.target.files.length){ const r=new FileReader(); r.onload=v=>{document.getElementById('image-to-crop').src=v.target.result; if(cropper)cropper.destroy(); cropper=new Cropper(document.getElementById('image-to-crop'),{aspectRatio:1,viewMode:1});}; r.readAsDataURL(e.target.files[0]);}});
-
-        window.openModal = id => { document.getElementById(id).classList.add('active'); if(id=='login-modal') setTimeout(()=>document.getElementById('pin-input').focus(),100); };
-        window.closeModal = id => { document.getElementById(id).classList.remove('active'); };
+        function initTheme(){ const s=localStorage.getItem('theme'); if(s) document.body.classList.toggle('light-mode', s==='light'); else document.body.classList.toggle('light-mode', themeQuery.matches); }
+        window.toggleTheme=()=>{ const isL = document.body.classList.toggle('light-mode'); localStorage.setItem('theme', isL?'light':'dark'); };
         
-        function applyTheme(isLight) { if (isLight) document.body.classList.add('light-mode'); else document.body.classList.remove('light-mode'); updateIcon(isLight); }
-        function initTheme() { const s = localStorage.getItem('theme'); if(s){ applyTheme(s==='light'); } else { applyTheme(themeQuery.matches); } }
-        themeQuery.addEventListener('change', (e) => { if(!localStorage.getItem('theme')) applyTheme(e.matches); });
-        window.toggleTheme = () => { const l = document.body.classList.contains('light-mode'); const t = !l; applyTheme(t); localStorage.setItem('theme', t?'light':'dark'); };
-        function updateIcon(l) { document.getElementById('theme-icon').className = l ? 'fas fa-moon' : 'fas fa-sun'; }
-
-        // Perf Logic
-        window.setPerformanceMode = function(isPerf) {
-            const body = document.body; const btnQual = document.getElementById('btn-qual'); const btnPerf = document.getElementById('btn-perf');
-            if (isPerf) { body.classList.add('perf-mode'); btnPerf.classList.add('active'); btnQual.classList.remove('active'); localStorage.setItem('lumina_perf', 'true'); } 
-            else { body.classList.remove('perf-mode'); btnQual.classList.add('active'); btnPerf.classList.remove('active'); localStorage.setItem('lumina_perf', 'false'); setup3DInteractions(); }
+        window.setPerformanceMode = (isPerf) => {
+            if(isPerf) { document.body.classList.add('perf-mode'); localStorage.setItem('lumina_perf','true'); document.getElementById('btn-perf').classList.add('active'); document.getElementById('btn-qual').classList.remove('active'); }
+            else { document.body.classList.remove('perf-mode'); localStorage.setItem('lumina_perf','false'); document.getElementById('btn-qual').classList.add('active'); document.getElementById('btn-perf').classList.remove('active'); setup3DInteractions(); }
         }
-        function initPerformanceMode() { setPerformanceMode(localStorage.getItem('lumina_perf') === 'true'); }
+        function initPerformanceMode() { window.setPerformanceMode(localStorage.getItem('lumina_perf')==='true'); }
 
-        window.splashEffect = () => { 
-            const con = document.querySelector('.splash-text'); const txt="Lumina"; con.innerHTML=''; 
-            txt.split('').forEach((c,i)=>{ const s=document.createElement('span'); s.innerText=c; s.style.animationDelay=`${i*0.1}s`; con.appendChild(s); });
-            setTimeout(()=>{ document.getElementById('splash-screen').style.opacity=0; document.getElementById('splash-screen').style.visibility='hidden'; document.body.classList.remove('no-scroll'); }, 4500); 
+        window.splashEffect = () => {
+            const con = document.querySelector('.splash-text');
+            const txt = "Lumina";
+            con.innerHTML = ''; // Reset container content to blank first
+            
+            // Loop through each letter and create a span
+            [...txt].forEach((char, idx) => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                // Assign animation delay to each letter for the staggered effect
+                span.style.animationDelay = `${idx * 0.1}s`;
+                con.appendChild(span);
+            });
+
+            // Set timeout to hide the splash screen after animations finish
+            setTimeout(() => {
+                document.getElementById('splash-screen').style.opacity = 0;
+                document.getElementById('splash-screen').style.visibility = 'hidden';
+                document.body.classList.remove('no-scroll');
+            }, 4500); 
         };
         
         function generateQuote() { const idx=Math.floor(Math.random()*quoteDB.length); const q=quoteDB[idx]; document.getElementById('quote-en').innerText=`"${q.en}"`; document.getElementById('quote-id').innerText=q.id?q.id:""; document.getElementById('quote-author').innerText=q.author; }
         
         window.setupObservers=()=>{ const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');obs.unobserve(e.target)}})); document.querySelectorAll('.hidden').forEach((e,i)=>{e.style.transitionDelay=i*100+'ms';obs.observe(e);}); };
-        window.setup3DInteractions=()=>{ document.querySelectorAll('.interactive-card, .app-item').forEach(card => { card.classList.add('interactive-card'); card.onmousemove=e=>{ if(document.body.classList.contains('perf-mode'))return; const rect=card.getBoundingClientRect(); card.style.setProperty('--x',(e.clientX-rect.left)+'px'); card.style.setProperty('--y',(e.clientY-rect.top)+'px'); card.style.transform=`perspective(1000px) rotateX(${((e.clientY-rect.top-rect.height/2)/rect.height)*-5}deg) rotateY(${((e.clientX-rect.left-rect.width/2)/rect.width)*5}deg) scale(1.02)`; }; card.onmouseleave=()=>card.style.transform='perspective(1000px) rotateX(0) rotateY(0) scale(1)'; }); };
+        window.setup3DInteractions=()=>{ document.querySelectorAll('.interactive-card, .app-item').forEach(card => { card.classList.add('interactive-card'); card.onmousemove=e=>{ if(document.body.classList.contains('perf-mode'))return; const r=card.getBoundingClientRect(); card.style.setProperty('--x',(e.clientX-r.left)+'px'); card.style.setProperty('--y',(e.clientY-r.top)+'px'); card.style.transform=`perspective(1000px) rotateX(${((e.clientY-r.top-r.height/2)/r.height)*-5}deg) rotateY(${((e.clientX-r.left-r.width/2)/r.width)*5}deg) scale(1.02)`; }; card.onmouseleave=()=>card.style.transform='perspective(1000px) rotateX(0) rotateY(0) scale(1)'; }); };
     </script>
 </body>
 </html>
