@@ -35,7 +35,6 @@
             --accent-firebase: #fbbf24; 
             --success: #34d399;
             --error: #f87171;
-            --warning: #fbbf24;
             --modal-bg: #1e293b; 
             
             /* GITHUB DARK */
@@ -121,12 +120,12 @@
         section { max-width: 900px; margin: 0 auto 60px; width: 90%; scroll-margin-top: 100px; }
         .section-header { font-size: 1.5rem; font-weight: 700; margin-bottom: 30px; border-bottom: 2px solid var(--accent-glow); padding-bottom: 5px; display: inline-block; color: var(--text-main); position: relative; padding-right: 120px;}
 
-        /* API STATUS BADGE */
-        .api-status { position: absolute; right: 0; top: 5px; font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; letter-spacing: 0.5px; opacity: 0; transition: 0.3s; transform: translateX(10px); cursor: pointer; }
+        /* API STATUS BADGE (Fixed Cursor) */
+        .api-status { position: absolute; right: 0; top: 5px; font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; letter-spacing: 0.5px; opacity: 0; transition: 0.3s; transform: translateX(10px); cursor: pointer; z-index: 10;}
         .api-status.show { opacity: 1; transform: translateX(0); }
-        .api-status.online { background: rgba(52, 211, 153, 0.15); color: var(--success); border: 1px solid var(--success); }
+        .api-status.online { background: rgba(52, 211, 153, 0.15); color: var(--success); border: 1px solid var(--success); cursor: default; }
         .api-status.offline { background: rgba(248, 113, 113, 0.15); color: var(--error); border: 1px solid var(--error); }
-        .api-status.limit { background: rgba(251, 191, 36, 0.15); color: var(--warning); border: 1px solid var(--warning); }
+        .api-status.offline:hover { background: rgba(248, 113, 113, 0.3); } /* Hover effect */
         .dot-status { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 20px; }
@@ -168,7 +167,7 @@
 
         @media (max-width: 768px) { .activity-section-split { grid-template-columns: 1fr; gap: 20px; } }
 
-        /* CHANGELOG */
+        /* CHANGELOG - VERSIONLESS LAYOUT FIXED */
         #changelog-section { font-size: 0.9rem; }
         .timeline { position: relative; margin-left: 10px; padding-left: 20px; }
         .timeline::before { content:''; position: absolute; top: 0; bottom: 0; left: 6px; width: 4px; background: var(--track-color); border-radius: 10px; }
@@ -178,7 +177,10 @@
         .timeline-item::after { content: ''; position: absolute; left: -29px; top: 5px; width: 10px; height: 10px; background: var(--text-muted); border-radius: 50%; z-index: 2; box-shadow: 0 0 0 4px var(--bg-color); transition: 0.3s; }
         .timeline-item:first-child::after { background: var(--accent-glow); height: 25px; border-radius: 10px; top: 0px; box-shadow: 0 0 15px var(--accent-glow); }
 
-        .category-badge { display: inline-block; font-size: 0.65rem; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; font-weight: 800; margin-right: 8px; letter-spacing: 0.5px; border: 1px solid transparent; background: rgba(255,255,255,0.05); color: var(--text-muted); }
+        .timeline-item > div { display: flex; align-items: center; gap: 15px; margin-bottom: 6px; }
+        .version-badge { display: none !important; } /* Force Hide old data */
+
+        .category-badge { display: inline-block; font-size: 0.65rem; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; border: 1px solid transparent; background: rgba(255,255,255,0.05); color: var(--text-muted); }
         .cat-feature { background: rgba(52, 211, 153, 0.15); color: #34d399; border-color: #34d399; }
         .cat-fix { background: rgba(248, 113, 113, 0.15); color: #f87171; border-color: #f87171; }
         .cat-style { background: rgba(167, 139, 250, 0.15); color: #a78bfa; border-color: #a78bfa; }
@@ -243,9 +245,7 @@
             <div class="profile-container" id="profile-trigger" onclick="handleProfileClick()">
                 <img src="https://ui-avatars.com/api/?name=User&background=38bdf8&color=fff" 
                      onerror="this.src='https://ui-avatars.com/api/?name=U&background=random'" 
-                     alt="Profile" 
-                     class="profile-pic" 
-                     id="hero-img">
+                     alt="Profile" class="profile-pic" id="hero-img">
                 <div class="profile-overlay"><i class="fas fa-camera"></i></div>
             </div>
             <h1 id="user-name">Your Name</h1>
@@ -292,7 +292,8 @@
             <div style="display:flex; justify-content: space-between; align-items:center;">
                 <h2 class="section-header" style="margin-bottom:0; border-bottom:0;">
                     Activity Hub 
-                    <span id="api-status-badge" class="api-status" onclick="retryGithubLoad()" title="Click to Retry"></span>
+                    <!-- API STATUS FIXER -->
+                    <span id="api-status-badge" class="api-status" onclick="fixGithubUser()" title="Click to fix username"></span>
                 </h2>
                 <i class="fas fa-cog" id="gh-config-btn" onclick="configureGithub()" style="display:none; color:var(--text-muted); cursor:pointer;"></i>
             </div>
@@ -323,13 +324,13 @@
         <div class="acrylic-panel hidden" style="padding: 30px;">
             <h2 class="section-header">System Changelog</h2>
             <div class="timeline" id="changelog-list">
-                <!-- Data loaded via JS -->
+                <!-- Backup History if needed -->
                 <div class="timeline-item">
                     <div>
                         <span class="category-badge cat-feature">FEATURE</span>
                         <span class="version-date">Today</span>
                     </div>
-                    <p class="version-desc">Robust API Handling & Versionless Changelog deployed.</p>
+                    <p class="version-desc">Robust API Logic V2.5.1: Added auto-trim username, click-to-fix bad api state, and safer fallbacks.</p>
                 </div>
             </div>
         </div>
@@ -367,36 +368,17 @@
         </div>
     </div>
 
-    <!-- PIN MODAL -->
-    <div class="modal-overlay" id="login-modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('login-modal')">&times;</span>
-            <h3>Admin Access</h3>
-            <input type="password" id="pin-input" class="pin-field" placeholder="••••" maxlength="4" inputmode="numeric">
-            <button onclick="checkPin()" class="app-visit-btn" style="width:100%; background:var(--accent-glow); border:none; color:#fff; cursor:pointer;">UNLOCK</button>
-        </div>
-    </div>
-
-    <!-- CROPPER MODAL -->
-    <div class="modal-overlay" id="cropper-modal">
-        <div class="modal-content" style="max-width:500px;">
-            <span class="close-modal" onclick="closeModal('cropper-modal')">&times;</span>
-            <h3>Update Profile</h3>
-            <input type="file" id="image-upload" accept="image/*" style="margin:20px 0;">
-            <div style="height:350px; background:#000; border-radius:10px; overflow:hidden; margin-bottom:15px;"><img id="image-to-crop" style="display:block; max-width:100%;" src=""></div>
-            <div style="display:flex; gap:10px; justify-content:center;">
-                <button onclick="applyCrop()" class="app-visit-btn" style="background:var(--success); border:none; color:#fff; cursor:pointer;">Save</button>
-            </div>
-        </div>
-    </div>
+    <div class="modal-overlay" id="login-modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('login-modal')">&times;</span><h3>Admin Access</h3><input type="password" id="pin-input" class="pin-field" placeholder="••••" maxlength="4" inputmode="numeric"><button onclick="checkPin()" class="app-visit-btn" style="width:100%; background:var(--accent-glow); border:none; color:#fff; cursor:pointer;">UNLOCK</button></div></div>
+    <div class="modal-overlay" id="cropper-modal"><div class="modal-content" style="max-width:500px;"><span class="close-modal" onclick="closeModal('cropper-modal')">&times;</span><h3>Update Profile</h3><input type="file" id="image-upload" accept="image/*" style="margin:20px 0;"><div style="height:350px; background:#000; border-radius:10px; overflow:hidden; margin-bottom:15px;"><img id="image-to-crop" style="display:block; max-width:100%;" src=""></div><div style="display:flex; gap:10px; justify-content:center;"><button onclick="applyCrop()" class="app-visit-btn" style="background:var(--success); border:none; color:#fff; cursor:pointer;">Save</button></div></div></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, collection, addDoc, query, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const UPDATE_MSG = 'Improved API robustness: Specific Error Handling for User Not Found vs Rate Limits.';
+        // === CONFIG ===
+        const UPDATE_MSG = 'Stability Update v2.5.1: "Click-to-Fix" API status added. Auto-trimmed username input to prevent API errors. Improved Fallbacks.';
 
-        // === ISI CONFIG ===
+        const firebaseConfig = {
         const firebaseConfig = {
   apiKey: "AIzaSyDfpLYr8g8ltUpdV_1HuN-S_m8vnMqqtYI",
   authDomain: "lumina-portofolio.firebaseapp.com",
@@ -415,8 +397,7 @@
 
         const quoteDB = [
             { en: "Stay hungry, stay foolish.", id: "Tetaplah lapar, tetaplah bodoh.", author: "Steve Jobs" },
-            { en: "The only way to do great work is to love what you do.", id: "Satu-satunya cara melakukan pekerjaan hebat adalah mencintai apa yang Anda lakukan.", author: "Steve Jobs" },
-            { en: "Code is like humor. When you have to explain it, it’s bad.", id: "Kode itu seperti lelucon. Jika Anda harus menjelaskannya, berarti itu buruk.", author: "Cory House" }
+            { en: "Code is like humor. When you have to explain it, it’s bad.", id: "Kode itu seperti lelucon. Jika harus dijelaskan, berarti buruk.", author: "Cory House" }
         ];
 
         const themeQuery = window.matchMedia('(prefers-color-scheme: light)');
@@ -433,26 +414,41 @@
             initPerformanceMode();
             setupObservers();
             setupActivityListener();
-            window.addEventListener('resize', () => { const u=localStorage.getItem('gh_user'); if(u) loadGithubData(u); });
+            window.addEventListener('resize', () => { 
+                const u = localStorage.getItem('gh_user'); 
+                if(u) loadGithubData(u.trim()); 
+            });
         });
 
-        // --- NEW: BETTER API HANDLING ---
+        // --- NEW: USER CLICK TO FIX ---
+        window.fixGithubUser = async () => {
+            const newUser = prompt("Fix GitHub Username:", localStorage.getItem('gh_user') || "");
+            if(newUser) {
+                const cleanedUser = newUser.trim(); // FORCE TRIM
+                localStorage.setItem('gh_user', cleanedUser);
+                loadGithubData(cleanedUser);
+            }
+        };
+
+        // --- API LOAD (Improved) ---
         window.loadGithubData = async (user) => {
+            user = user ? user.trim() : 'erga2904'; // Safer default
+            
             const grid = document.getElementById('contribution-grid');
             const feed = document.getElementById('github-feed');
             const statusBadge = document.getElementById('api-status-badge');
             
             grid.innerHTML = '';
             document.getElementById('total-contributions').innerText = "Connecting to GitHub...";
-            statusBadge.className = 'api-status'; 
-            statusBadge.innerHTML = '';
+            statusBadge.className = 'api-status'; statusBadge.innerHTML = '';
 
             try {
                 const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${user}?y=last`);
-                
                 if (res.ok) {
                     statusBadge.innerHTML = '<div class="dot-status"></div> API Online';
                     statusBadge.classList.add('show', 'online');
+                    statusBadge.onclick = null; // Remove fix handler if online
+                    
                     const d = await res.json();
                     const w = window.innerWidth;
                     let daysCount = 364; if(w<600)daysCount=120; else if(w<900)daysCount=200;
@@ -463,21 +459,21 @@
                     });
                 } else if (res.status === 404) {
                     throw new Error("User Not Found");
-                } else if (res.status === 429) {
-                    throw new Error("Rate Limited");
                 } else {
-                    throw new Error("Server Error");
+                    throw new Error("Limit");
                 }
             } catch(e) {
-                // Handling specific error states
-                if(e.message === "User Not Found") {
-                    statusBadge.innerHTML = '<div class="dot-status"></div> User Not Found';
+                // If 404, User clickable "Fix"
+                if (e.message === "User Not Found") {
+                    statusBadge.innerHTML = '<div class="dot-status"></div> User Not Found (Click to Fix)';
                     statusBadge.classList.add('show', 'offline');
-                    document.getElementById('total-contributions').innerText = `GitHub user '${user}' not found.`;
+                    statusBadge.setAttribute('onclick', 'fixGithubUser()');
+                    statusBadge.style.cursor = 'pointer';
+                    document.getElementById('total-contributions').innerText = `Username '${user}' unknown`;
                 } else {
-                    statusBadge.innerHTML = '<div class="dot-status"></div> Rate Limit (Wait)';
-                    statusBadge.classList.add('show', 'limit');
-                    document.getElementById('total-contributions').innerText = `Data temporarily unavailable. Try again later.`;
+                    statusBadge.innerHTML = '<div class="dot-status"></div> API Rate Limit';
+                    statusBadge.classList.add('show', 'offline');
+                    document.getElementById('total-contributions').innerText = `Data Unavailable`;
                 }
                 grid.innerHTML = '<div class="empty-state-graph">Chart Offline</div>';
             }
@@ -499,36 +495,27 @@
             } catch(e){ console.log("Event Err"); }
         }
 
-        window.retryGithubLoad = () => {
-            const user = localStorage.getItem('gh_user') || 'erga2904';
-            loadGithubData(user);
-        }
-
-        // --- CORE DB ---
         async function loadFromDB() {
             try {
                 const snap = await getDoc(docRef);
                 const data = snap.exists() ? snap.data() : {};
-                const list = document.getElementById('changelog-list');
                 
-                // LOAD CHANGELOG & DETECT IF NEW UPDATE (AUTO)
+                // Logic changelog 
                 let currentHtml = data.changelogHtml;
                 if (currentHtml && currentHtml.length > 50) { 
                     if (!currentHtml.includes(UPDATE_MSG)) { 
                         const d = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-                        // Versi HILANG di kode ini sesuai request
                         const newLog = `<div class="timeline-item"><div><span class="category-badge cat-feature">FEATURE</span><span class="version-date">${d}</span></div><p class="version-desc">${UPDATE_MSG}</p></div>`;
-                        list.innerHTML = newLog + currentHtml;
-                    } else { list.innerHTML = currentHtml; }
+                        document.getElementById('changelog-list').innerHTML = newLog + currentHtml;
+                    } else { document.getElementById('changelog-list').innerHTML = currentHtml; }
                 } 
-                list.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
+                document.getElementById('changelog-list').querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
 
                 if(data.legendTexts) {
                     document.getElementById('legend-1').innerText = data.legendTexts.l1 || "0 - lagi mager -_-";
                     document.getElementById('legend-2').innerText = data.legendTexts.l2 || "Med";
                     document.getElementById('legend-3').innerText = data.legendTexts.l3 || "On Fire!";
                 }
-                
                 if(data.name) document.getElementById('user-name').innerText = data.name;
                 if(data.bio) document.getElementById('user-bio').innerText = data.bio;
                 if(data.links) {
@@ -550,7 +537,8 @@
                     document.getElementById('apps-list').innerHTML = t.innerHTML;
                 }
 
-                const user = data.ghUsername || 'erga2904';
+                // FORCE TRIM HERE TOO
+                let user = (data.ghUsername || 'erga2904').trim();
                 localStorage.setItem('gh_user', user);
                 loadGithubData(user);
             } catch(e) { console.error(e); }
@@ -574,6 +562,7 @@
             });
         }
 
+        // SAVE LOCK
         window.saveAndLock = async function() {
             if(!confirm("Simpan & Kunci?")) return;
             document.body.style.cursor = 'wait';
@@ -617,7 +606,10 @@
                     },
                     appsHtml: list.innerHTML,
                     changelogHtml: logs.innerHTML, 
-                    ghUsername: localStorage.getItem('gh_user'),
+                    
+                    // SAVE USERNAME SAFER
+                    ghUsername: (localStorage.getItem('gh_user') || 'erga2904').trim(),
+                    
                     links: {
                         git: document.getElementById('link-github').getAttribute('href'),
                         tw: document.getElementById('link-twitter').getAttribute('href'),
@@ -661,7 +653,7 @@
         window.editLinkAttr=(e,el)=>{if(isEditing){e.preventDefault();const n=prompt("App URL:",el.getAttribute('href'));if(n)el.setAttribute('href',n);}};
         window.configureGithub=()=>{if(isEditing){const n=prompt("Github User:");if(n){localStorage.setItem('gh_user',n);loadGithubData(n);}}};
         window.handleProfileClick=()=>{if(isEditing)openModal('cropper-modal');};
-        window.applyCrop=()=>{if(cropper){document.getElementById('hero-img').src=cropper.getCroppedCanvas({width:300,height:300}).toDataURL();closeModal('cropper-modal');}};
+        window.applyCrop=()=>{if(cropper){const canvas=cropper.getCroppedCanvas({width:256,height:256}); const b64=canvas.toDataURL('image/jpeg',0.5); document.getElementById('hero-img').src=b64; closeModal('cropper-modal');}};
         document.getElementById('image-upload').addEventListener('change',e=>{if(e.target.files.length){const r=new FileReader();r.onload=v=>{document.getElementById('image-to-crop').src=v.target.result;if(cropper)cropper.destroy();cropper=new Cropper(document.getElementById('image-to-crop'),{aspectRatio:1,viewMode:1});};r.readAsDataURL(e.target.files[0]);}});
         window.openModal=id=>{document.getElementById(id).classList.add('active');if(id=='login-modal')setTimeout(()=>document.getElementById('pin-input').focus(),100);};
         window.closeModal=id=>{document.getElementById(id).classList.remove('active');};
