@@ -35,6 +35,7 @@
             --accent-firebase: #fbbf24; 
             --success: #34d399;
             --error: #f87171;
+            --warning: #fbbf24;
             --modal-bg: #1e293b; 
             
             /* GITHUB DARK */
@@ -107,14 +108,8 @@
 
         .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding-top: 150px; padding-bottom: 50px; gap: 20px;}
         .hero-card { padding: 40px; width: 90%; max-width: 600px; text-align: center; }
-        
-        /* FIXED PROFILE PICTURE (SAFE MODE) */
         .profile-container { width: 140px; height: 140px; margin: 0 auto 20px; position: relative; }
-        .profile-pic { 
-            width: 100%; height: 100%; border-radius: 50%; object-fit: cover; 
-            border: 4px solid var(--glass-border); box-shadow: 0 10px 40px rgba(0,0,0,0.2); 
-            background: #1e293b; /* Fallback color so it doesn't look invisible */
-        }
+        .profile-pic { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--glass-border); box-shadow: 0 10px 40px rgba(0,0,0,0.2); background: #333; }
         .profile-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; color: #fff; font-size: 1.5rem; transition: 0.3s; }
         .profile-container:hover .profile-overlay { opacity: 1; display: flex;}
 
@@ -127,10 +122,11 @@
         .section-header { font-size: 1.5rem; font-weight: 700; margin-bottom: 30px; border-bottom: 2px solid var(--accent-glow); padding-bottom: 5px; display: inline-block; color: var(--text-main); position: relative; padding-right: 120px;}
 
         /* API STATUS BADGE */
-        .api-status { position: absolute; right: 0; top: 5px; font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; letter-spacing: 0.5px; opacity: 0; transition: 0.3s; transform: translateX(10px); }
+        .api-status { position: absolute; right: 0; top: 5px; font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; letter-spacing: 0.5px; opacity: 0; transition: 0.3s; transform: translateX(10px); cursor: pointer; }
         .api-status.show { opacity: 1; transform: translateX(0); }
         .api-status.online { background: rgba(52, 211, 153, 0.15); color: var(--success); border: 1px solid var(--success); }
         .api-status.offline { background: rgba(248, 113, 113, 0.15); color: var(--error); border: 1px solid var(--error); }
+        .api-status.limit { background: rgba(251, 191, 36, 0.15); color: var(--warning); border: 1px solid var(--warning); }
         .dot-status { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 20px; }
@@ -172,26 +168,17 @@
 
         @media (max-width: 768px) { .activity-section-split { grid-template-columns: 1fr; gap: 20px; } }
 
-        /* CHANGELOG - VERSIONLESS LAYOUT FIXED */
+        /* CHANGELOG */
         #changelog-section { font-size: 0.9rem; }
         .timeline { position: relative; margin-left: 10px; padding-left: 20px; }
         .timeline::before { content:''; position: absolute; top: 0; bottom: 0; left: 6px; width: 4px; background: var(--track-color); border-radius: 10px; }
-        
         .timeline-item { position: relative; margin-bottom: 30px; }
         .timeline-item:last-child { margin-bottom: 0; }
         
-        /* Node Indicator */
         .timeline-item::after { content: ''; position: absolute; left: -29px; top: 5px; width: 10px; height: 10px; background: var(--text-muted); border-radius: 50%; z-index: 2; box-shadow: 0 0 0 4px var(--bg-color); transition: 0.3s; }
-        /* Latest Item Glow */
         .timeline-item:first-child::after { background: var(--accent-glow); height: 25px; border-radius: 10px; top: 0px; box-shadow: 0 0 15px var(--accent-glow); }
 
-        /* Header Baris Kategori + Tanggal */
-        .timeline-item > div { display: flex; align-items: center; gap: 15px; margin-bottom: 6px; }
-
-        /* HIDDEN OLD BADGE */
-        .version-badge { display: none !important; } 
-
-        .category-badge { display: inline-block; font-size: 0.65rem; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; border: 1px solid transparent; background: rgba(255,255,255,0.05); color: var(--text-muted); }
+        .category-badge { display: inline-block; font-size: 0.65rem; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; font-weight: 800; margin-right: 8px; letter-spacing: 0.5px; border: 1px solid transparent; background: rgba(255,255,255,0.05); color: var(--text-muted); }
         .cat-feature { background: rgba(52, 211, 153, 0.15); color: #34d399; border-color: #34d399; }
         .cat-fix { background: rgba(248, 113, 113, 0.15); color: #f87171; border-color: #f87171; }
         .cat-style { background: rgba(167, 139, 250, 0.15); color: #a78bfa; border-color: #a78bfa; }
@@ -305,7 +292,7 @@
             <div style="display:flex; justify-content: space-between; align-items:center;">
                 <h2 class="section-header" style="margin-bottom:0; border-bottom:0;">
                     Activity Hub 
-                    <span id="api-status-badge" class="api-status"></span>
+                    <span id="api-status-badge" class="api-status" onclick="retryGithubLoad()" title="Click to Retry"></span>
                 </h2>
                 <i class="fas fa-cog" id="gh-config-btn" onclick="configureGithub()" style="display:none; color:var(--text-muted); cursor:pointer;"></i>
             </div>
@@ -313,7 +300,6 @@
             <div class="activity-wrapper">
                 <div class="contribution-graph" id="contribution-grid"></div>
             </div>
-            <!-- Legend Text Editable -->
             <div class="legend-details">
                 <div class="legend-item"><div class="legend-color" style="background:var(--graph-l0)"></div> <span class="legend-label" id="legend-1">0 - lagi mager -_-</span></div>
                 <div class="legend-item"><div class="legend-color" style="background:var(--graph-l2)"></div> <span class="legend-label" id="legend-2">Med</span></div>
@@ -337,13 +323,13 @@
         <div class="acrylic-panel hidden" style="padding: 30px;">
             <h2 class="section-header">System Changelog</h2>
             <div class="timeline" id="changelog-list">
-                <!-- Backup History if needed -->
+                <!-- Data loaded via JS -->
                 <div class="timeline-item">
                     <div>
                         <span class="category-badge cat-feature">FEATURE</span>
                         <span class="version-date">Today</span>
                     </div>
-                    <p class="version-desc">Version badges hidden for a cleaner look. Changelog layout optimized.</p>
+                    <p class="version-desc">Robust API Handling & Versionless Changelog deployed.</p>
                 </div>
             </div>
         </div>
@@ -381,17 +367,37 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="login-modal"><div class="modal-content"><span class="close-modal" onclick="closeModal('login-modal')">&times;</span><h3>Admin Access</h3><input type="password" id="pin-input" class="pin-field" placeholder="••••" maxlength="4" inputmode="numeric"><button onclick="checkPin()" class="app-visit-btn" style="width:100%; background:var(--accent-glow); border:none; color:#fff; cursor:pointer;">UNLOCK</button></div></div>
-    <div class="modal-overlay" id="cropper-modal"><div class="modal-content" style="max-width:500px;"><span class="close-modal" onclick="closeModal('cropper-modal')">&times;</span><h3>Update Profile</h3><input type="file" id="image-upload" accept="image/*" style="margin:20px 0;"><div style="height:350px; background:#000; border-radius:10px; overflow:hidden; margin-bottom:15px;"><img id="image-to-crop" style="display:block; max-width:100%;" src=""></div><div style="display:flex; gap:10px; justify-content:center;"><button onclick="applyCrop()" class="app-visit-btn" style="background:var(--success); border:none; color:#fff; cursor:pointer;">Save</button></div></div></div>
+    <!-- PIN MODAL -->
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('login-modal')">&times;</span>
+            <h3>Admin Access</h3>
+            <input type="password" id="pin-input" class="pin-field" placeholder="••••" maxlength="4" inputmode="numeric">
+            <button onclick="checkPin()" class="app-visit-btn" style="width:100%; background:var(--accent-glow); border:none; color:#fff; cursor:pointer;">UNLOCK</button>
+        </div>
+    </div>
+
+    <!-- CROPPER MODAL -->
+    <div class="modal-overlay" id="cropper-modal">
+        <div class="modal-content" style="max-width:500px;">
+            <span class="close-modal" onclick="closeModal('cropper-modal')">&times;</span>
+            <h3>Update Profile</h3>
+            <input type="file" id="image-upload" accept="image/*" style="margin:20px 0;">
+            <div style="height:350px; background:#000; border-radius:10px; overflow:hidden; margin-bottom:15px;"><img id="image-to-crop" style="display:block; max-width:100%;" src=""></div>
+            <div style="display:flex; gap:10px; justify-content:center;">
+                <button onclick="applyCrop()" class="app-visit-btn" style="background:var(--success); border:none; color:#fff; cursor:pointer;">Save</button>
+            </div>
+        </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, collection, addDoc, query, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // === CONFIG ===
-        const UPDATE_MSG = 'Updated Code: Version numbers removed from Changelog history to streamline interface. Previous logs hidden via CSS.';
+        const UPDATE_MSG = 'Improved API robustness: Specific Error Handling for User Not Found vs Rate Limits.';
 
-       const firebaseConfig = {
+        // === ISI CONFIG ===
+        const firebaseConfig = {
   apiKey: "AIzaSyDfpLYr8g8ltUpdV_1HuN-S_m8vnMqqtYI",
   authDomain: "lumina-portofolio.firebaseapp.com",
   projectId: "lumina-portofolio",
@@ -430,7 +436,7 @@
             window.addEventListener('resize', () => { const u=localStorage.getItem('gh_user'); if(u) loadGithubData(u); });
         });
 
-        // --- API LOAD ---
+        // --- NEW: BETTER API HANDLING ---
         window.loadGithubData = async (user) => {
             const grid = document.getElementById('contribution-grid');
             const feed = document.getElementById('github-feed');
@@ -438,10 +444,12 @@
             
             grid.innerHTML = '';
             document.getElementById('total-contributions').innerText = "Connecting to GitHub...";
-            statusBadge.className = 'api-status'; statusBadge.innerHTML = '';
+            statusBadge.className = 'api-status'; 
+            statusBadge.innerHTML = '';
 
             try {
                 const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${user}?y=last`);
+                
                 if (res.ok) {
                     statusBadge.innerHTML = '<div class="dot-status"></div> API Online';
                     statusBadge.classList.add('show', 'online');
@@ -453,11 +461,25 @@
                     days.forEach(day => {
                         const dDiv = document.createElement('div'); dDiv.className = 'day-box'; dDiv.setAttribute('data-level', day.level); dDiv.title = `${day.date}: ${day.count}`; grid.appendChild(dDiv);
                     });
-                } else { throw new Error("Limit"); }
+                } else if (res.status === 404) {
+                    throw new Error("User Not Found");
+                } else if (res.status === 429) {
+                    throw new Error("Rate Limited");
+                } else {
+                    throw new Error("Server Error");
+                }
             } catch(e) {
-                statusBadge.innerHTML = '<div class="dot-status"></div> API Offline'; statusBadge.classList.add('show', 'offline');
-                document.getElementById('total-contributions').innerText = `Data Unavailable`;
-                grid.innerHTML = '<div class="empty-state-graph">Chart Unavailable.</div>';
+                // Handling specific error states
+                if(e.message === "User Not Found") {
+                    statusBadge.innerHTML = '<div class="dot-status"></div> User Not Found';
+                    statusBadge.classList.add('show', 'offline');
+                    document.getElementById('total-contributions').innerText = `GitHub user '${user}' not found.`;
+                } else {
+                    statusBadge.innerHTML = '<div class="dot-status"></div> Rate Limit (Wait)';
+                    statusBadge.classList.add('show', 'limit');
+                    document.getElementById('total-contributions').innerText = `Data temporarily unavailable. Try again later.`;
+                }
+                grid.innerHTML = '<div class="empty-state-graph">Chart Offline</div>';
             }
 
             try {
@@ -477,18 +499,24 @@
             } catch(e){ console.log("Event Err"); }
         }
 
+        window.retryGithubLoad = () => {
+            const user = localStorage.getItem('gh_user') || 'erga2904';
+            loadGithubData(user);
+        }
+
+        // --- CORE DB ---
         async function loadFromDB() {
             try {
                 const snap = await getDoc(docRef);
                 const data = snap.exists() ? snap.data() : {};
                 const list = document.getElementById('changelog-list');
                 
-                // Logic changelog (VERSION REMOVED CHECK)
+                // LOAD CHANGELOG & DETECT IF NEW UPDATE (AUTO)
                 let currentHtml = data.changelogHtml;
                 if (currentHtml && currentHtml.length > 50) { 
                     if (!currentHtml.includes(UPDATE_MSG)) { 
                         const d = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-                        // NO VERSION BADGE HERE
+                        // Versi HILANG di kode ini sesuai request
                         const newLog = `<div class="timeline-item"><div><span class="category-badge cat-feature">FEATURE</span><span class="version-date">${d}</span></div><p class="version-desc">${UPDATE_MSG}</p></div>`;
                         list.innerHTML = newLog + currentHtml;
                     } else { list.innerHTML = currentHtml; }
@@ -546,7 +574,6 @@
             });
         }
 
-        // --- NEW SAVE: NO VERSION NUMBER PROMPT ---
         window.saveAndLock = async function() {
             if(!confirm("Simpan & Kunci?")) return;
             document.body.style.cursor = 'wait';
@@ -634,18 +661,7 @@
         window.editLinkAttr=(e,el)=>{if(isEditing){e.preventDefault();const n=prompt("App URL:",el.getAttribute('href'));if(n)el.setAttribute('href',n);}};
         window.configureGithub=()=>{if(isEditing){const n=prompt("Github User:");if(n){localStorage.setItem('gh_user',n);loadGithubData(n);}}};
         window.handleProfileClick=()=>{if(isEditing)openModal('cropper-modal');};
-        
-        // --- FIXED COMPRESSION to Avoid Broken Images ---
-        window.applyCrop=()=>{
-            if(cropper){
-                // Compressing to JPEG 0.5 Quality to ensure small file size for Firebase
-                const canvas = cropper.getCroppedCanvas({width:256,height:256});
-                const base64 = canvas.toDataURL('image/jpeg', 0.5); 
-                document.getElementById('hero-img').src=base64;
-                closeModal('cropper-modal');
-            }
-        };
-        
+        window.applyCrop=()=>{if(cropper){document.getElementById('hero-img').src=cropper.getCroppedCanvas({width:300,height:300}).toDataURL();closeModal('cropper-modal');}};
         document.getElementById('image-upload').addEventListener('change',e=>{if(e.target.files.length){const r=new FileReader();r.onload=v=>{document.getElementById('image-to-crop').src=v.target.result;if(cropper)cropper.destroy();cropper=new Cropper(document.getElementById('image-to-crop'),{aspectRatio:1,viewMode:1});};r.readAsDataURL(e.target.files[0]);}});
         window.openModal=id=>{document.getElementById(id).classList.add('active');if(id=='login-modal')setTimeout(()=>document.getElementById('pin-input').focus(),100);};
         window.closeModal=id=>{document.getElementById(id).classList.remove('active');};
