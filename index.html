@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -66,7 +65,7 @@
             --glass-surface: #ffffff; --modal-bg: #ffffff; --glass-border: #cbd5e1;
         }
         body.perf-mode .ambient-light, body.perf-mode .interactive-card::before { display: none; }
-        body.perf-mode .acrylic-panel, body.perf-mode .modal-content, body.perf-mode .version-badge {
+        body.perf-mode .acrylic-panel, body.perf-mode .modal-content, body.perf-mode .category-badge {
             backdrop-filter: none !important; box-shadow: none !important;
         }
 
@@ -81,18 +80,15 @@
         .interactive-card:hover::before { opacity: 0.15; }
         .interactive-card > * { position: relative; z-index: 2; }
 
-        /* --- SPLASH (Fixed Animation) --- */
+        /* SPLASH */
         #splash-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-color); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease-out, visibility 0.8s; padding: 20px; }
         .splash-text { font-size: 4rem; font-weight: 800; color: var(--text-main); margin-bottom: 30px; letter-spacing: -2px;}
         .splash-text span { display: inline-block; opacity: 0; filter: blur(10px); transform: scale(1.1); animation: blurIn 0.8s forwards ease-in-out; }
-        
         .quote-container { margin-top: 20px; max-width: 600px; text-align: center; opacity: 0; transform: translateY(20px); animation: floatUp 1s ease-out forwards; animation-delay: 0.8s; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); }
         .quote-en { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: var(--text-main); margin-bottom: 8px; }
         .quote-id { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; }
         .quote-author { font-size: 0.85rem; font-weight: 700; color: var(--accent-glow); text-transform: uppercase; }
         .quote-author::before { content: '— '; }
-        
-        /* RESTORED ANIMATION KEYFRAMES */
         @keyframes blurIn { to { opacity: 1; filter: blur(0); transform: scale(1); } }
         @keyframes floatUp { to { opacity: 1; transform: translateY(0); } }
 
@@ -111,8 +107,14 @@
 
         .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding-top: 150px; padding-bottom: 50px; gap: 20px;}
         .hero-card { padding: 40px; width: 90%; max-width: 600px; text-align: center; }
+        
+        /* FIXED PROFILE PICTURE (SAFE MODE) */
         .profile-container { width: 140px; height: 140px; margin: 0 auto 20px; position: relative; }
-        .profile-pic { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--glass-border); box-shadow: 0 10px 40px rgba(0,0,0,0.2); background: #333; }
+        .profile-pic { 
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover; 
+            border: 4px solid var(--glass-border); box-shadow: 0 10px 40px rgba(0,0,0,0.2); 
+            background: #1e293b; /* Fallback color so it doesn't look invisible */
+        }
         .profile-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; color: #fff; font-size: 1.5rem; transition: 0.3s; }
         .profile-container:hover .profile-overlay { opacity: 1; display: flex;}
 
@@ -124,7 +126,7 @@
         section { max-width: 900px; margin: 0 auto 60px; width: 90%; scroll-margin-top: 100px; }
         .section-header { font-size: 1.5rem; font-weight: 700; margin-bottom: 30px; border-bottom: 2px solid var(--accent-glow); padding-bottom: 5px; display: inline-block; color: var(--text-main); position: relative; padding-right: 120px;}
 
-        /* API STATUS BADGE (NEW) */
+        /* API STATUS BADGE */
         .api-status { position: absolute; right: 0; top: 5px; font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; letter-spacing: 0.5px; opacity: 0; transition: 0.3s; transform: translateX(10px); }
         .api-status.show { opacity: 1; transform: translateX(0); }
         .api-status.online { background: rgba(52, 211, 153, 0.15); color: var(--success); border: 1px solid var(--success); }
@@ -170,27 +172,33 @@
 
         @media (max-width: 768px) { .activity-section-split { grid-template-columns: 1fr; gap: 20px; } }
 
-        /* CHANGELOG */
+        /* CHANGELOG - VERSIONLESS LAYOUT FIXED */
         #changelog-section { font-size: 0.9rem; }
         .timeline { position: relative; margin-left: 10px; padding-left: 20px; }
         .timeline::before { content:''; position: absolute; top: 0; bottom: 0; left: 6px; width: 4px; background: var(--track-color); border-radius: 10px; }
+        
         .timeline-item { position: relative; margin-bottom: 30px; }
         .timeline-item:last-child { margin-bottom: 0; }
         
+        /* Node Indicator */
         .timeline-item::after { content: ''; position: absolute; left: -29px; top: 5px; width: 10px; height: 10px; background: var(--text-muted); border-radius: 50%; z-index: 2; box-shadow: 0 0 0 4px var(--bg-color); transition: 0.3s; }
+        /* Latest Item Glow */
         .timeline-item:first-child::after { background: var(--accent-glow); height: 25px; border-radius: 10px; top: 0px; box-shadow: 0 0 15px var(--accent-glow); }
 
-        .version-badge { background: transparent; border: 1px solid var(--accent-glow); padding: 2px 8px; border-radius: 6px; font-size: 0.75rem; color: var(--accent-glow); font-weight: 700; margin-right: 8px; transition: 0.3s; }
-        .timeline-item:first-child .version-badge { background: var(--accent-glow); color: #fff; box-shadow: 0 0 10px var(--accent-glow); }
+        /* Header Baris Kategori + Tanggal */
+        .timeline-item > div { display: flex; align-items: center; gap: 15px; margin-bottom: 6px; }
 
-        .category-badge { display: inline-block; font-size: 0.65rem; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; font-weight: 800; margin-right: 8px; letter-spacing: 0.5px; border: 1px solid transparent; background: rgba(255,255,255,0.05); color: var(--text-muted); }
+        /* HIDDEN OLD BADGE */
+        .version-badge { display: none !important; } 
+
+        .category-badge { display: inline-block; font-size: 0.65rem; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; border: 1px solid transparent; background: rgba(255,255,255,0.05); color: var(--text-muted); }
         .cat-feature { background: rgba(52, 211, 153, 0.15); color: #34d399; border-color: #34d399; }
         .cat-fix { background: rgba(248, 113, 113, 0.15); color: #f87171; border-color: #f87171; }
         .cat-style { background: rgba(167, 139, 250, 0.15); color: #a78bfa; border-color: #a78bfa; }
         .cat-core { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: #38bdf8; }
 
-        .version-date { font-size: 0.75rem; color: var(--text-muted); }
-        .version-desc { margin-top: 5px; color: var(--text-main); line-height: 1.5; }
+        .version-date { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; opacity: 0.8; }
+        .version-desc { margin-top: 0px; color: var(--text-main); line-height: 1.5; font-size: 0.9rem; }
 
         /* SETTINGS & MODALS */
         .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 20px; margin-top: 15px;}
@@ -224,9 +232,9 @@
     <div id="splash-screen">
         <h1 class="splash-text"></h1>
         <div class="quote-container">
-            <p id="quote-en" class="quote-en">"Innovation distinguishes between a leader and a follower."</p>
-            <p id="quote-id" class="quote-id">Inovasi membedakan antara seorang pemimpin dan pengikut.</p>
-            <p id="quote-author" class="quote-author">Steve Jobs</p>
+            <p id="quote-en" class="quote-en"></p>
+            <p id="quote-id" class="quote-id"></p>
+            <p id="quote-author" class="quote-author"></p>
         </div>
     </div>
 
@@ -246,7 +254,11 @@
     <div class="hero">
         <div class="hero-card acrylic-panel interactive-card hidden">
             <div class="profile-container" id="profile-trigger" onclick="handleProfileClick()">
-                <img src="https://via.placeholder.com/150" alt="Profile" class="profile-pic" id="hero-img">
+                <img src="https://ui-avatars.com/api/?name=User&background=38bdf8&color=fff" 
+                     onerror="this.src='https://ui-avatars.com/api/?name=U&background=random'" 
+                     alt="Profile" 
+                     class="profile-pic" 
+                     id="hero-img">
                 <div class="profile-overlay"><i class="fas fa-camera"></i></div>
             </div>
             <h1 id="user-name">Your Name</h1>
@@ -325,14 +337,13 @@
         <div class="acrylic-panel hidden" style="padding: 30px;">
             <h2 class="section-header">System Changelog</h2>
             <div class="timeline" id="changelog-list">
-                <!-- Fallback History -->
+                <!-- Backup History if needed -->
                 <div class="timeline-item">
-                    <div><span class="version-badge">v2.4</span><span class="category-badge cat-fix">FIX</span><span class="version-date">Today</span></div>
-                    <p class="version-desc">Fixed animation glitch on Splash Screen (staggered text reveal restored). API health indicator & graph fallback optimized.</p>
-                </div>
-                <div class="timeline-item">
-                    <div><span class="version-badge">v2.3</span><span class="category-badge cat-fix">FIX</span><span class="version-date">Yesterday</span></div>
-                    <p class="version-desc">Updated core algorithm. Stability improvement.</p>
+                    <div>
+                        <span class="category-badge cat-feature">FEATURE</span>
+                        <span class="version-date">Today</span>
+                    </div>
+                    <p class="version-desc">Version badges hidden for a cleaner look. Changelog layout optimized.</p>
                 </div>
             </div>
         </div>
@@ -378,10 +389,9 @@
         import { getFirestore, doc, getDoc, setDoc, collection, addDoc, query, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         // === CONFIG ===
-        const CURRENT_VERSION = 'v2.4';
-        const UPDATE_MSG = 'Updated Code Logic: Splash screen text animation restored & enhanced API failure handling.';
+        const UPDATE_MSG = 'Updated Code: Version numbers removed from Changelog history to streamline interface. Previous logs hidden via CSS.';
 
-        const firebaseConfig = {
+       const firebaseConfig = {
   apiKey: "AIzaSyDfpLYr8g8ltUpdV_1HuN-S_m8vnMqqtYI",
   authDomain: "lumina-portofolio.firebaseapp.com",
   projectId: "lumina-portofolio",
@@ -420,6 +430,7 @@
             window.addEventListener('resize', () => { const u=localStorage.getItem('gh_user'); if(u) loadGithubData(u); });
         });
 
+        // --- API LOAD ---
         window.loadGithubData = async (user) => {
             const grid = document.getElementById('contribution-grid');
             const feed = document.getElementById('github-feed');
@@ -427,34 +438,24 @@
             
             grid.innerHTML = '';
             document.getElementById('total-contributions').innerText = "Connecting to GitHub...";
-            statusBadge.className = 'api-status'; 
-            statusBadge.innerHTML = '';
+            statusBadge.className = 'api-status'; statusBadge.innerHTML = '';
 
             try {
                 const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${user}?y=last`);
                 if (res.ok) {
                     statusBadge.innerHTML = '<div class="dot-status"></div> API Online';
                     statusBadge.classList.add('show', 'online');
-                    
                     const d = await res.json();
                     const w = window.innerWidth;
                     let daysCount = 364; if(w<600)daysCount=120; else if(w<900)daysCount=200;
                     const days = (d.contributions||[]).slice(-daysCount);
                     document.getElementById('total-contributions').innerText = `${d.total?.lastYear || '?'} contributions (${user})`;
-                    
                     days.forEach(day => {
-                        const dDiv = document.createElement('div');
-                        dDiv.className = 'day-box';
-                        dDiv.setAttribute('data-level', day.level);
-                        dDiv.title = `${day.date}: ${day.count}`;
-                        grid.appendChild(dDiv);
+                        const dDiv = document.createElement('div'); dDiv.className = 'day-box'; dDiv.setAttribute('data-level', day.level); dDiv.title = `${day.date}: ${day.count}`; grid.appendChild(dDiv);
                     });
-                } else {
-                    throw new Error("API Limit");
-                }
+                } else { throw new Error("Limit"); }
             } catch(e) {
-                statusBadge.innerHTML = '<div class="dot-status"></div> API Offline';
-                statusBadge.classList.add('show', 'offline');
+                statusBadge.innerHTML = '<div class="dot-status"></div> API Offline'; statusBadge.classList.add('show', 'offline');
                 document.getElementById('total-contributions').innerText = `Data Unavailable`;
                 grid.innerHTML = '<div class="empty-state-graph">Chart Unavailable.</div>';
             }
@@ -482,11 +483,13 @@
                 const data = snap.exists() ? snap.data() : {};
                 const list = document.getElementById('changelog-list');
                 
+                // Logic changelog (VERSION REMOVED CHECK)
                 let currentHtml = data.changelogHtml;
                 if (currentHtml && currentHtml.length > 50) { 
-                    if (!currentHtml.includes(CURRENT_VERSION)) {
+                    if (!currentHtml.includes(UPDATE_MSG)) { 
                         const d = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
-                        const newLog = `<div class="timeline-item"><div><span class="version-badge">${CURRENT_VERSION}</span><span class="category-badge cat-feature">FEATURE</span><span class="version-date">${d}</span></div><p class="version-desc">${UPDATE_MSG}</p></div>`;
+                        // NO VERSION BADGE HERE
+                        const newLog = `<div class="timeline-item"><div><span class="category-badge cat-feature">FEATURE</span><span class="version-date">${d}</span></div><p class="version-desc">${UPDATE_MSG}</p></div>`;
                         list.innerHTML = newLog + currentHtml;
                     } else { list.innerHTML = currentHtml; }
                 } 
@@ -497,6 +500,7 @@
                     document.getElementById('legend-2').innerText = data.legendTexts.l2 || "Med";
                     document.getElementById('legend-3').innerText = data.legendTexts.l3 || "On Fire!";
                 }
+                
                 if(data.name) document.getElementById('user-name').innerText = data.name;
                 if(data.bio) document.getElementById('user-bio').innerText = data.bio;
                 if(data.links) {
@@ -521,8 +525,7 @@
                 const user = data.ghUsername || 'erga2904';
                 localStorage.setItem('gh_user', user);
                 loadGithubData(user);
-                
-            } catch (e) { console.error("DB Err:",e); }
+            } catch(e) { console.error(e); }
             if(localStorage.getItem('lumina_perf') !== 'true') setup3DInteractions();
         }
 
@@ -543,22 +546,22 @@
             });
         }
 
+        // --- NEW SAVE: NO VERSION NUMBER PROMPT ---
         window.saveAndLock = async function() {
             if(!confirm("Simpan & Kunci?")) return;
             document.body.style.cursor = 'wait';
             
-            if(confirm("Tambah Manual Log?")) {
-                const ver = prompt("Versi:");
+            if(confirm("Tambah Log Manual?")) {
                 const catInput = prompt("Kategori? (feature/fix/style/core)").toLowerCase();
-                const desc = prompt("Ket:");
-                if(ver && desc) {
+                const desc = prompt("Keterangan:");
+                if(desc) {
                     const d = new Date().toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
                     let catClass='cat-core', catLabel='CORE';
                     if(catInput.includes('fix')) {catClass='cat-fix'; catLabel='FIX';}
                     else if(catInput.includes('feat')) {catClass='cat-feature'; catLabel='FEATURE';}
                     else if(catInput.includes('style')) {catClass='cat-style'; catLabel='STYLE';}
                     
-                    const newItem = `<div class="timeline-item"><div><span class="version-badge">${ver}</span><span class="category-badge ${catClass}">${catLabel}</span><span class="version-date">${d}</span></div><p class="version-desc">${desc}</p></div>`;
+                    const newItem = `<div class="timeline-item"><div><span class="category-badge ${catClass}">${catLabel}</span><span class="version-date">${d}</span></div><p class="version-desc">${desc}</p></div>`;
                     document.getElementById('changelog-list').insertAdjacentHTML('afterbegin', newItem);
                 }
             }
@@ -610,7 +613,6 @@
             const ids = ['user-name','user-bio','dash-title-1','dash-desc-1','dash-title-2','dash-desc-2'];
             ids.forEach(id => document.getElementById(id).contentEditable="true");
             document.querySelectorAll('.legend-label').forEach(e => e.contentEditable="true");
-            document.querySelectorAll('.version-badge').forEach(e => e.contentEditable="true");
             document.querySelectorAll('.category-badge').forEach(e => e.contentEditable="true");
             document.querySelectorAll('.version-date').forEach(e => e.contentEditable="true");
             document.querySelectorAll('.version-desc').forEach(e => e.contentEditable="true");
@@ -632,7 +634,18 @@
         window.editLinkAttr=(e,el)=>{if(isEditing){e.preventDefault();const n=prompt("App URL:",el.getAttribute('href'));if(n)el.setAttribute('href',n);}};
         window.configureGithub=()=>{if(isEditing){const n=prompt("Github User:");if(n){localStorage.setItem('gh_user',n);loadGithubData(n);}}};
         window.handleProfileClick=()=>{if(isEditing)openModal('cropper-modal');};
-        window.applyCrop=()=>{if(cropper){document.getElementById('hero-img').src=cropper.getCroppedCanvas({width:300,height:300}).toDataURL();closeModal('cropper-modal');}};
+        
+        // --- FIXED COMPRESSION to Avoid Broken Images ---
+        window.applyCrop=()=>{
+            if(cropper){
+                // Compressing to JPEG 0.5 Quality to ensure small file size for Firebase
+                const canvas = cropper.getCroppedCanvas({width:256,height:256});
+                const base64 = canvas.toDataURL('image/jpeg', 0.5); 
+                document.getElementById('hero-img').src=base64;
+                closeModal('cropper-modal');
+            }
+        };
+        
         document.getElementById('image-upload').addEventListener('change',e=>{if(e.target.files.length){const r=new FileReader();r.onload=v=>{document.getElementById('image-to-crop').src=v.target.result;if(cropper)cropper.destroy();cropper=new Cropper(document.getElementById('image-to-crop'),{aspectRatio:1,viewMode:1});};r.readAsDataURL(e.target.files[0]);}});
         window.openModal=id=>{document.getElementById(id).classList.add('active');if(id=='login-modal')setTimeout(()=>document.getElementById('pin-input').focus(),100);};
         window.closeModal=id=>{document.getElementById(id).classList.remove('active');};
@@ -646,30 +659,8 @@
         }
         function initPerformanceMode() { window.setPerformanceMode(localStorage.getItem('lumina_perf')==='true'); }
 
-        window.splashEffect = () => {
-            const con = document.querySelector('.splash-text');
-            const txt = "Lumina";
-            con.innerHTML = ''; // Reset container content to blank first
-            
-            // Loop through each letter and create a span
-            [...txt].forEach((char, idx) => {
-                const span = document.createElement('span');
-                span.textContent = char;
-                // Assign animation delay to each letter for the staggered effect
-                span.style.animationDelay = `${idx * 0.1}s`;
-                con.appendChild(span);
-            });
-
-            // Set timeout to hide the splash screen after animations finish
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.opacity = 0;
-                document.getElementById('splash-screen').style.visibility = 'hidden';
-                document.body.classList.remove('no-scroll');
-            }, 4500); 
-        };
-        
+        window.splashEffect = () => { const con = document.querySelector('.splash-text'); const txt="Lumina"; con.innerHTML=''; txt.split('').forEach((c,i)=>{ const s=document.createElement('span'); s.innerText=c; s.style.animationDelay=`${i*0.1}s`; con.appendChild(s); }); setTimeout(()=>{ document.getElementById('splash-screen').style.opacity=0; document.getElementById('splash-screen').style.visibility='hidden'; document.body.classList.remove('no-scroll'); }, 4500); };
         function generateQuote() { const idx=Math.floor(Math.random()*quoteDB.length); const q=quoteDB[idx]; document.getElementById('quote-en').innerText=`"${q.en}"`; document.getElementById('quote-id').innerText=q.id?q.id:""; document.getElementById('quote-author').innerText=q.author; }
-        
         window.setupObservers=()=>{ const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');obs.unobserve(e.target)}})); document.querySelectorAll('.hidden').forEach((e,i)=>{e.style.transitionDelay=i*100+'ms';obs.observe(e);}); };
         window.setup3DInteractions=()=>{ document.querySelectorAll('.interactive-card, .app-item').forEach(card => { card.classList.add('interactive-card'); card.onmousemove=e=>{ if(document.body.classList.contains('perf-mode'))return; const r=card.getBoundingClientRect(); card.style.setProperty('--x',(e.clientX-r.left)+'px'); card.style.setProperty('--y',(e.clientY-r.top)+'px'); card.style.transform=`perspective(1000px) rotateX(${((e.clientY-r.top-r.height/2)/r.height)*-5}deg) rotateY(${((e.clientX-r.left-r.width/2)/r.width)*5}deg) scale(1.02)`; }; card.onmouseleave=()=>card.style.transform='perspective(1000px) rotateX(0) rotateY(0) scale(1)'; }); };
     </script>
