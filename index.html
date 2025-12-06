@@ -160,11 +160,7 @@
         .card-icon { font-size: 2.5rem; margin-bottom: 15px; transition: 0.3s; color: var(--text-muted); }
         .status-badge { position: absolute; top: 15px; right: 15px; font-size: 0.7rem; background: rgba(0,0,0,0.4); padding: 4px 10px; border-radius: 20px; color: #fff; }
 
-        /* APPS */
-        .filter-container { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
-        .filter-btn { padding: 6px 16px; border-radius: 20px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.03); color: var(--text-muted); cursor: pointer; font-size: 0.85rem; transition: 0.3s; white-space: nowrap; }
-        .filter-btn.active, .filter-btn:hover { background: var(--accent-glow); border-color: var(--accent-glow); color: #fff; }
-
+        /* APPS GRID */
         .apps-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
         .app-item { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-left: 4px solid var(--accent-glow); padding: 25px; border-radius: 15px; display: flex; flex-direction: column; position: relative; }
         .app-item.hide { display: none !important; }
@@ -337,18 +333,13 @@
         </div>
     </section>
 
-    <!-- PROJECTS -->
+    <!-- APPS GRID SECTION (NO FILTERS) -->
     <section id="apps-section">
         <div class="acrylic-panel hidden" style="padding: 30px; position: relative;">
-            <h2 class="section-header">Portfolio</h2>
+            <h2 class="section-header">My Apps</h2>
             <i id="add-app-btn" class="fas fa-plus-circle" onclick="addApp()" style="position:absolute; top:30px; right:30px; font-size:1.8rem; color:var(--success); cursor:pointer; display:none;"></i>
             
-            <div class="filter-container">
-                <button class="filter-btn active" onclick="filterApps('all', this)">All</button>
-                <button class="filter-btn" onclick="filterApps('web', this)">Web</button>
-                <button class="filter-btn" onclick="filterApps('mobile', this)">Mobile</button>
-                <button class="filter-btn" onclick="filterApps('ui', this)">UI/UX</button>
-            </div>
+            <!-- Filters removed here -->
 
             <div class="apps-grid" id="apps-list"></div>
         </div>
@@ -489,7 +480,7 @@
             setupObservers();
         });
 
-        /* --- LOAD LOGIC FIX (APPS) --- */
+        /* --- LOAD LOGIC (APP FILTER FIX) --- */
         async function loadFromDB() {
             try {
                 const snap = await getDoc(docRef);
@@ -519,20 +510,18 @@
                     document.getElementById('link-email').href = data.links.mail || '#';
                 }
 
-                // APPS - FIX VISIBILITY
+                // APPS - FIX VISIBILITY (IMPORTANT!)
                 if(data.appsHtml) {
                     const appList = document.getElementById('apps-list');
                     appList.innerHTML = data.appsHtml;
                     // Reset: Ensure apps are clean (no edit attributes) AND visible (remove .hide)
+                    // Even though filters are removed from UI, we safeguard here.
                     appList.querySelectorAll('.app-item').forEach(e => {
                         e.classList.remove('editing'); 
-                        e.classList.remove('hide'); // Force show everything on load
+                        e.classList.remove('hide'); // Force show everything
                         e.querySelectorAll('[contenteditable]').forEach(c => c.removeAttribute('contenteditable'));
                         const d = e.querySelector('.delete-btn'); if(d) d.style.display='none';
                     });
-                    // Reset filter button visually
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    document.querySelector('.filter-btn').classList.add('active'); // "All" button
                 }
 
                 if(data.snippetsHtml) document.getElementById('snippets-list').innerHTML = data.snippetsHtml;
@@ -574,10 +563,9 @@
             ['user-name', 'user-bio'].forEach(id => document.getElementById(id).contentEditable = "true");
 
             document.querySelector('.profile-overlay').style.display='flex';
-            // FORCE DELETE BUTTONS TO SHOW IN EDIT MODE
+            
             document.querySelectorAll('.delete-btn, .tech-delete, .gb-del').forEach(b => {
                 b.style.display = 'block'; 
-                // remove inline 'none' if exists
                 b.style.removeProperty('display'); 
             });
 
@@ -616,14 +604,14 @@
             try {
                 const tStack = Array.from(document.querySelectorAll('#tech-list i')).map(el => el.className);
                 
-                // SAVE LOGIC - CLEAN APP HTML
+                // SAVE LOGIC
                 const appsClone = document.getElementById('apps-list').cloneNode(true);
-                // Important: Show hidden items before saving to ensure data isn't lost
+                // SAFEGUARD: Make sure NO apps are hidden when saving
                 appsClone.querySelectorAll('.hide').forEach(e => e.classList.remove('hide'));
                 
                 appsClone.querySelectorAll('.editing').forEach(e => e.classList.remove('editing'));
                 appsClone.querySelectorAll('[contenteditable]').forEach(e => e.removeAttribute('contenteditable'));
-                appsClone.querySelectorAll('.delete-btn').forEach(e => e.style.display='none'); // Hide for storage
+                appsClone.querySelectorAll('.delete-btn').forEach(e => e.style.display='none');
 
                 const snipClone = document.getElementById('snippets-list').cloneNode(true);
                 snipClone.querySelectorAll('[contenteditable]').forEach(e => e.removeAttribute('contenteditable'));
@@ -636,7 +624,7 @@
                     photoBase64: document.getElementById('hero-img').src,
                     manualSongId: manualIdToSave,
                     techStack: tStack,
-                    appsHtml: appsClone.innerHTML, // Cleaned HTML
+                    appsHtml: appsClone.innerHTML, 
                     snippetsHtml: snipClone.innerHTML,
                     changelogHtml: document.getElementById('changelog-list').innerHTML,
                     ghUsername: localStorage.getItem('gh_user'),
@@ -707,7 +695,24 @@
         }
 
         /* --- UTILS --- */
-        window.addApp=()=>{const n=prompt("Project:");if(n){const d=document.createElement('div');d.className='app-item editing interactive-card';d.innerHTML=`<div class="app-header"><h4 class="app-name" contenteditable="true">${n}</h4><span class="app-tag">WEB</span></div><p class="app-desc" contenteditable="true">Desc...</p><button class="delete-btn" style="display:block" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button><a href="#" class="app-visit-btn" onclick="editLink(event,this)">Visit</a>`;document.getElementById('apps-list').prepend(d);}};
+        window.addApp=()=>{
+            const n=prompt("Nama Project:"); 
+            if(n){
+                const d=document.createElement('div');
+                d.className='app-item editing interactive-card';
+                // Tag otomatis jadi PROJECT saja karena kategori sudah dihapus
+                d.innerHTML=`
+                    <div class="app-header">
+                        <h4 class="app-name" contenteditable="true">${n}</h4>
+                        <span class="app-tag">PROJECT</span>
+                    </div>
+                    <p class="app-desc" contenteditable="true">Deskripsi singkat...</p>
+                    <button class="delete-btn" style="display:block" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                    <a href="#" class="app-visit-btn" onclick="editLink(event,this)">Visit</a>`;
+                document.getElementById('apps-list').prepend(d);
+            }
+        };
+        
         window.addTech=()=>{const i=prompt("FontAwesome (fab fa-js):");if(i)document.getElementById('tech-list').innerHTML+=`<div class="tech-item"><i class="${i}"></i><span class="tech-delete" style="display:flex" onclick="this.parentElement.remove()">x</span></div>`;};
         window.addSnippet=()=>{const t=prompt("Title:");if(t)document.getElementById('snippets-list').innerHTML=`<div class="snippet-card"><h4 contenteditable="true">${t}</h4><div class="snippet-code" contenteditable="true">// code</div><span style="position:absolute;top:10px;right:10px;color:red;cursor:pointer;" onclick="this.parentElement.remove()">x</span></div>`+document.getElementById('snippets-list').innerHTML;}
 
@@ -751,7 +756,6 @@
             if(localStorage.getItem('lumina_perf')=='true')togglePerf();
         }
 
-        window.filterApps=(t,b)=>{document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.app-item').forEach(x=>{if(t==='all'||x.getAttribute('data-tag')===t)x.classList.remove('hide');else x.classList.add('hide');});};
         window.editLink=(e,el)=>{if(isEditing){e.preventDefault();const n=prompt("Link:",el.getAttribute('href'));if(n)el.setAttribute('href',n);}};
         
         window.openModal=id=>{document.getElementById(id).classList.add('active');if(id=='login-modal')setTimeout(()=>document.getElementById('pin-input').focus(),100);}
