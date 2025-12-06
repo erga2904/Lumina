@@ -66,13 +66,28 @@
         .interactive-card:hover::before { opacity: 0.15; }
         .interactive-card > * { position: relative; z-index: 2; }
 
-        /* SPLASH */
+        /* SPLASH & LOADING (NEW) */
         #splash-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-color); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease-out, visibility 0.8s; padding: 20px; text-align: center;}
-        .splash-text { font-size: 3rem; font-weight: 800; color: var(--text-main); margin-bottom: 20px; letter-spacing: -1px;}
+        .splash-text { font-size: 3rem; font-weight: 800; color: var(--text-main); margin-bottom: 10px; letter-spacing: -1px;}
         .splash-text span { display: inline-block; opacity: 0; filter: blur(10px); transform: scale(1.1); animation: blurIn 0.8s forwards ease-in-out; }
-        .quote-container { margin-top: 30px; opacity: 0; transform: translateY(20px); animation: fadeInUp 1s forwards 0.8s; max-width: 500px; padding: 20px; border: 1px solid var(--glass-border); border-radius: 15px; background: rgba(255,255,255,0.03); backdrop-filter: blur(5px);}
-        .quote-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--text-main); margin-bottom: 10px; font-style: italic;}
+        
+        .loader {
+            width: 40px; height: 40px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top: 4px solid var(--accent-glow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px 0;
+            opacity: 0; 
+            animation: spin 1s linear infinite, fadeIn 0.5s forwards 1s; /* Muncul setelah 1 detik */
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        .quote-container { opacity: 0; transform: translateY(20px); animation: fadeInUp 1s forwards 0.5s; max-width: 500px; padding: 15px 20px; border: 1px solid var(--glass-border); border-radius: 15px; background: rgba(255,255,255,0.03); backdrop-filter: blur(5px);}
+        .quote-text { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--text-main); margin-bottom: 5px; font-style: italic;}
         .quote-author { color: var(--accent-glow); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;}
+        
         @keyframes blurIn { to { opacity: 1; filter: blur(0); transform: scale(1); } }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
@@ -84,19 +99,13 @@
         .orb-2 { width: 50vw; height: 50vw; bottom: 0; right: 0; background: var(--accent-glow); filter: hue-rotate(45deg) blur(80px); animation-delay: -5s; }
         @keyframes float { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,40px)} }
 
-        /* --- NAV DESKTOP (DEFAULT) --- */
+        /* NAV */
         nav { 
-            position: fixed; top: 20px; 
-            left: 50%; transform: translateX(-50%); 
-            width: 90%; max-width: 600px; 
-            padding: 12px 30px; 
-            z-index: 5000; 
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 600px; 
+            padding: 12px 30px; z-index: 5000; 
             display: flex; justify-content: space-between; align-items: center; 
-            border-radius: 50px; 
-            background: rgba(255,255,255,0.01); 
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
-            border: 1px solid var(--glass-border); 
-            transition: top 0.3s, padding 0.3s;
+            border-radius: 50px; background: rgba(255,255,255,0.01); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
+            border: 1px solid var(--glass-border); transition: top 0.3s, padding 0.3s;
         }
         nav h3 { font-weight: 800; font-size: 1.2rem; color: var(--text-main); margin: 0; }
         nav ul { display: flex; gap: 20px; list-style: none; align-items: center; margin: 0; }
@@ -104,14 +113,12 @@
         nav a:hover { opacity: 1; color: var(--accent-glow); }
         #inbox-indicator { position: absolute; top: -3px; right: -8px; width: 8px; height: 8px; background: var(--error); border-radius: 50%; display: none; }
 
-        /* --- NAV MOBILE FIXED --- */
         @media (max-width: 650px) {
             nav {
                 transform: none; left: auto; margin: 0;
                 position: fixed; top: 15px; left: 15px; right: 15px;
                 width: auto; max-width: none;
-                padding: 10px 18px; 
-                border-radius: 16px;
+                padding: 10px 18px; border-radius: 16px;
                 justify-content: space-between;
             }
             nav h3 { font-size: 1rem; }
@@ -127,20 +134,16 @@
         .profile-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; color: #fff; font-size: 1.5rem; transition: 0.3s; }
         .profile-container:hover .profile-overlay { opacity: 1; display: flex;}
         
-        /* MUSIC PILL */
         .music-pill { 
             width: 100%; max-width: 400px; margin: 20px auto 0;
-            background: #191414; border-radius: 12px; 
-            border: 1px solid var(--glass-border); 
+            background: #191414; border-radius: 12px; border: 1px solid var(--glass-border); 
             display: flex; align-items: center; justify-content: center;
-            padding: 0; min-height: 82px; 
-            overflow: hidden; position: relative;
+            padding: 0; min-height: 82px; overflow: hidden; position: relative;
         }
         iframe.spotify-embed { border-radius: 12px; width: 100%; height: 80px; border:none; display: block; }
         .music-error-state { padding: 20px; text-align: center; color: var(--error); display: none; font-size: 0.8rem;}
         .vibe-pill { display: none; }
 
-        /* TECH & SOCIAL */
         .tech-stack { display: flex; justify-content: center; gap: 15px; margin-top: 25px; flex-wrap: wrap; }
         .tech-item { font-size: 1.5rem; color: var(--text-muted); transition: 0.3s; position: relative; }
         .tech-item:hover { color: var(--accent-glow); transform: translateY(-3px); }
@@ -150,7 +153,7 @@
         .social-icon { color: var(--text-muted); font-size: 1.4rem; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 50%; transition: 0.3s; text-decoration: none; border: 1px solid transparent; }
         .social-icon:hover { color: var(--accent-glow); background: rgba(255,255,255,0.1); transform: translateY(-3px); }
 
-        /* SECTIONS & GRID */
+        /* GRID SYSTEM */
         section { max-width: 900px; margin: 0 auto 60px; width: 90%; scroll-margin-top: 100px; }
         .section-header { font-size: 1.5rem; font-weight: 700; margin-bottom: 25px; border-bottom: 2px solid var(--accent-glow); padding-bottom: 5px; display: inline-block; color: var(--text-main); position: relative; padding-right: 50px;}
 
@@ -173,7 +176,7 @@
         .delete-btn { position: absolute; bottom: 20px; right: 20px; background: none; border: none; color: #ff4757; font-size: 1.2rem; cursor: pointer; display: none; }
         .app-item.editing .delete-btn { display: block; }
 
-        /* GITHUB & SNIPPETS */
+        /* REPO */
         .repo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; }
         .repo-card { padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 12px; transition: 0.3s; height: 100%; display: flex; flex-direction: column; }
         .repo-card:hover { transform: translateY(-5px); border-color: var(--accent-glow); }
@@ -185,7 +188,6 @@
         .snippet-card { min-width: 280px; max-width: 300px; padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 15px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
         .snippet-code { font-family: 'Fira Code', monospace; font-size: 0.8rem; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-top: 10px; color: #a5b4fc; overflow: hidden; white-space: pre-wrap; height: 100px; }
 
-        /* GUESTBOOK */
         .guestbook-container { display: flex; flex-direction: column; gap: 20px; }
         .gb-form { display: flex; gap: 10px; flex-wrap: wrap; }
         .gb-input { flex: 1; min-width: 150px; padding: 10px 15px; border-radius: 8px; border: 1px solid var(--glass-border); background: var(--input-bg); color: var(--text-main); font-size: 0.9rem; }
@@ -199,7 +201,6 @@
         .contact-form { margin-top: 20px; display: grid; gap: 15px; }
         textarea.gb-input { height: 100px; resize: vertical; }
 
-        /* CHANGELOG */
         .timeline { position: relative; margin-left: 10px; padding-left: 20px; border-left: 2px solid var(--glass-border); }
         .timeline-item { position: relative; margin-bottom: 30px; }
         .timeline-item::after { content: ''; position: absolute; left: -27px; top: 5px; width: 12px; height: 12px; background: var(--bg-color); border: 2px solid var(--accent-glow); border-radius: 50%; z-index: 2; }
@@ -218,18 +219,14 @@
         input.pin-field { width: 100%; padding: 15px; font-size: 2rem; text-align: center; margin: 20px 0; background: var(--input-bg); border: 1px solid var(--glass-border); color: var(--text-main); border-radius: 12px; letter-spacing: 8px; }
         [contenteditable="true"] { border: 1px dashed var(--accent-glow); background: rgba(56, 189, 248, 0.1); padding: 0 5px; border-radius: 4px; display: inline-block; min-width: 10px;}
 
-        /* SETTINGS STYLE */
+        /* SETTINGS */
         .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin: 15px 0;}
         .color-swatch { width: 45px; height: 45px; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition:0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
         .color-swatch:hover { transform:scale(1.1); border-color:var(--text-main); }
         
         #settings-modal .modal-content { background: #1e293b !important; color: #f8fafc !important; text-align: left; }
         #settings-modal h3 { text-align: center; margin-bottom: 20px; }
-        .setting-action-btn { 
-            width: 100%; margin-top: 15px; padding: 12px; 
-            border: 1px solid rgba(255,255,255,0.2); 
-            border-radius: 10px; background: rgba(255,255,255,0.05); color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s;
-        }
+        .setting-action-btn { width: 100%; margin-top: 15px; padding: 12px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; background: rgba(255,255,255,0.05); color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s;}
         .setting-action-btn:hover { border-color: var(--accent-glow); background: rgba(255,255,255,0.1); }
         
         #edit-music-btn { display: none; background: transparent; color: var(--text-muted); border: 1px dashed var(--glass-border); cursor: pointer; margin-top: 8px; border-radius: 4px; padding: 4px 12px; font-size: 0.7rem; width: auto; margin-left: auto; margin-right: auto;}
@@ -243,19 +240,20 @@
 </head>
 <body class="no-scroll">
 
-    <!-- Splash Screen -->
+    <!-- SPLASH SCREEN + LOADER -->
     <div id="splash-screen">
         <h1 class="splash-text"></h1>
+        <div class="loader"></div>
         <div class="quote-container">
             <p id="splash-quote-text" class="quote-text"></p>
             <p id="splash-quote-author" class="quote-author"></p>
         </div>
     </div>
 
-    <!-- Background Ambience -->
+    <!-- BACKGROUND -->
     <div class="ambient-light"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
 
-    <!-- Navigation -->
+    <!-- NAV -->
     <nav class="acrylic-panel">
         <h3>Lumina</h3>
         <ul>
@@ -314,7 +312,6 @@
             </div>
             <div class="option-card acrylic-panel interactive-card hidden" onclick="document.getElementById('apps-section').scrollIntoView()">
                 <div class="card-icon"><i class="fas fa-cubes"></i></div>
-                <!-- TITLE FIXED: MY APPS -->
                 <div class="card-title">My Apps</div>
                 <div class="card-desc">See my work</div>
             </div>
@@ -333,14 +330,12 @@
         </div>
     </section>
 
-    <!-- APPS GRID SECTION (NO FILTERS) -->
+    <!-- APPS GRID (CLEAN, NO FILTER) -->
     <section id="apps-section">
         <div class="acrylic-panel hidden" style="padding: 30px; position: relative;">
             <h2 class="section-header">My Apps</h2>
             <i id="add-app-btn" class="fas fa-plus-circle" onclick="addApp()" style="position:absolute; top:30px; right:30px; font-size:1.8rem; color:var(--success); cursor:pointer; display:none;"></i>
             
-            <!-- Filters removed here -->
-
             <div class="apps-grid" id="apps-list"></div>
         </div>
     </section>
@@ -441,7 +436,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, collection, addDoc, query, orderBy, limit, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        /* --- CONFIG FIREBASE --- */
+        // === CONFIG ===
         const firebaseConfig = {
         apiKey: "AIzaSyDfpLYr8g8ltUpdV_1HuN-S_m8vnMqqtYI",
         authDomain: "lumina-portofolio.firebaseapp.com",
@@ -465,22 +460,30 @@
             { t: "Experience is the name everyone gives to their mistakes.", a: "Oscar Wilde" }
         ];
 
-        /* --- DAILY PLAYLIST --- */
-        const globalPlaylist = [
-            "2IgI5W5v7bY2p8E4cW4A4h", "60ycX53i166L7q2Y1K2t1c", "6kqK3e3N3yK8aN3i6O1L8i",
-            "1xziMcdG4K5w7yG1w1P5a4", "5K4gC0qV3iC3w3i7m4K3g3"
-        ];
+        /* --- AUTO PLAYLIST --- */
+        const globalPlaylist = ["2IgI5W5v7bY2p8E4cW4A4h", "60ycX53i166L7q2Y1K2t1c", "6kqK3e3N3yK8aN3i6O1L8i","1xziMcdG4K5w7yG1w1P5a4", "5K4gC0qV3iC3w3i7m4K3g3"];
 
-        window.addEventListener('DOMContentLoaded', () => {
+        /* --- SMART LOADER STARTUP --- */
+        window.addEventListener('DOMContentLoaded', async () => {
             splashEffect();
             generateQuote();
-            loadFromDB(); 
+            
+            // Promise wrapper for min 2s display time
+            const minTime = new Promise(r => setTimeout(r, 2000));
+            // Actual data loading
+            const dataFetch = loadFromDB();
+            
+            // Wait for both
+            await Promise.all([minTime, dataFetch]);
+            
+            removeSplash(); // Hide splash when ready
+            
             initTheme();
             setupGuestbook();
             setupObservers();
         });
 
-        /* --- LOAD LOGIC (APP FILTER FIX) --- */
+        /* --- LOAD DATA --- */
         async function loadFromDB() {
             try {
                 const snap = await getDoc(docRef);
@@ -491,16 +494,12 @@
                 if(data.photoBase64) document.getElementById('hero-img').src = data.photoBase64;
                 if(data.themeAccent) updateAccent(data.themeAccent);
                 
-                // MUSIC
                 const savedManualId = data.manualSongId;
                 if(savedManualId && savedManualId !== "auto" && savedManualId.length > 5) {
                     setSpotifyFrame(savedManualId);
                     document.getElementById('spotify-embed').setAttribute('data-manual-id', savedManualId);
-                } else {
-                    setDailyMusic(globalPlaylist); 
-                }
+                } else setDailyMusic(globalPlaylist); 
 
-                // TECH
                 const tStack = data.techStack || ['fab fa-html5', 'fab fa-js', 'fab fa-react'];
                 renderTechStack(tStack);
 
@@ -510,15 +509,12 @@
                     document.getElementById('link-email').href = data.links.mail || '#';
                 }
 
-                // APPS - FIX VISIBILITY (IMPORTANT!)
+                // APPS - FORCE SHOW (No Filter Logic Anymore)
                 if(data.appsHtml) {
                     const appList = document.getElementById('apps-list');
                     appList.innerHTML = data.appsHtml;
-                    // Reset: Ensure apps are clean (no edit attributes) AND visible (remove .hide)
-                    // Even though filters are removed from UI, we safeguard here.
                     appList.querySelectorAll('.app-item').forEach(e => {
-                        e.classList.remove('editing'); 
-                        e.classList.remove('hide'); // Force show everything
+                        e.classList.remove('editing', 'hide'); 
                         e.querySelectorAll('[contenteditable]').forEach(c => c.removeAttribute('contenteditable'));
                         const d = e.querySelector('.delete-btn'); if(d) d.style.display='none';
                     });
@@ -535,9 +531,7 @@
 
                 setTimeout(() => init3DTilt(), 1000);
 
-            } catch(e) { 
-                console.error("Load Err:", e); 
-            }
+            } catch(e) { console.error("Load Err:", e); }
         }
 
         /* --- AUTH & SAVE --- */
@@ -563,17 +557,12 @@
             ['user-name', 'user-bio'].forEach(id => document.getElementById(id).contentEditable = "true");
 
             document.querySelector('.profile-overlay').style.display='flex';
-            
             document.querySelectorAll('.delete-btn, .tech-delete, .gb-del').forEach(b => {
-                b.style.display = 'block'; 
-                b.style.removeProperty('display'); 
+                b.style.display = 'block'; b.style.removeProperty('display'); 
             });
 
             document.querySelectorAll('.social-icon').forEach(l => {
-                l.onclick = (e) => { 
-                    e.preventDefault(); const n = prompt("Edit Link URL:", l.getAttribute('href')); 
-                    if(n) l.setAttribute('href', n); 
-                };
+                l.onclick = (e) => { e.preventDefault(); const n = prompt("Edit Link URL:", l.getAttribute('href')); if(n) l.setAttribute('href', n); };
             });
 
             document.querySelectorAll('.app-item').forEach(el => {
@@ -604,11 +593,9 @@
             try {
                 const tStack = Array.from(document.querySelectorAll('#tech-list i')).map(el => el.className);
                 
-                // SAVE LOGIC
                 const appsClone = document.getElementById('apps-list').cloneNode(true);
-                // SAFEGUARD: Make sure NO apps are hidden when saving
+                // SAFEGUARD
                 appsClone.querySelectorAll('.hide').forEach(e => e.classList.remove('hide'));
-                
                 appsClone.querySelectorAll('.editing').forEach(e => e.classList.remove('editing'));
                 appsClone.querySelectorAll('[contenteditable]').forEach(e => e.removeAttribute('contenteditable'));
                 appsClone.querySelectorAll('.delete-btn').forEach(e => e.style.display='none');
@@ -624,7 +611,7 @@
                     photoBase64: document.getElementById('hero-img').src,
                     manualSongId: manualIdToSave,
                     techStack: tStack,
-                    appsHtml: appsClone.innerHTML, 
+                    appsHtml: appsClone.innerHTML,
                     snippetsHtml: snipClone.innerHTML,
                     changelogHtml: document.getElementById('changelog-list').innerHTML,
                     ghUsername: localStorage.getItem('gh_user'),
@@ -643,11 +630,7 @@
                 alert("Berhasil disimpan!");
                 window.location.reload();
 
-            } catch(e) {
-                console.error("Save Error:", e);
-                alert("Gagal: " + e.message);
-                document.body.style.cursor = 'default';
-            }
+            } catch(e) { alert("Gagal: " + e.message); document.body.style.cursor = 'default'; }
         }
 
         /* --- FEATURE: MUSIC --- */
@@ -664,7 +647,7 @@
                 const match = input.match(regex);
                 if (match && match[1]) return match[1];
                 if(/^[a-zA-Z0-9]{15,30}$/.test(input)) return input;
-            } catch(e) { console.error(e); }
+            } catch(e) {}
             return null;
         }
 
@@ -680,11 +663,7 @@
         window.editDailyMusic = () => {
             if(!isEditing) return;
             const userInput = prompt("Link Spotify Lagu:");
-            if(userInput === "") {
-                setDailyMusic(globalPlaylist);
-                alert("Mode Auto.");
-                return;
-            }
+            if(userInput === "") { setDailyMusic(globalPlaylist); alert("Mode Auto."); return; }
             if(userInput) {
                 const validId = getSpotifyId(userInput);
                 if(validId) {
@@ -695,12 +674,12 @@
         }
 
         /* --- UTILS --- */
+        // Simplified APP creation (Default label: PROJECT)
         window.addApp=()=>{
             const n=prompt("Nama Project:"); 
             if(n){
                 const d=document.createElement('div');
                 d.className='app-item editing interactive-card';
-                // Tag otomatis jadi PROJECT saja karena kategori sudah dihapus
                 d.innerHTML=`
                     <div class="app-header">
                         <h4 class="app-name" contenteditable="true">${n}</h4>
@@ -726,14 +705,24 @@
                 repos.forEach(r => {
                     list.innerHTML += `<a href="${r.html_url}" target="_blank"><div class="repo-card interactive-card"><div class="repo-name"><i class="fas fa-book-bookmark"></i> ${r.name}</div><div class="repo-desc">${r.description?r.description.substring(0,50)+'...':'No Desc'}</div><div class="repo-meta"><span>${r.language||'Code'}</span><span>★ ${r.stargazers_count}</span></div></div></a>`;
                 });
-            } catch(e) { console.log(e); }
+            } catch(e) {}
         }
         window.configGithub=()=>{if(isEditing){const n=prompt("GH User:");if(n){localStorage.setItem('gh_user',n);loadRecentRepos(n);}}};
 
         function renderTechStack(arr) { document.getElementById('tech-list').innerHTML = arr.map(i=>`<div class="tech-item"><i class="${i.replace('<span class="tech-delete" style="display:flex" onclick="this.parentElement.remove()">x</span>','')}"></i><span class="tech-delete" onclick="this.parentElement.remove()">x</span></div>`).join(''); }
         function renderDefaultSnippets(){ document.getElementById('snippets-list').innerHTML = `<div class="snippet-card"><h4>Hello</h4><div class="snippet-code">console.log('Hi');</div></div>`; }
 
-        window.splashEffect=()=>{const t="Lumina";const c=document.querySelector('.splash-text');c.innerHTML='';t.split('').forEach((s,i)=>{const n=document.createElement('span');n.innerText=s;n.style.animationDelay=i*0.1+'s';c.appendChild(n);});setTimeout(()=>{document.getElementById('splash-screen').style.opacity=0;document.getElementById('splash-screen').style.visibility='hidden';document.body.classList.remove('no-scroll');},2200);}
+        // --- SPLASH CONTROLLER ---
+        window.splashEffect=()=>{
+            const t="Lumina";const c=document.querySelector('.splash-text');c.innerHTML='';
+            t.split('').forEach((s,i)=>{const n=document.createElement('span');n.innerText=s;n.style.animationDelay=i*0.1+'s';c.appendChild(n);});
+        }
+        function removeSplash(){
+            const s = document.getElementById('splash-screen');
+            s.style.opacity = 0;
+            s.style.visibility = 'hidden';
+            document.body.classList.remove('no-scroll');
+        }
         window.generateQuote=()=>{const r=quoteDB[Math.floor(Math.random()*quoteDB.length)];document.getElementById('splash-quote-text').innerText=`"${r.t}"`;document.getElementById('splash-quote-author').innerText=`- ${r.a}`;}
         
         window.init3DTilt=()=>{
@@ -744,7 +733,6 @@
             });
         }
         
-        // Colors & Settings
         const cols=['#38bdf8','#818cf8','#a78bfa','#f472b6','#f87171','#fb923c','#facc15','#4ade80'];
         document.getElementById('accent-grid').innerHTML=cols.map(c=>`<div class="color-swatch" style="background:${c}" onclick="updateAccent('${c}')"></div>`).join('');
         window.updateAccent=(c)=>{document.documentElement.style.setProperty('--accent-glow',c);localStorage.setItem('lumina_accent',c);}
