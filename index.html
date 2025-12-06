@@ -20,9 +20,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
     <style>
-        /* --- CSS VARS (DARK DEFAULT) --- */
+        /* --- CSS VARS --- */
         :root {
             --accent-glow: #38bdf8; 
+            
+            /* DARK MODE DEFAULT */
             --bg-color: #0f172a;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
@@ -37,7 +39,7 @@
             --modal-bg: #1e293b; 
         }
 
-        /* LIGHT MODE VARIABLES (Diubah ke :root.light-mode untuk loading instan) */
+        /* LIGHT MODE */
         :root.light-mode {
             --bg-color: #f1f5f9;
             --text-main: #1e293b;
@@ -49,7 +51,7 @@
             --btn-bg: #e2e8f0;
         }
 
-        /* ANTI-FLASH: Matikan transisi saat loading awal */
+        /* PRELOADER STATE (Anti Flash) */
         body.preload * {
             transition: none !important;
         }
@@ -57,7 +59,6 @@
         /* PERFORMANCE MODE */
         :root.perf-mode { --glass-surface: #1e293b; --modal-bg: #1e293b; --glass-border: #334155; }
         :root.light-mode.perf-mode { --glass-surface: #ffffff; --modal-bg: #ffffff; --glass-border: #cbd5e1; }
-        
         body.perf-mode .ambient-light, body.perf-mode .interactive-card::before { display: none; }
         body.perf-mode .acrylic-panel, body.perf-mode .modal-content, body.perf-mode .category-badge { 
             backdrop-filter: none !important; box-shadow: none !important; 
@@ -71,7 +72,6 @@
             color: var(--text-main); 
             overflow-x: hidden; 
             min-height: 100vh; 
-            /* Transisi dinyalakan setelah class .preload dicabut */
             transition: background-color 0.4s ease, color 0.4s ease; 
         }
         body.no-scroll { overflow: hidden; height: 100vh; }
@@ -82,8 +82,26 @@
         .interactive-card:hover::before { opacity: 0.15; }
         .interactive-card > * { position: relative; z-index: 2; }
 
-        /* SPLASH & LOADER & QUOTES */
-        #splash-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-color); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease-out, visibility 0.8s; padding: 20px; text-align: center;}
+        /* SPLASH & ANIMATION (BLUR OUT UPDATED) */
+        #splash-screen { 
+            position: fixed; top: 0; left: 0; 
+            width: 100vw; height: 100vh; 
+            background-color: var(--bg-color); 
+            z-index: 99999; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            padding: 20px; text-align: center;
+            /* Transition for properties that will change */
+            transition: opacity 0.8s ease-in-out, filter 0.8s ease-in-out, transform 0.8s ease-in-out;
+        }
+
+        /* State ketika splash menghilang */
+        #splash-screen.splash-exit {
+            opacity: 0;
+            filter: blur(20px) brightness(1.2); /* Efek Blur + Sedikit lebih terang */
+            transform: scale(1.1); /* Sedikit membesar agar terasa 'terbang' ke penonton */
+            pointer-events: none;
+        }
+
         .splash-text { font-size: 3rem; font-weight: 800; color: var(--text-main); margin-bottom: 10px; letter-spacing: -1px;}
         .splash-text span { display: inline-block; opacity: 0; filter: blur(10px); transform: scale(1.1); animation: blurIn 0.8s forwards ease-in-out; }
         
@@ -266,27 +284,24 @@
         footer { padding: 40px 0; text-align: center; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--glass-border); margin-top: 60px; background: var(--bg-color); z-index: 5; }
     </style>
     
-    <!-- SCRIPT INI WAJIB DI HEAD UNTUK MENCEGAH FLASH -->
+    <!-- ANTI-FLASH SCRIPT (PRE-RENDER) -->
     <script>
         (function() {
             try {
-                // Tambahkan class preload untuk matikan animasi
-                document.documentElement.classList.add('preload'); 
+                // 1. Matikan transisi agar tidak animasi warna di awal
+                document.documentElement.classList.add('preload');
                 
+                // 2. Baca setting & terapkan SEBELUM render
                 var saved = localStorage.getItem('theme');
                 var sys = window.matchMedia('(prefers-color-scheme: light)').matches;
-                
-                // Set theme ke <html> (root) langsung
                 if(saved === 'light' || (!saved && sys)) {
                     document.documentElement.classList.add('light-mode');
-                } else if(saved === 'dark') {
-                    document.documentElement.classList.remove('light-mode');
                 }
             } catch(e) {}
         })();
     </script>
 </head>
-<body class="preload"> <!-- Class preload aktif saat start -->
+<body class="no-scroll">
 
     <!-- SPLASH SCREEN + LOADER -->
     <div id="splash-screen">
@@ -378,7 +393,7 @@
         </div>
     </section>
 
-    <!-- APPS GRID (CLEAN, NO FILTER) -->
+    <!-- APPS GRID -->
     <section id="apps-section">
         <div class="acrylic-panel hidden" style="padding: 30px; position: relative;">
             <h2 class="section-header">My Apps</h2>
@@ -483,7 +498,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, collection, addDoc, query, orderBy, limit, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // === CONFIG ===
+        // === CONFIG FIREBASE (ISI DENGAN DATA ANDA) ===
         const firebaseConfig = {
         apiKey: "AIzaSyDfpLYr8g8ltUpdV_1HuN-S_m8vnMqqtYI",
         authDomain: "lumina-portofolio.firebaseapp.com",
@@ -514,13 +529,12 @@
         /* --- SMART LOADER STARTUP --- */
         window.addEventListener('DOMContentLoaded', async () => {
             splashEffect();
-            generateQuote(); // DIPANGGIL DI SINI AGAR QUOTES MUNCUL
+            generateQuote();
             
             const minTime = new Promise(r => setTimeout(r, 2000));
             const dataFetch = loadFromDB();
             
             await Promise.all([minTime, dataFetch]);
-            
             removeSplash(); 
             initTheme();
             setupGuestbook();
@@ -746,21 +760,23 @@
         function renderTechStack(arr) { document.getElementById('tech-list').innerHTML = arr.map(i=>`<div class="tech-item"><i class="${i.replace('<span class="tech-delete" style="display:flex" onclick="this.parentElement.remove()">x</span>','')}"></i><span class="tech-delete" onclick="this.parentElement.remove()">x</span></div>`).join(''); }
         function renderDefaultSnippets(){ document.getElementById('snippets-list').innerHTML = `<div class="snippet-card"><h4>Hello</h4><div class="snippet-code">console.log('Hi');</div></div>`; }
 
-        // --- SPLASH CONTROLLER ---
+        // --- SPLASH CONTROLLER (UPDATED FOR BLUR EXIT) ---
         window.splashEffect=()=>{
             const t="Lumina";const c=document.querySelector('.splash-text');c.innerHTML='';
             t.split('').forEach((s,i)=>{const n=document.createElement('span');n.innerText=s;n.style.animationDelay=i*0.1+'s';c.appendChild(n);});
         }
         function removeSplash(){
             const s = document.getElementById('splash-screen');
-            s.style.opacity = 0;
-            s.style.visibility = 'hidden';
+            // Trigger animation exit class
+            s.classList.add('splash-exit');
             
-            // AKTIFKAN TRANSISI SETELAH LOADING
+            // Wait for transition to finish before allowing scroll & interaction
             setTimeout(() => {
+                // remove DOM
+                s.style.display = 'none';
                 document.documentElement.classList.remove('preload');
                 document.body.classList.remove('preload', 'no-scroll');
-            }, 100);
+            }, 800); // 800ms match css duration
         }
         window.generateQuote=()=>{const r=quoteDB[Math.floor(Math.random()*quoteDB.length)];document.getElementById('splash-quote-text').innerText=`"${r.t}"`;document.getElementById('splash-quote-author').innerText=`- ${r.a}`;}
         
