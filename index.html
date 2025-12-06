@@ -20,7 +20,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
     <style>
-        /* --- CSS VARS --- */
+        /* --- CSS VARS (DARK DEFAULT) --- */
         :root {
             --accent-glow: #38bdf8; 
             --bg-color: #0f172a;
@@ -37,8 +37,8 @@
             --modal-bg: #1e293b; 
         }
 
-        /* LIGHT MODE */
-        body.light-mode {
+        /* LIGHT MODE VARIABLES (Diubah ke :root.light-mode untuk loading instan) */
+        :root.light-mode {
             --bg-color: #f1f5f9;
             --text-main: #1e293b;
             --text-muted: #64748b;
@@ -49,10 +49,19 @@
             --btn-bg: #e2e8f0;
         }
 
-        body.perf-mode { --glass-surface: #1e293b; --modal-bg: #1e293b; --glass-border: #334155; }
-        body.light-mode.perf-mode { --glass-surface: #ffffff; --modal-bg: #ffffff; --glass-border: #cbd5e1; }
+        /* ANTI-FLASH: Matikan transisi saat loading awal */
+        body.preload * {
+            transition: none !important;
+        }
+
+        /* PERFORMANCE MODE */
+        :root.perf-mode { --glass-surface: #1e293b; --modal-bg: #1e293b; --glass-border: #334155; }
+        :root.light-mode.perf-mode { --glass-surface: #ffffff; --modal-bg: #ffffff; --glass-border: #cbd5e1; }
+        
         body.perf-mode .ambient-light, body.perf-mode .interactive-card::before { display: none; }
-        body.perf-mode .acrylic-panel, body.perf-mode .modal-content, body.perf-mode .category-badge { backdrop-filter: none !important; box-shadow: none !important; }
+        body.perf-mode .acrylic-panel, body.perf-mode .modal-content, body.perf-mode .category-badge { 
+            backdrop-filter: none !important; box-shadow: none !important; 
+        }
 
         html { scroll-behavior: smooth; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; outline: none; }
@@ -62,7 +71,8 @@
             color: var(--text-main); 
             overflow-x: hidden; 
             min-height: 100vh; 
-            transition: background-color 0.4s; 
+            /* Transisi dinyalakan setelah class .preload dicabut */
+            transition: background-color 0.4s ease, color 0.4s ease; 
         }
         body.no-scroll { overflow: hidden; height: 100vh; }
 
@@ -256,22 +266,29 @@
         footer { padding: 40px 0; text-align: center; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--glass-border); margin-top: 60px; background: var(--bg-color); z-index: 5; }
     </style>
     
-    <!-- ANTI-FLASH SCRIPT (PRE-RENDER) -->
+    <!-- SCRIPT INI WAJIB DI HEAD UNTUK MENCEGAH FLASH -->
     <script>
         (function() {
             try {
+                // Tambahkan class preload untuk matikan animasi
+                document.documentElement.classList.add('preload'); 
+                
                 var saved = localStorage.getItem('theme');
                 var sys = window.matchMedia('(prefers-color-scheme: light)').matches;
+                
+                // Set theme ke <html> (root) langsung
                 if(saved === 'light' || (!saved && sys)) {
-                    document.body.classList.add('light-mode');
+                    document.documentElement.classList.add('light-mode');
+                } else if(saved === 'dark') {
+                    document.documentElement.classList.remove('light-mode');
                 }
             } catch(e) {}
         })();
     </script>
 </head>
-<body class="no-scroll">
+<body class="preload"> <!-- Class preload aktif saat start -->
 
-    <!-- SPLASH + LOADER -->
+    <!-- SPLASH SCREEN + LOADER -->
     <div id="splash-screen">
         <h1 class="splash-text"></h1>
         <div class="loader"></div>
@@ -503,6 +520,7 @@
             const dataFetch = loadFromDB();
             
             await Promise.all([minTime, dataFetch]);
+            
             removeSplash(); 
             initTheme();
             setupGuestbook();
@@ -728,6 +746,7 @@
         function renderTechStack(arr) { document.getElementById('tech-list').innerHTML = arr.map(i=>`<div class="tech-item"><i class="${i.replace('<span class="tech-delete" style="display:flex" onclick="this.parentElement.remove()">x</span>','')}"></i><span class="tech-delete" onclick="this.parentElement.remove()">x</span></div>`).join(''); }
         function renderDefaultSnippets(){ document.getElementById('snippets-list').innerHTML = `<div class="snippet-card"><h4>Hello</h4><div class="snippet-code">console.log('Hi');</div></div>`; }
 
+        // --- SPLASH CONTROLLER ---
         window.splashEffect=()=>{
             const t="Lumina";const c=document.querySelector('.splash-text');c.innerHTML='';
             t.split('').forEach((s,i)=>{const n=document.createElement('span');n.innerText=s;n.style.animationDelay=i*0.1+'s';c.appendChild(n);});
@@ -736,7 +755,12 @@
             const s = document.getElementById('splash-screen');
             s.style.opacity = 0;
             s.style.visibility = 'hidden';
-            document.body.classList.remove('no-scroll');
+            
+            // AKTIFKAN TRANSISI SETELAH LOADING
+            setTimeout(() => {
+                document.documentElement.classList.remove('preload');
+                document.body.classList.remove('preload', 'no-scroll');
+            }, 100);
         }
         window.generateQuote=()=>{const r=quoteDB[Math.floor(Math.random()*quoteDB.length)];document.getElementById('splash-quote-text').innerText=`"${r.t}"`;document.getElementById('splash-quote-author').innerText=`- ${r.a}`;}
         
@@ -750,13 +774,31 @@
         
         const cols=['#38bdf8','#818cf8','#a78bfa','#f472b6','#f87171','#fb923c','#facc15','#4ade80'];
         document.getElementById('accent-grid').innerHTML=cols.map(c=>`<div class="color-swatch" style="background:${c}" onclick="updateAccent('${c}')"></div>`).join('');
-        window.updateAccent=(c)=>{document.documentElement.style.setProperty('--accent-glow',c);localStorage.setItem('lumina_accent',c);}
-        window.toggleTheme=()=>{document.body.classList.toggle('light-mode');localStorage.setItem('theme',document.body.classList.contains('light-mode')?'light':'dark');}
+        
+        window.updateAccent=(c)=>{
+            document.documentElement.style.setProperty('--accent-glow',c);
+            localStorage.setItem('lumina_accent',c);
+        }
+        window.toggleTheme=()=>{
+            const html = document.documentElement;
+            html.classList.toggle('light-mode');
+            
+            if (html.classList.contains('light-mode')) {
+                localStorage.setItem('theme', 'light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+            }
+        }
         window.togglePerf=()=>{const p=document.body.classList.toggle('perf-mode');localStorage.setItem('lumina_perf',p);if(!p)init3DTilt();}
         window.initTheme=()=>{
-            if(localStorage.getItem('theme')=='light')document.body.classList.add('light-mode');
-            if(localStorage.getItem('lumina_accent'))updateAccent(localStorage.getItem('lumina_accent'));
-            if(localStorage.getItem('lumina_perf')=='true')togglePerf();
+            // LOGIC UTAMA SUDAH DI HEAD SCRIPT, ini fallback
+            const theme = localStorage.getItem('theme');
+            if(theme === 'light') document.documentElement.classList.add('light-mode');
+            
+            const accent = localStorage.getItem('lumina_accent');
+            if(accent) updateAccent(accent);
+            
+            if(localStorage.getItem('lumina_perf')=='true') togglePerf();
         }
 
         window.editLink=(e,el)=>{if(isEditing){e.preventDefault();const n=prompt("Link:",el.getAttribute('href'));if(n)el.setAttribute('href',n);}};
@@ -767,6 +809,33 @@
         
         window.applyCrop=()=>{if(cropper){document.getElementById('hero-img').src=cropper.getCroppedCanvas({width:300,height:300}).toDataURL('image/jpeg',0.6);closeModal('cropper-modal');}}
         document.getElementById('image-upload').addEventListener('change',e=>{if(e.target.files.length){const r=new FileReader();r.onload=v=>{document.getElementById('image-to-crop').src=v.target.result;if(cropper)cropper.destroy();cropper=new Cropper(document.getElementById('image-to-crop'),{aspectRatio:1,viewMode:1});};r.readAsDataURL(e.target.files[0]);}});
+        
+        function setupGuestbook() {
+            const q = query(collection(db, "lumina_guestbook"), orderBy("date", "desc"), limit(10));
+            onSnapshot(q, (snap) => {
+                const div = document.getElementById('gb-display');
+                if(snap.empty){ div.innerHTML="<p style='color:grey; text-align:center'>Belum ada pesan.</p>"; return;}
+                div.innerHTML='';
+                snap.forEach(d=>{
+                    const dat = d.data();
+                    const del = isEditing ? `<i class="fas fa-trash gb-del" style="display:inline; margin-left:10px; color:#f87171; cursor:pointer;" onclick="delGuest('${d.id}')"></i>` : '';
+                    div.innerHTML+=`<div class="gb-item"><div><span class="gb-meta">${dat.name} <small style="font-weight:400; opacity:0.7;">${dat.date?new Date(dat.date.seconds*1000).toLocaleDateString():''}</small></span><span class="gb-text">${dat.msg}</span></div>${del}</div>`;
+                });
+            }, err => { document.getElementById('gb-display').innerHTML=`<p style='color:red; text-align:center'>Gagal memuat: ${err.code}</p>`; });
+        }
+        window.postGuestbook=async()=>{const n=document.getElementById('gb-name').value;const m=document.getElementById('gb-msg').value;if(!m)return;await addDoc(collection(db,"lumina_guestbook"),{name:n||'Anon',msg:m,date:new Date()});document.getElementById('gb-msg').value='';};
+        window.delGuest=(id)=>{if(confirm("Hapus?")) deleteDoc(doc(db,"lumina_guestbook",id));};
+        
+        function listenToInbox(){
+            const q=query(collection(db,"lumina_messages"),orderBy("date","desc"),limit(10));
+            onSnapshot(q,(snap)=>{
+                let h=''; let count=0;
+                snap.forEach(d=>{ count++; const dat=d.data(); h+=`<div class="msg-card"><b>${dat.name}</b> (${dat.email})<br>${dat.msg}</div>`; });
+                document.getElementById('inbox-list').innerHTML=h||'Kosong.';
+                if(count>0) { document.getElementById('inbox-indicator').style.display='block'; }
+            });
+        }
+        window.sendMessage=async()=>{const n=document.getElementById('c-name').value;const e=document.getElementById('c-email').value;const m=document.getElementById('c-msg').value;if(n&&e&&m){await addDoc(collection(db,"lumina_messages"),{name:n,email:e,msg:m,date:new Date()});alert("Terkirim!");}};
         window.setupObservers=()=>{const o=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('show');o.unobserve(x.target)}}),{threshold:0.1});document.querySelectorAll('.hidden').forEach(x=>o.observe(x));}
     </script>
 </body>
