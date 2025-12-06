@@ -23,8 +23,6 @@
         /* --- CSS VARS --- */
         :root {
             --accent-glow: #38bdf8; 
-            
-            /* DARK MODE (Default) */
             --bg-color: #0f172a;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
@@ -39,7 +37,6 @@
             --modal-bg: #1e293b; 
         }
 
-        /* LIGHT MODE OVERRIDE */
         body.light-mode {
             --bg-color: #f1f5f9;
             --text-main: #1e293b;
@@ -59,17 +56,10 @@
         html { scroll-behavior: smooth; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; outline: none; }
         
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            overflow-x: hidden; 
-            min-height: 100vh; 
-            /* Transisi background dimatikan sebentar via JS saat load untuk mencegah kedip */
-            transition: background-color 0.4s; 
-        }
+        body { background-color: var(--bg-color); color: var(--text-main); overflow-x: hidden; min-height: 100vh; transition: background-color 0.4s; }
         body.no-scroll { overflow: hidden; height: 100vh; }
 
-        /* 3D EFFECTS */
+        /* 3D & UI */
         .interactive-card { position: relative; transition: transform 0.1s ease; transform-style: preserve-3d; }
         .interactive-card::before { content:''; position: absolute; top: var(--y, 50%); left: var(--x, 50%); width: 350px; height: 350px; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%); opacity: 0; transform: translate(-50%, -50%); transition: opacity 0.3s; pointer-events: none; mix-blend-mode: overlay; z-index: 0; }
         .interactive-card:hover::before { opacity: 0.15; }
@@ -80,27 +70,12 @@
         .splash-text { font-size: 3rem; font-weight: 800; color: var(--text-main); margin-bottom: 10px; letter-spacing: -1px;}
         .splash-text span { display: inline-block; opacity: 0; filter: blur(10px); transform: scale(1.1); animation: blurIn 0.8s forwards ease-in-out; }
         
-        .loader {
-            width: 40px; height: 40px;
-            border: 4px solid rgba(255,255,255,0.1);
-            border-top: 4px solid var(--accent-glow);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px 0;
-            opacity: 0; 
-            animation: spin 1s linear infinite, fadeIn 0.5s forwards 1s; 
-        }
+        .loader { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--accent-glow); border-radius: 50%; animation: spin 1s linear infinite; margin: 20px 0; opacity: 0; animation: spin 1s linear infinite, fadeIn 0.5s forwards 1s; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes fadeIn { to { opacity: 1; } }
-
-        .quote-container { opacity: 0; transform: translateY(20px); animation: fadeInUp 1s forwards 0.5s; max-width: 500px; padding: 15px 20px; border: 1px solid var(--glass-border); border-radius: 15px; background: rgba(255,255,255,0.03); backdrop-filter: blur(5px);}
-        .quote-text { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--text-main); margin-bottom: 5px; font-style: italic;}
-        .quote-author { color: var(--accent-glow); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;}
         
         @keyframes blurIn { to { opacity: 1; filter: blur(0); transform: scale(1); } }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-        /* PANEL */
         .acrylic-panel { background: var(--glass-surface); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-top: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 30px rgba(0,0,0,0.1); border-radius: 20px; }
         .ambient-light { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5; animation: float 15s infinite; transition: background 0.5s; }
@@ -135,7 +110,7 @@
             nav a { font-size: 0.85rem; }
         }
 
-        /* HERO */
+        /* HERO & CONTENT */
         .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 120px 0 50px; gap: 30px;}
         .hero-card { padding: 40px; width: 90%; max-width: 600px; text-align: center; }
         .profile-container { width: 140px; height: 140px; margin: 0 auto 20px; position: relative; }
@@ -151,8 +126,7 @@
         }
         iframe.spotify-embed { border-radius: 12px; width: 100%; height: 80px; border:none; display: block; }
         .music-error-state { padding: 20px; text-align: center; color: var(--error); display: none; font-size: 0.8rem;}
-        .vibe-pill { display: none; }
-
+        
         .tech-stack { display: flex; justify-content: center; gap: 15px; margin-top: 25px; flex-wrap: wrap; }
         .tech-item { font-size: 1.5rem; color: var(--text-muted); transition: 0.3s; position: relative; }
         .tech-item:hover { color: var(--accent-glow); transform: translateY(-3px); }
@@ -162,7 +136,6 @@
         .social-icon { color: var(--text-muted); font-size: 1.4rem; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 50%; transition: 0.3s; text-decoration: none; border: 1px solid transparent; }
         .social-icon:hover { color: var(--accent-glow); background: rgba(255,255,255,0.1); transform: translateY(-3px); }
 
-        /* GRID SYSTEM */
         section { max-width: 900px; margin: 0 auto 60px; width: 90%; scroll-margin-top: 100px; }
         .section-header { font-size: 1.5rem; font-weight: 700; margin-bottom: 25px; border-bottom: 2px solid var(--accent-glow); padding-bottom: 5px; display: inline-block; color: var(--text-main); position: relative; padding-right: 50px;}
 
@@ -172,7 +145,6 @@
         .card-icon { font-size: 2.5rem; margin-bottom: 15px; transition: 0.3s; color: var(--text-muted); }
         .status-badge { position: absolute; top: 15px; right: 15px; font-size: 0.7rem; background: rgba(0,0,0,0.4); padding: 4px 10px; border-radius: 20px; color: #fff; }
 
-        /* APPS GRID */
         .apps-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
         .app-item { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-left: 4px solid var(--accent-glow); padding: 25px; border-radius: 15px; display: flex; flex-direction: column; position: relative; }
         .app-item.hide { display: none !important; }
@@ -185,7 +157,6 @@
         .delete-btn { position: absolute; bottom: 20px; right: 20px; background: none; border: none; color: #ff4757; font-size: 1.2rem; cursor: pointer; display: none; }
         .app-item.editing .delete-btn { display: block; }
 
-        /* REPO */
         .repo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; }
         .repo-card { padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 12px; transition: 0.3s; height: 100%; display: flex; flex-direction: column; }
         .repo-card:hover { transform: translateY(-5px); border-color: var(--accent-glow); }
@@ -197,6 +168,7 @@
         .snippet-card { min-width: 280px; max-width: 300px; padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 15px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
         .snippet-code { font-family: 'Fira Code', monospace; font-size: 0.8rem; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-top: 10px; color: #a5b4fc; overflow: hidden; white-space: pre-wrap; height: 100px; }
 
+        /* GUESTBOOK */
         .guestbook-container { display: flex; flex-direction: column; gap: 20px; }
         .gb-form { display: flex; gap: 10px; flex-wrap: wrap; }
         .gb-input { flex: 1; min-width: 150px; padding: 10px 15px; border-radius: 8px; border: 1px solid var(--glass-border); background: var(--input-bg); color: var(--text-main); font-size: 0.9rem; }
@@ -246,28 +218,26 @@
 
         footer { padding: 40px 0; text-align: center; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--glass-border); margin-top: 60px; background: var(--bg-color); z-index: 5; }
     </style>
+    
+    <!-- ANTI-FLASH SCRIPT (PRE-RENDER) -->
+    <script>
+        (function() {
+            try {
+                var saved = localStorage.getItem('theme');
+                var sys = window.matchMedia('(prefers-color-scheme: light)').matches;
+                if(saved === 'light' || (!saved && sys)) {
+                    document.body.classList.add('light-mode');
+                }
+            } catch(e) {}
+        })();
+    </script>
 </head>
 <body class="no-scroll">
 
-    <!-- IMMEDIATE SCRIPT TO PREVENT THEME FLASH -->
-    <script>
-        (function() {
-            const savedTheme = localStorage.getItem('theme');
-            const sysPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-            if (savedTheme === 'light' || (!savedTheme && sysPrefersLight)) {
-                document.body.classList.add('light-mode');
-            }
-        })();
-    </script>
-
-    <!-- SPLASH SCREEN + LOADER -->
+    <!-- SPLASH + LOADER -->
     <div id="splash-screen">
         <h1 class="splash-text"></h1>
         <div class="loader"></div>
-        <div class="quote-container">
-            <p id="splash-quote-text" class="quote-text"></p>
-            <p id="splash-quote-author" class="quote-author"></p>
-        </div>
     </div>
 
     <!-- BACKGROUND -->
@@ -355,7 +325,6 @@
         <div class="acrylic-panel hidden" style="padding: 30px; position: relative;">
             <h2 class="section-header">My Apps</h2>
             <i id="add-app-btn" class="fas fa-plus-circle" onclick="addApp()" style="position:absolute; top:30px; right:30px; font-size:1.8rem; color:var(--success); cursor:pointer; display:none;"></i>
-            
             <div class="apps-grid" id="apps-list"></div>
         </div>
     </section>
@@ -456,7 +425,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, collection, addDoc, query, orderBy, limit, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // === CONFIG ===
+        // === CONFIG FIREBASE (WAJIB DIGANTI!) ===
         const firebaseConfig = {
         apiKey: "AIzaSyDfpLYr8g8ltUpdV_1HuN-S_m8vnMqqtYI",
         authDomain: "lumina-portofolio.firebaseapp.com",
@@ -473,32 +442,24 @@
         let isEditing = false;
         let cropper = null;
 
-        const quoteDB = [
-            { t: "The only way to do great work is to love what you do.", a: "Steve Jobs" },
-            { t: "Simplicity is the ultimate sophistication.", a: "Leonardo da Vinci" },
-            { t: "Code is like humor. When you have to explain it, it’s bad.", a: "Cory House" },
-            { t: "Experience is the name everyone gives to their mistakes.", a: "Oscar Wilde" }
-        ];
-
         /* --- AUTO PLAYLIST --- */
         const globalPlaylist = ["2IgI5W5v7bY2p8E4cW4A4h", "60ycX53i166L7q2Y1K2t1c", "6kqK3e3N3yK8aN3i6O1L8i","1xziMcdG4K5w7yG1w1P5a4", "5K4gC0qV3iC3w3i7m4K3g3"];
 
-        /* --- SMART LOADER STARTUP --- */
+        /* --- SMART LOADER --- */
         window.addEventListener('DOMContentLoaded', async () => {
             splashEffect();
-            generateQuote();
             
-            // Promise wrapper for min 2s display time
+            // Promise timer minimum 2 detik agar animasi loader terlihat smooth
             const minTime = new Promise(r => setTimeout(r, 2000));
-            // Actual data loading
+            // Fetch data
             const dataFetch = loadFromDB();
             
-            // Wait for both
+            // Tunggu keduanya selesai
             await Promise.all([minTime, dataFetch]);
             
-            removeSplash(); // Hide splash when ready
+            removeSplash();
             
-            initTheme();
+            // Setup sisanya
             setupGuestbook();
             setupObservers();
         });
@@ -529,7 +490,7 @@
                     document.getElementById('link-email').href = data.links.mail || '#';
                 }
 
-                // APPS - FORCE SHOW (No Filter Logic Anymore)
+                // APPS SHOW FIX
                 if(data.appsHtml) {
                     const appList = document.getElementById('apps-list');
                     appList.innerHTML = data.appsHtml;
@@ -612,9 +573,8 @@
 
             try {
                 const tStack = Array.from(document.querySelectorAll('#tech-list i')).map(el => el.className);
-                
                 const appsClone = document.getElementById('apps-list').cloneNode(true);
-                // SAFEGUARD
+                // Safe
                 appsClone.querySelectorAll('.hide').forEach(e => e.classList.remove('hide'));
                 appsClone.querySelectorAll('.editing').forEach(e => e.classList.remove('editing'));
                 appsClone.querySelectorAll('[contenteditable]').forEach(e => e.removeAttribute('contenteditable'));
@@ -694,20 +654,12 @@
         }
 
         /* --- UTILS --- */
-        // Simplified APP creation (Default label: PROJECT)
         window.addApp=()=>{
             const n=prompt("Nama Project:"); 
             if(n){
                 const d=document.createElement('div');
                 d.className='app-item editing interactive-card';
-                d.innerHTML=`
-                    <div class="app-header">
-                        <h4 class="app-name" contenteditable="true">${n}</h4>
-                        <span class="app-tag">PROJECT</span>
-                    </div>
-                    <p class="app-desc" contenteditable="true">Deskripsi singkat...</p>
-                    <button class="delete-btn" style="display:block" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
-                    <a href="#" class="app-visit-btn" onclick="editLink(event,this)">Visit</a>`;
+                d.innerHTML=`<div class="app-header"><h4 class="app-name" contenteditable="true">${n}</h4><span class="app-tag">PROJECT</span></div><p class="app-desc" contenteditable="true">Deskripsi singkat...</p><button class="delete-btn" style="display:block" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button><a href="#" class="app-visit-btn" onclick="editLink(event,this)">Visit</a>`;
                 document.getElementById('apps-list').prepend(d);
             }
         };
@@ -732,7 +684,6 @@
         function renderTechStack(arr) { document.getElementById('tech-list').innerHTML = arr.map(i=>`<div class="tech-item"><i class="${i.replace('<span class="tech-delete" style="display:flex" onclick="this.parentElement.remove()">x</span>','')}"></i><span class="tech-delete" onclick="this.parentElement.remove()">x</span></div>`).join(''); }
         function renderDefaultSnippets(){ document.getElementById('snippets-list').innerHTML = `<div class="snippet-card"><h4>Hello</h4><div class="snippet-code">console.log('Hi');</div></div>`; }
 
-        // --- SPLASH CONTROLLER ---
         window.splashEffect=()=>{
             const t="Lumina";const c=document.querySelector('.splash-text');c.innerHTML='';
             t.split('').forEach((s,i)=>{const n=document.createElement('span');n.innerText=s;n.style.animationDelay=i*0.1+'s';c.appendChild(n);});
@@ -743,7 +694,6 @@
             s.style.visibility = 'hidden';
             document.body.classList.remove('no-scroll');
         }
-        window.generateQuote=()=>{const r=quoteDB[Math.floor(Math.random()*quoteDB.length)];document.getElementById('splash-quote-text').innerText=`"${r.t}"`;document.getElementById('splash-quote-author').innerText=`- ${r.a}`;}
         
         window.init3DTilt=()=>{
             if(document.body.classList.contains('perf-mode')) return;
@@ -759,6 +709,7 @@
         window.toggleTheme=()=>{document.body.classList.toggle('light-mode');localStorage.setItem('theme',document.body.classList.contains('light-mode')?'light':'dark');}
         window.togglePerf=()=>{const p=document.body.classList.toggle('perf-mode');localStorage.setItem('lumina_perf',p);if(!p)init3DTilt();}
         window.initTheme=()=>{
+            // Logic ini sudah di-handle pre-script, ini hanya fail-safe
             if(localStorage.getItem('theme')=='light')document.body.classList.add('light-mode');
             if(localStorage.getItem('lumina_accent'))updateAccent(localStorage.getItem('lumina_accent'));
             if(localStorage.getItem('lumina_perf')=='true')togglePerf();
@@ -772,6 +723,33 @@
         
         window.applyCrop=()=>{if(cropper){document.getElementById('hero-img').src=cropper.getCroppedCanvas({width:300,height:300}).toDataURL('image/jpeg',0.6);closeModal('cropper-modal');}}
         document.getElementById('image-upload').addEventListener('change',e=>{if(e.target.files.length){const r=new FileReader();r.onload=v=>{document.getElementById('image-to-crop').src=v.target.result;if(cropper)cropper.destroy();cropper=new Cropper(document.getElementById('image-to-crop'),{aspectRatio:1,viewMode:1});};r.readAsDataURL(e.target.files[0]);}});
+        
+        function setupGuestbook() {
+            const q = query(collection(db, "lumina_guestbook"), orderBy("date", "desc"), limit(10));
+            onSnapshot(q, (snap) => {
+                const div = document.getElementById('gb-display');
+                if(snap.empty){ div.innerHTML="<p style='color:grey; text-align:center'>Belum ada pesan.</p>"; return;}
+                div.innerHTML='';
+                snap.forEach(d=>{
+                    const dat = d.data();
+                    const del = isEditing ? `<i class="fas fa-trash gb-del" style="display:inline; margin-left:10px; color:#f87171; cursor:pointer;" onclick="delGuest('${d.id}')"></i>` : '';
+                    div.innerHTML+=`<div class="gb-item"><div><span class="gb-meta">${dat.name} <small style="font-weight:400; opacity:0.7;">${dat.date?new Date(dat.date.seconds*1000).toLocaleDateString():''}</small></span><span class="gb-text">${dat.msg}</span></div>${del}</div>`;
+                });
+            }, err => { document.getElementById('gb-display').innerHTML=`<p style='color:red; text-align:center'>Gagal memuat: ${err.code}</p>`; });
+        }
+        window.postGuestbook=async()=>{const n=document.getElementById('gb-name').value;const m=document.getElementById('gb-msg').value;if(!m)return;await addDoc(collection(db,"lumina_guestbook"),{name:n||'Anon',msg:m,date:new Date()});document.getElementById('gb-msg').value='';};
+        window.delGuest=(id)=>{if(confirm("Hapus?")) deleteDoc(doc(db,"lumina_guestbook",id));};
+        
+        function listenToInbox(){
+            const q=query(collection(db,"lumina_messages"),orderBy("date","desc"),limit(10));
+            onSnapshot(q,(snap)=>{
+                let h=''; let count=0;
+                snap.forEach(d=>{ count++; const dat=d.data(); h+=`<div class="msg-card"><b>${dat.name}</b> (${dat.email})<br>${dat.msg}</div>`; });
+                document.getElementById('inbox-list').innerHTML=h||'Kosong.';
+                if(count>0) { document.getElementById('inbox-indicator').style.display='block'; }
+            });
+        }
+        window.sendMessage=async()=>{const n=document.getElementById('c-name').value;const e=document.getElementById('c-email').value;const m=document.getElementById('c-msg').value;if(n&&e&&m){await addDoc(collection(db,"lumina_messages"),{name:n,email:e,msg:m,date:new Date()});alert("Terkirim!");}};
         window.setupObservers=()=>{const o=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('show');o.unobserve(x.target)}}),{threshold:0.1});document.querySelectorAll('.hidden').forEach(x=>o.observe(x));}
     </script>
 </body>
