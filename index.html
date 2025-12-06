@@ -76,7 +76,7 @@
         @keyframes blurIn { to { opacity: 1; filter: blur(0); transform: scale(1); } }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-        /* PANEL & AMBIENCE */
+        /* PANEL */
         .acrylic-panel { background: var(--glass-surface); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-top: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 30px rgba(0,0,0,0.1); border-radius: 20px; }
         .ambient-light { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5; animation: float 15s infinite; transition: background 0.5s; }
@@ -86,23 +86,15 @@
 
         /* --- NAV DESKTOP (DEFAULT) --- */
         nav { 
-            position: fixed; 
-            top: 20px; 
-            /* Centering technique Desktop */
-            left: 50%; 
-            transform: translateX(-50%); 
-            
-            width: 90%; 
-            max-width: 600px; /* Lebar pulau Desktop */
+            position: fixed; top: 20px; 
+            left: 50%; transform: translateX(-50%); 
+            width: 90%; max-width: 600px; 
             padding: 12px 30px; 
             z-index: 5000; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
+            display: flex; justify-content: space-between; align-items: center; 
             border-radius: 50px; 
             background: rgba(255,255,255,0.01); 
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px); 
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
             border: 1px solid var(--glass-border); 
             transition: top 0.3s, padding 0.3s;
         }
@@ -112,34 +104,22 @@
         nav a:hover { opacity: 1; color: var(--accent-glow); }
         #inbox-indicator { position: absolute; top: -3px; right: -8px; width: 8px; height: 8px; background: var(--error); border-radius: 50%; display: none; }
 
-        /* --- NAV MOBILE OVERRIDE (FIXED) --- */
-        /* Menggunakan max-width 650px agar tablet kecil juga rapi */
+        /* --- NAV MOBILE FIXED --- */
         @media (max-width: 650px) {
             nav {
-                /* Reset centering method */
-                transform: none; 
-                left: auto; 
-                margin: 0;
-                
-                /* Anchor technique: tempel ke kiri & kanan */
-                position: fixed;
-                top: 15px;
-                left: 15px;
-                right: 15px;
-                width: auto; /* Width auto + left/right = stretch sesuai margin */
-                max-width: none;
-                
-                /* Tampilan ringkas */
+                transform: none; left: auto; margin: 0;
+                position: fixed; top: 15px; left: 15px; right: 15px;
+                width: auto; max-width: none;
                 padding: 10px 18px; 
-                border-radius: 16px; /* Sudut lebih kotak dikit biar muat */
+                border-radius: 16px;
                 justify-content: space-between;
             }
             nav h3 { font-size: 1rem; }
-            nav ul { gap: 12px; } /* Jarak ikon lebih rapat */
+            nav ul { gap: 12px; }
             nav a { font-size: 0.85rem; }
         }
 
-        /* HERO & CONTENT */
+        /* HERO */
         .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 120px 0 50px; gap: 30px;}
         .hero-card { padding: 40px; width: 90%; max-width: 600px; text-align: center; }
         .profile-container { width: 140px; height: 140px; margin: 0 auto 20px; position: relative; }
@@ -147,7 +127,7 @@
         .profile-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; color: #fff; font-size: 1.5rem; transition: 0.3s; }
         .profile-container:hover .profile-overlay { opacity: 1; display: flex;}
         
-        /* MUSIC */
+        /* MUSIC PILL */
         .music-pill { 
             width: 100%; max-width: 400px; margin: 20px auto 0;
             background: #191414; border-radius: 12px; 
@@ -170,7 +150,7 @@
         .social-icon { color: var(--text-muted); font-size: 1.4rem; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 50%; transition: 0.3s; text-decoration: none; border: 1px solid transparent; }
         .social-icon:hover { color: var(--accent-glow); background: rgba(255,255,255,0.1); transform: translateY(-3px); }
 
-        /* GRID SYSTEM */
+        /* SECTIONS & GRID */
         section { max-width: 900px; margin: 0 auto 60px; width: 90%; scroll-margin-top: 100px; }
         .section-header { font-size: 1.5rem; font-weight: 700; margin-bottom: 25px; border-bottom: 2px solid var(--accent-glow); padding-bottom: 5px; display: inline-block; color: var(--text-main); position: relative; padding-right: 50px;}
 
@@ -180,14 +160,14 @@
         .card-icon { font-size: 2.5rem; margin-bottom: 15px; transition: 0.3s; color: var(--text-muted); }
         .status-badge { position: absolute; top: 15px; right: 15px; font-size: 0.7rem; background: rgba(0,0,0,0.4); padding: 4px 10px; border-radius: 20px; color: #fff; }
 
-        /* PROJECTS */
+        /* APPS */
         .filter-container { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
         .filter-btn { padding: 6px 16px; border-radius: 20px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.03); color: var(--text-muted); cursor: pointer; font-size: 0.85rem; transition: 0.3s; white-space: nowrap; }
         .filter-btn.active, .filter-btn:hover { background: var(--accent-glow); border-color: var(--accent-glow); color: #fff; }
 
         .apps-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
         .app-item { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-left: 4px solid var(--accent-glow); padding: 25px; border-radius: 15px; display: flex; flex-direction: column; position: relative; }
-        .app-item.hide { display: none; }
+        .app-item.hide { display: none !important; }
         .app-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;}
         .app-tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; background: rgba(255,255,255,0.08); text-transform: uppercase; font-weight: 600; color: var(--accent-glow); }
         .app-name { font-size: 1.2rem; font-weight: 700; color: var(--text-main); }
@@ -223,7 +203,7 @@
         .contact-form { margin-top: 20px; display: grid; gap: 15px; }
         textarea.gb-input { height: 100px; resize: vertical; }
 
-        /* UPDATES */
+        /* CHANGELOG */
         .timeline { position: relative; margin-left: 10px; padding-left: 20px; border-left: 2px solid var(--glass-border); }
         .timeline-item { position: relative; margin-bottom: 30px; }
         .timeline-item::after { content: ''; position: absolute; left: -27px; top: 5px; width: 12px; height: 12px; background: var(--bg-color); border: 2px solid var(--accent-glow); border-radius: 50%; z-index: 2; }
@@ -242,7 +222,7 @@
         input.pin-field { width: 100%; padding: 15px; font-size: 2rem; text-align: center; margin: 20px 0; background: var(--input-bg); border: 1px solid var(--glass-border); color: var(--text-main); border-radius: 12px; letter-spacing: 8px; }
         [contenteditable="true"] { border: 1px dashed var(--accent-glow); background: rgba(56, 189, 248, 0.1); padding: 0 5px; border-radius: 4px; display: inline-block; min-width: 10px;}
 
-        /* SETTINGS & STYLES */
+        /* SETTINGS STYLE */
         .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin: 15px 0;}
         .color-swatch { width: 45px; height: 45px; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition:0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
         .color-swatch:hover { transform:scale(1.1); border-color:var(--text-main); }
@@ -300,7 +280,6 @@
     <!-- HERO -->
     <div class="hero">
         <div class="hero-card acrylic-panel interactive-card hidden">
-            <!-- Profile -->
             <div class="profile-container" onclick="handleProfileClick()">
                 <img src="" onerror="this.src='https://ui-avatars.com/api/?name=U&background=random'" alt="Profile" class="profile-pic" id="hero-img">
                 <div class="profile-overlay"><i class="fas fa-camera"></i></div>
@@ -309,7 +288,6 @@
             <h1 id="user-name">User Name</h1>
             <p id="user-bio" style="font-size: 1.1rem; color: var(--text-muted); margin-top: 10px;">Web Developer</p>
             
-            <!-- MUSIC (Fix Embed) -->
             <div class="music-pill">
                 <p id="loading-music" style="color:var(--text-muted); font-size:0.8rem;">Loading Vibe...</p>
                 <iframe id="spotify-embed" class="spotify-embed" style="display:none;" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
@@ -317,11 +295,9 @@
             </div>
             <button id="edit-music-btn" onclick="editDailyMusic()">Ganti Lagu Manual</button>
 
-            <!-- TECH STACK -->
             <div class="tech-stack" id="tech-list"></div>
             <button id="add-tech-btn" style="display:none; margin-top:10px; background:transparent; border:1px dashed var(--text-muted); color:var(--text-muted); padding:5px 10px; border-radius:5px; cursor:pointer;" onclick="addTech()">+ Icon</button>
 
-            <!-- Links -->
             <div class="social-links">
                 <a href="#" class="social-icon" id="link-github"><i class="fab fa-github"></i></a>
                 <a href="#" class="social-icon" id="link-twitter"><i class="fa-brands fa-x-twitter"></i></a>
@@ -342,7 +318,8 @@
             </div>
             <div class="option-card acrylic-panel interactive-card hidden" onclick="document.getElementById('apps-section').scrollIntoView()">
                 <div class="card-icon"><i class="fas fa-cubes"></i></div>
-                <div class="card-title">Portfolio</div>
+                <!-- TITLE FIXED: MY APPS -->
+                <div class="card-title">My Apps</div>
                 <div class="card-desc">See my work</div>
             </div>
         </div>
@@ -473,7 +450,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, collection, addDoc, query, orderBy, limit, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // === CONFIG FIREBASE ===
+        /* --- CONFIG FIREBASE --- */
         const firebaseConfig = {
         apiKey: "AIzaSyDfpLYr8g8ltUpdV_1HuN-S_m8vnMqqtYI",
         authDomain: "lumina-portofolio.firebaseapp.com",
@@ -497,16 +474,12 @@
             { t: "Experience is the name everyone gives to their mistakes.", a: "Oscar Wilde" }
         ];
 
-        /* --- AUTO PLAYLIST --- */
+        /* --- DAILY PLAYLIST --- */
         const globalPlaylist = [
-            "2IgI5W5v7bY2p8E4cW4A4h", 
-            "60ycX53i166L7q2Y1K2t1c", 
-            "6kqK3e3N3yK8aN3i6O1L8i",
-            "1xziMcdG4K5w7yG1w1P5a4", 
-            "5K4gC0qV3iC3w3i7m4K3g3"
+            "2IgI5W5v7bY2p8E4cW4A4h", "60ycX53i166L7q2Y1K2t1c", "6kqK3e3N3yK8aN3i6O1L8i",
+            "1xziMcdG4K5w7yG1w1P5a4", "5K4gC0qV3iC3w3i7m4K3g3"
         ];
 
-        /* --- STARTUP --- */
         window.addEventListener('DOMContentLoaded', () => {
             splashEffect();
             generateQuote();
@@ -516,7 +489,7 @@
             setupObservers();
         });
 
-        /* --- LOAD --- */
+        /* --- LOAD LOGIC FIX (APPS) --- */
         async function loadFromDB() {
             try {
                 const snap = await getDoc(docRef);
@@ -536,7 +509,7 @@
                     setDailyMusic(globalPlaylist); 
                 }
 
-                // Tech
+                // TECH
                 const tStack = data.techStack || ['fab fa-html5', 'fab fa-js', 'fab fa-react'];
                 renderTechStack(tStack);
 
@@ -546,12 +519,20 @@
                     document.getElementById('link-email').href = data.links.mail || '#';
                 }
 
-                // Apps
+                // APPS - FIX VISIBILITY
                 if(data.appsHtml) {
-                    document.getElementById('apps-list').innerHTML = data.appsHtml;
-                    document.querySelectorAll('#apps-list [contenteditable]').forEach(e => e.removeAttribute('contenteditable'));
-                    document.querySelectorAll('#apps-list .delete-btn').forEach(e => e.style.display = 'none');
-                    document.querySelectorAll('#apps-list .app-item').forEach(e => e.classList.remove('editing'));
+                    const appList = document.getElementById('apps-list');
+                    appList.innerHTML = data.appsHtml;
+                    // Reset: Ensure apps are clean (no edit attributes) AND visible (remove .hide)
+                    appList.querySelectorAll('.app-item').forEach(e => {
+                        e.classList.remove('editing'); 
+                        e.classList.remove('hide'); // Force show everything on load
+                        e.querySelectorAll('[contenteditable]').forEach(c => c.removeAttribute('contenteditable'));
+                        const d = e.querySelector('.delete-btn'); if(d) d.style.display='none';
+                    });
+                    // Reset filter button visually
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelector('.filter-btn').classList.add('active'); // "All" button
                 }
 
                 if(data.snippetsHtml) document.getElementById('snippets-list').innerHTML = data.snippetsHtml;
@@ -565,10 +546,12 @@
 
                 setTimeout(() => init3DTilt(), 1000);
 
-            } catch(e) { console.error("Load Err:", e); }
+            } catch(e) { 
+                console.error("Load Err:", e); 
+            }
         }
 
-        /* --- LOGIC AUTH --- */
+        /* --- AUTH & SAVE --- */
         window.checkPin = () => {
             if(document.getElementById('pin-input').value === ADMIN_PIN) {
                 closeModal('login-modal');
@@ -591,12 +574,16 @@
             ['user-name', 'user-bio'].forEach(id => document.getElementById(id).contentEditable = "true");
 
             document.querySelector('.profile-overlay').style.display='flex';
-            document.querySelectorAll('.delete-btn, .tech-delete, .gb-del').forEach(b => b.style.display='block');
+            // FORCE DELETE BUTTONS TO SHOW IN EDIT MODE
+            document.querySelectorAll('.delete-btn, .tech-delete, .gb-del').forEach(b => {
+                b.style.display = 'block'; 
+                // remove inline 'none' if exists
+                b.style.removeProperty('display'); 
+            });
 
             document.querySelectorAll('.social-icon').forEach(l => {
                 l.onclick = (e) => { 
-                    e.preventDefault(); 
-                    const n = prompt("Edit Link URL:", l.getAttribute('href')); 
+                    e.preventDefault(); const n = prompt("Edit Link URL:", l.getAttribute('href')); 
                     if(n) l.setAttribute('href', n); 
                 };
             });
@@ -628,13 +615,20 @@
 
             try {
                 const tStack = Array.from(document.querySelectorAll('#tech-list i')).map(el => el.className);
+                
+                // SAVE LOGIC - CLEAN APP HTML
                 const appsClone = document.getElementById('apps-list').cloneNode(true);
-                appsClone.querySelectorAll('.editing, [contenteditable], .delete-btn').forEach(e=>{e.classList.remove('editing');e.removeAttribute('contenteditable');e.style.display='none';});
+                // Important: Show hidden items before saving to ensure data isn't lost
+                appsClone.querySelectorAll('.hide').forEach(e => e.classList.remove('hide'));
+                
+                appsClone.querySelectorAll('.editing').forEach(e => e.classList.remove('editing'));
+                appsClone.querySelectorAll('[contenteditable]').forEach(e => e.removeAttribute('contenteditable'));
+                appsClone.querySelectorAll('.delete-btn').forEach(e => e.style.display='none'); // Hide for storage
+
                 const snipClone = document.getElementById('snippets-list').cloneNode(true);
                 snipClone.querySelectorAll('[contenteditable]').forEach(e => e.removeAttribute('contenteditable'));
                 
-                const manualMusicEl = document.getElementById('spotify-embed');
-                const manualIdToSave = manualMusicEl.getAttribute('data-manual-id') || "auto";
+                const manualIdToSave = document.getElementById('spotify-embed').getAttribute('data-manual-id') || "auto";
 
                 const payload = {
                     name: document.getElementById('user-name').innerText,
@@ -642,7 +636,7 @@
                     photoBase64: document.getElementById('hero-img').src,
                     manualSongId: manualIdToSave,
                     techStack: tStack,
-                    appsHtml: appsClone.innerHTML,
+                    appsHtml: appsClone.innerHTML, // Cleaned HTML
                     snippetsHtml: snipClone.innerHTML,
                     changelogHtml: document.getElementById('changelog-list').innerHTML,
                     ghUsername: localStorage.getItem('gh_user'),
@@ -671,8 +665,7 @@
         /* --- FEATURE: MUSIC --- */
         function setDailyMusic(list) {
             const index = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24)) % list.length;
-            const id = list[index];
-            setSpotifyFrame(id);
+            setSpotifyFrame(list[index]);
             document.getElementById('spotify-embed').setAttribute('data-manual-id', 'auto');
         }
 
@@ -738,7 +731,6 @@
         window.splashEffect=()=>{const t="Lumina";const c=document.querySelector('.splash-text');c.innerHTML='';t.split('').forEach((s,i)=>{const n=document.createElement('span');n.innerText=s;n.style.animationDelay=i*0.1+'s';c.appendChild(n);});setTimeout(()=>{document.getElementById('splash-screen').style.opacity=0;document.getElementById('splash-screen').style.visibility='hidden';document.body.classList.remove('no-scroll');},2200);}
         window.generateQuote=()=>{const r=quoteDB[Math.floor(Math.random()*quoteDB.length)];document.getElementById('splash-quote-text').innerText=`"${r.t}"`;document.getElementById('splash-quote-author').innerText=`- ${r.a}`;}
         
-        // Tilt
         window.init3DTilt=()=>{
             if(document.body.classList.contains('perf-mode')) return;
             document.querySelectorAll('.interactive-card').forEach(c=>{
