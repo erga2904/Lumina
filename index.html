@@ -86,14 +86,51 @@
         .orb-2 { width: 50vw; height: 50vw; bottom: 0; right: 0; background: var(--accent-glow); filter: hue-rotate(45deg) blur(80px); animation-delay: -5s; }
         @keyframes float { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,40px)} }
 
-        /* NAV */
-        nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 600px; padding: 12px 30px; z-index: 5000; display: flex; justify-content: space-between; align-items: center; border-radius: 50px; background: rgba(255,255,255,0.01); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--glass-border); }
+        /* --- NAV DESKTOP (DEFAULT) --- */
+        nav { 
+            position: fixed; 
+            top: 20px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 90%; 
+            max-width: 600px; 
+            padding: 12px 30px; /* Padding Desktop Normal */
+            z-index: 5000; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-radius: 50px; 
+            background: rgba(255,255,255,0.01); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px); 
+            border: 1px solid var(--glass-border); 
+            transition: all 0.3s ease;
+        }
         nav h3 { font-weight: 800; font-size: 1.2rem; color: var(--text-main); margin: 0; }
         nav ul { display: flex; gap: 20px; list-style: none; align-items: center; margin: 0; }
         nav a { text-decoration: none; color: var(--text-main); font-size: 0.9rem; font-weight: 600; opacity: 0.7; transition: 0.3s; cursor: pointer; position: relative;}
         nav a:hover { opacity: 1; color: var(--accent-glow); }
         
         #inbox-indicator { position: absolute; top: -3px; right: -8px; width: 8px; height: 8px; background: var(--error); border-radius: 50%; display: none; }
+
+        /* --- NAV MOBILE OVERRIDE --- */
+        @media (max-width: 480px) {
+            nav {
+                width: 95%; /* Lebar dimaksimalkan ke pinggir layar */
+                max-width: none;
+                padding: 10px 20px; /* Header lebih tipis/kecil */
+                top: 15px; /* Jarak atas dikurangi */
+            }
+            nav h3 {
+                font-size: 1rem; /* Font nama lebih kecil */
+            }
+            nav ul {
+                gap: 12px; /* Jarak antar ikon dirapatkan agar muat */
+            }
+            nav a {
+                font-size: 0.8rem; /* Ukuran ikon diperkecil sedikit */
+            }
+        }
 
         /* HERO */
         .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 120px 0 50px; gap: 30px;}
@@ -116,10 +153,8 @@
         }
         iframe.spotify-embed { border-radius: 12px; width: 100%; height: 80px; border:none; display: block; }
         
-        /* Placeholder for invalid link */
         .music-error-state { padding: 20px; text-align: center; color: var(--error); display: none; font-size: 0.8rem;}
-
-        .vibe-pill { display: none; } /* Hide old vibe widget */
+        .vibe-pill { display: none; }
 
         .tech-stack { display: flex; justify-content: center; gap: 15px; margin-top: 25px; flex-wrap: wrap; }
         .tech-item { font-size: 1.5rem; color: var(--text-muted); transition: 0.3s; position: relative; }
@@ -450,6 +485,7 @@
         import { getFirestore, doc, getDoc, setDoc, collection, addDoc, query, orderBy, limit, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         /* --- CONFIG FIREBASE (WAJIB DIGANTI!) --- */
+        // Masukkan data dari Firebase Console -> Project Settings
         const firebaseConfig = {
   apiKey: "AIzaSyDfpLYr8g8ltUpdV_1HuN-S_m8vnMqqtYI",
   authDomain: "lumina-portofolio.firebaseapp.com",
