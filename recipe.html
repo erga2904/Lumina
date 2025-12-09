@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3RG4 | Kitchen AI</title>
+    
+    <!-- FONTS & ICONS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;600;700;800&family=Fira+Code:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* --- STYLE CSS --- */
+        :root {
+            --accent-glow: #38bdf8; --bg-color: #0f172a; --text-main: #f8fafc; --text-muted: #94a3b8;
+            --glass-surface: rgba(255, 255, 255, 0.05); --glass-strong: rgba(20, 30, 48, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.1); --input-bg: rgba(0, 0, 0, 0.3); --modal-bg: #1e293b;
+            --success: #34d399; --warning-bg: rgba(251, 191, 36, 0.1); --warning-text: #fbbf24; --error: #f87171;
+        }
+        :root.light-mode {
+            --bg-color: #f8fafc; --text-main: #1e293b; --text-muted: #475569;
+            --glass-surface: rgba(255, 255, 255, 0.6); --glass-strong: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.8); --input-bg: rgba(255, 255, 255, 0.8);
+            --modal-bg: #ffffff; --warning-bg: rgba(245, 158, 11, 0.1); --warning-text: #d97706;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Figtree', sans-serif; outline: none; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; overflow-x: hidden; transition: 0.4s; }
+        
+        .ambient-light { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5; animation: float 15s infinite; transition: background 0.5s; }
+        .orb-1 { width: 60vw; height: 60vw; top: -10%; left: -10%; background: var(--accent-glow); }
+        .orb-2 { width: 50vw; height: 50vw; bottom: 0; right: 0; background: var(--accent-glow); filter: hue-rotate(45deg); animation-delay: -5s; }
+        
+        /* NAVBAR CAPSULE STYLE */
+        nav { 
+            position: fixed; top: 25px; left: 50%; transform: translateX(-50%); width: 90%; 
+            max-width: 620px; height: 60px; padding: 0 30px; 
+            z-index: 50; display: flex; justify-content: space-between; align-items: center; 
+            border-radius: 100px; background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+        }
+        nav .logo { font-family: 'Fira Code', monospace; font-weight: 800; font-size: 1.3rem; letter-spacing: -0.02em; color: var(--text-main); }
+        nav .nav-content { display: flex; align-items: center; gap: 20px; height: 100%; }
+
+        /* LINK FIX: Beranda ke index.html */
+        .nav-links { display: flex; gap: 15px; border-right: 1px solid var(--glass-border); padding-right: 15px; height: 20px; align-items: center;}
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 500; font-size: 0.85rem; transition: 0.3s; }
+        .nav-links a:hover { color: var(--text-main); }
+        .nav-links a.active { color: var(--text-main); font-weight: 700; cursor: default; }
+
+        .nav-actions { display: flex; align-items: center; gap: 12px; font-size: 1.1rem; }
+        .nav-actions i { color: var(--text-muted); cursor: pointer; transition: 0.2s; }
+        .nav-actions i:hover { color: var(--text-main); transform: scale(1.1); }
+        
+        .auth-user-icon { cursor: pointer; display: block; font-size: 1.1rem !important; }
+        #user-avatar-nav { width: 28px; height: 28px; border-radius: 50%; display: none; border: 2px solid var(--accent-glow); object-fit: cover; cursor: pointer; transition: 0.2s;}
+        #user-avatar-nav:hover { transform: scale(1.1); }
+
+        .hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 100px 20px 50px; }
+        .acrylic-panel { background: var(--glass-surface); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-top: 1px solid rgba(255,255,255,0.2); border-radius: 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); width: 100%; max-width: 550px; padding: 40px; text-align: center; transition: 0.3s; }
+        
+        .main-input, select.main-input { width: 100%; padding: 15px 20px; border-radius: 12px; border: 1px solid var(--glass-border); background: var(--input-bg); color: var(--text-main); font-size: 1rem; font-weight: 500; transition: 0.3s; }
+        select.main-input option { background: var(--modal-bg); color: var(--text-main); }
+        .recipe-input-group { position: relative; width: 100%; margin-top: 25px; display:flex; gap:10px; }
+        .action-btn { padding: 12px 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 12px; color: var(--text-main); cursor: pointer; font-weight: 700; transition: 0.3s; display:flex; align-items:center; gap:8px; font-size: 0.9rem; }
+        .action-btn:hover { background: var(--accent-glow); border-color: var(--accent-glow); color: #fff; transform: translateY(-2px); }
+        .action-btn.primary { background: var(--accent-glow); color: white; border: none; box-shadow: 0 5px 15px -5px var(--accent-glow); }
+        .action-btn.detail { width: 100%; justify-content: center; background: transparent; border: 1px solid var(--text-muted); opacity: 0.8; margin-bottom: 15px;}
+        .action-btn.detail:hover { opacity: 1; border-color: var(--text-main); background: var(--glass-surface); transform: translateY(-2px);}
+        .tags-area { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; justify-content: center; min-height: 30px;}
+        .ing-tag { background: transparent; border: 1px dashed var(--accent-glow); color: var(--accent-glow); font-family: 'Fira Code', monospace; font-size: 0.8rem; padding: 5px 12px; border-radius: 50px; cursor: pointer; transition: 0.2s; }
+        .ing-tag:hover { border-color: var(--error); color: var(--error); background: rgba(248, 113, 113, 0.1); }
+        section { max-width: 900px; margin: 0 auto 100px; width: 95%; }
+        .recipe-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .recipe-card { background: var(--glass-strong); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); padding: 30px; border-radius: 20px; display: flex; flex-direction: column; position: relative; animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 10px 40px rgba(0,0,0,0.1); transition: transform 0.3s; }
+        .recipe-card:hover { transform: translateY(-5px); border-color: var(--accent-glow); }
+        .recipe-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 10px; color: var(--text-main); line-height: 1.2;}
+        .recipe-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 25px; flex: 1; font-weight: 400;}
+        .recipe-meta-box { margin-top: auto; background: var(--warning-bg); border: 1px solid rgba(251, 191, 36, 0.2); color: var(--warning-text); padding: 15px; border-radius: 12px; font-size: 0.85rem; font-family: 'Fira Code', monospace; }
+        .save-btn { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-muted); transition:0.2s; }
+        .save-btn:hover { color: var(--accent-glow); border-color: var(--accent-glow); transform: scale(1.1); }
+        .save-btn.saved { background: var(--accent-glow); color: #fff; border: none; box-shadow: 0 0 15px var(--accent-glow); }
+        
+        @keyframes slideUp { from {opacity:0; transform:translateY(30px);} to {opacity:1; transform:translateY(0);} }
+        .ai-loading { display: none; margin-top: 25px; color: var(--accent-glow); font-family:'Fira Code'; font-size: 0.9rem; letter-spacing: 1px;}
+        .dots::after { content: '.'; animation: dots 1.5s steps(5, end) infinite; }
+        @keyframes dots { 0%, 20% { content: '.'; } 40% { content: '..'; } 60% { content: '...'; } 80%, 100% { content: ''; } }
+        
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .modal-content { background: var(--modal-bg); color: var(--text-main); width: 90%; max-width: 500px; padding: 30px; border-radius: 20px; border: 1px solid var(--glass-border); position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.4); max-height: 85vh; overflow-y: auto;}
+        
+        .cookbook-item { display:flex; justify-content:space-between; align-items:center; padding:15px; border-bottom:1px solid var(--glass-border); cursor: pointer; transition: 0.2s; }
+        .cookbook-item:hover { background: var(--glass-surface); padding-left: 20px;}
+        .detail-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 20px; padding-right: 30px; color: var(--accent-glow);}
+        .detail-step { display: flex; gap: 15px; margin-bottom: 15px; }
+        .step-num { min-width: 25px; height: 25px; background: var(--accent-glow); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; margin-top: 2px; }
+        .step-txt { font-size: 0.95rem; line-height: 1.6; color: var(--text-main); opacity: 0.9;}
+        .color-swatch { width: 100%; aspect-ratio: 1/1; border-radius: 8px; cursor: pointer; transition: 0.2s; border: 2px solid transparent; }
+        .color-swatch:hover { transform: scale(1.15); border-color: var(--text-main); }
+        .badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--glass-border); font-weight: 700;}
+        .b-status.online { background: rgba(56, 189, 248, 0.15); color: var(--accent-glow); }
+        .b-status.error { background: rgba(248, 113, 113, 0.15); color: var(--error); }
+    </style>
+</head>
+<body>
+    <div class="ambient-light"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+    
+    <!-- NAVBAR CAPSULE -->
+    <nav>
+        <div class="logo">3RG4</div>
+        <div class="nav-content">
+            <div class="nav-links">
+                <a href="index.html">Beranda</a> <!-- KEMBALI KE PORTOFOLIO -->
+                <a href="#" class="active">Aplikasi</a>
+            </div>
+            <div class="nav-actions">
+                <i class="fas fa-book" onclick="window.openCookbook()" title="Buku Resep"></i>
+                <i class="fas fa-cog" onclick="window.openSettings()" title="Settings"></i>
+                <i class="fas fa-user auth-user-icon" id="auth-icon" onclick="window.handleAuth()" title="Login"></i>
+                <img id="user-avatar-nav" src="" onclick="window.handleLogout()" title="Logout">
+                <i class="fas fa-adjust" onclick="window.toggleTheme()" title="Ganti Tema"></i>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="acrylic-panel">
+            <h1 style="font-weight: 800; font-size: 2.5rem; letter-spacing: -1px; margin-bottom: 5px;">Kitchen AI</h1>
+            <p style="color: var(--text-muted);">Masukkan bahan yang ada di kulkas.</p>
+            <div class="recipe-input-group">
+                <input type="text" id="ing-input" class="main-input" placeholder="Tulis: Ayam, Bawang, Cabai..." autofocus>
+                <button class="action-btn" onclick="window.addIngredient()"><i class="fas fa-plus"></i></button>
+            </div>
+            <div class="tags-area" id="tag-container"></div>
+            <div style="margin-top:30px; display:flex; justify-content:space-between; align-items:center; border-top: 1px solid var(--glass-border); padding-top: 20px;">
+                <span id="mode-indicator" class="badge b-status">DATABASE</span>
+                <div style="display: flex; gap: 10px;">
+                     <button class="action-btn" onclick="window.resetApp()" style="font-size: 0.8rem; padding: 10px 15px;">Reset</button>
+                    <button class="action-btn primary" onclick="window.generateRecipe()">GENERATE <i class="fas fa-magic"></i></button>
+                </div>
+            </div>
+            <div class="ai-loading" id="loader"><i class="fas fa-circle-notch fa-spin"></i> Meracik Resep<span class="dots"></span></div>
+        </div>
+    </div>
+
+    <section>
+        <h2 style="font-size:1.8rem; font-weight:800; border-bottom:3px solid var(--accent-glow); display:inline-block; margin-bottom:30px;">Hasil Racikan</h2>
+        <div class="recipe-grid" id="recipe-list">
+            <div class="empty-state" style="text-align:center; padding:50px 0; color:var(--text-muted); opacity:0.6;">
+                <i class="fas fa-utensils" style="font-size: 4rem; margin-bottom: 20px;"></i>
+                <p>Masukkan bahan di atas dan tekan Generate.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SETTINGS (AUTO SAVE, ONLY GEMINI 2.5) -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="modal-content">
+            <span style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:1.5rem;" onclick="window.closeModal('settings-modal')">&times;</span>
+            <h3 style="margin-bottom:20px;">Settings</h3>
+            <div style="display:grid; grid-template-columns: repeat(6,1fr); gap:10px; margin-bottom:15px;" id="color-picker-area"></div>
+            
+            <label style="display:block; margin-top:15px; font-weight:700; font-size:0.8rem; color:var(--text-muted);">MODEL (GEMINI 2.5)</label>
+            <select id="model-select" class="main-input" style="padding:10px; margin-bottom:5px;" onchange="window.handleAutoSave()">
+                <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+            </select>
+
+            <label style="display:block; font-weight:700; font-size:0.8rem; color:var(--text-muted); margin-top:10px;">API KEY</label>
+            <input type="password" id="api-key-input" class="main-input" placeholder="Google Gemini Key..." style="font-size:0.85rem;" oninput="window.handleAutoSave()">
+            
+            <p id="cloud-status" style="font-size:0.8rem; color:var(--text-muted); text-align:right; margin-top:20px; transition:0.3s; display:flex; align-items:center; justify-content:flex-end; gap:5px; opacity:0;"><i class="fas fa-check-circle"></i> Tersimpan</p>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div class="modal-overlay" id="cookbook-modal">
+        <div class="modal-content">
+            <span style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:1.5rem;" onclick="window.closeModal('cookbook-modal')">&times;</span>
+            <h3 style="margin-bottom:20px;"><i class="fas fa-book"></i> Buku Resepku</h3>
+            <div id="cookbook-list" style="max-height:60vh; overflow-y:auto;">Loading...</div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="detail-modal">
+        <div class="modal-content">
+            <span style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:1.5rem;" onclick="window.closeModal('detail-modal')">&times;</span>
+            <div id="detail-content"></div>
+            <button class="action-btn" onclick="window.closeModal('detail-modal')" style="width:100%; margin-top:20px; justify-content:center;">Tutup</button>
+        </div>
+    </div>
+
+    <script type="module">
+        // --- !!! ISI CONFIG FIREBASE !!! ---
+        const firebaseConfig = {
+        apiKey: "AIzaSyDkSwr7n2niyN5MFzr6LMOIv-4Vpqa9LlY",
+        authDomain: "studio-7547085914-216a7.firebaseapp.com",
+        projectId: "studio-7547085914-216a7",
+        storageBucket: "studio-7547085914-216a7.firebasestorage.app",
+        messagingSenderId: "1014659160462",
+        appId: "1:1014659160462:web:41f266d7b57409061bacdf"
+        };
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, arrayUnion, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        let app, auth, db, userRef, currentUser;
+        try {
+            if(!firebaseConfig.apiKey.includes("ISI_API")) {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+            }
+        } catch(e) { console.error(e); }
+
+        let myIngredients = [];
+        let currentRecipes = [];
+        let savedRecipes = [];
+        let geminiKey = localStorage.getItem('3rg4_recipe_apikey') || "";
+        let selectedModel = localStorage.getItem('3rg4_gemini_model') || 'gemini-2.5-flash';
+        let autoSaveTimeout;
+        const defaultColors = ['#38bdf8', '#a78bfa', '#f472b6', '#fb923c', '#facc15', '#4ade80', '#2dd4bf', '#f87171'];
+
+        window.onload = () => {
+            initTheme(); renderColorPicker(); updateModeIndicator();
+            const ms = document.getElementById('model-select'); 
+            if(ms) { 
+                ms.value = selectedModel;
+                if(!ms.value) { ms.value = 'gemini-2.5-flash'; window.handleAutoSave(); }
+            }
+            document.getElementById('ing-input').addEventListener('keypress', e => { if(e.key === 'Enter') window.addIngredient(); });
+
+            if(auth) {
+                onAuthStateChanged(auth, async (user) => {
+                    currentUser = user;
+                    const authIcon = document.getElementById('auth-icon');
+                    const authAvatar = document.getElementById('user-avatar-nav');
+                    if (user) {
+                        authIcon.style.display='none';
+                        authAvatar.src=user.photoURL; authAvatar.style.display='block';
+                        await loadUserData(user.uid);
+                    } else {
+                        authIcon.style.display='block';
+                        authAvatar.style.display='none';
+                    }
+                    updateModeIndicator();
+                });
+            }
+        };
+
+        async function loadUserData(uid) {
+            userRef = doc(db, 'users_cookbook', uid);
+            onSnapshot(userRef, (ds) => {
+                if (ds.exists()) {
+                    const d = ds.data();
+                    if(d.geminiKey && !geminiKey) { geminiKey = d.geminiKey; localStorage.setItem('3rg4_recipe_apikey', geminiKey); updateModeIndicator(); }
+                    if(d.accent) window.updateAccent(d.accent);
+                    savedRecipes = d.myRecipes || [];
+                    if(document.getElementById('cookbook-modal').classList.contains('active')) renderCookbook();
+                }
+            });
+        }
+
+        /* ACTIONS */
+        window.handleAuth = async () => { if(!auth) return alert("Firebase Config belum diisi."); await signInWithPopup(auth, new GoogleAuthProvider()); };
+        window.handleLogout = async () => { if(confirm("Logout?")) { await signOut(auth); window.location.reload(); } };
+
+        window.addIngredient = () => { const v=document.getElementById('ing-input').value.trim(); if(v && !myIngredients.includes(v)) { myIngredients.push(v); renderTags(); document.getElementById('ing-input').value=''; }};
+        window.removeIng = (i) => { myIngredients.splice(i,1); renderTags(); };
+        window.resetApp = () => { myIngredients=[]; renderTags(); document.getElementById('recipe-list').innerHTML=`<div class="empty-state"><i class="fas fa-utensils" style="font-size:4rem;opacity:0.3;margin-bottom:15px"></i><p>Siap.</p></div>`; };
+        function renderTags() { document.getElementById('tag-container').innerHTML = myIngredients.map((x,i)=>`<div class="ing-tag" onclick="window.removeIng(${i})">${x} &times;</div>`).join(''); }
+
+        /* GENERATE LOGIC */
+        window.generateRecipe = async () => {
+            if(myIngredients.length === 0) return alert("Isi bahan!");
+            const ldr = document.getElementById('loader'); const lst = document.getElementById('recipe-list');
+            lst.innerHTML=''; ldr.style.display='block';
+
+            if(!geminiKey) {
+                await new Promise(r=>setTimeout(r,1000)); ldr.style.display='none';
+                currentRecipes=[{name:"Mode Demo",desc:"Login/API Key diperlukan.",missing:"API Key",steps:["Settings > Login/Key"]}];
+                renderList(currentRecipes); return;
+            }
+
+            try {
+                // Prompt Indonesia
+                const prompt = `Peran: Chef. Bahan: ${myIngredients.join(', ')}.
+                Buat 2 resep INDONESIA. Strict JSON Array MURNI. No Markdown.
+                Format: [{"name":"Nama","desc":"Deskripsi","missing":"Bahan Kurang","steps":["1","2"]}]`;
+
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${geminiKey}`;
+                const r = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
+                const d = await r.json();
+
+                if(d.error) throw new Error(d.error.message);
+                if(!d.candidates) throw new Error("No response");
+
+                let raw = d.candidates[0].content.parts[0].text;
+                raw = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
+                const start = raw.indexOf('['); const end = raw.lastIndexOf(']');
+                if(start !== -1 && end !== -1) {
+                    raw = raw.substring(start, end+1).replace(/}\s*{/g, '},{').replace(/,\s*]/g, ']'); 
+                    try { currentRecipes = JSON.parse(raw); renderList(currentRecipes); } 
+                    catch(e) { throw new Error("JSON Format Salah."); }
+                } else { throw new Error("Response Invalid."); }
+
+            } catch(e) {
+                let msg=e.message; 
+                if(msg.includes('404')) msg=`Model ${selectedModel} belum rilis umum. Ganti Setting.`;
+                lst.innerHTML=`<div style="text-align:center;padding:20px;border:1px solid #f87171;border-radius:12px;color:#f87171">Error: ${msg}</div>`;
+                document.getElementById('mode-indicator').innerText='ERROR';
+            } finally { ldr.style.display='none'; }
+        };
+
+        function renderList(arr) {
+            document.getElementById('recipe-list').innerHTML = arr.map((x,i) => `
+                <div class="recipe-card">
+                    <div class="save-btn" onclick="window.saveToCookbook(${i})"><i class="fas fa-bookmark"></i></div>
+                    <h3 class="recipe-name">${x.name}</h3>
+                    <p class="recipe-desc">${x.desc}</p>
+                    <button class="action-btn detail" onclick="window.showRecipeDetail(${i})">Cara Memasak <i class="fas fa-arrow-right"></i></button>
+                    <div class="recipe-meta-box"><i class="fas fa-shopping-basket"></i> Kurang: ${x.missing}</div>
+                </div>
+            `).join('');
+        }
+
+        window.handleAutoSave = () => {
+            const k = document.getElementById('api-key-input').value.trim();
+            const m = document.getElementById('model-select').value;
+            const st = document.getElementById('cloud-status');
+
+            if(k) { localStorage.setItem('3rg4_recipe_apikey', k); geminiKey=k; }
+            if(m) { localStorage.setItem('3rg4_gemini_model', m); selectedModel=m; }
+            updateModeIndicator();
+
+            st.style.opacity = '1'; st.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> ...'; st.style.color = 'var(--warning-text)';
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(async () => {
+                if(currentUser && userRef) {
+                    try { await setDoc(userRef, { geminiKey: k, selectedModel: m }, { merge: true }); st.style.color = 'var(--success)'; st.innerHTML = '<i class="fas fa-check"></i> Tersimpan'; setTimeout(() => st.style.opacity = '0', 2000); } 
+                    catch(e) { st.style.color = 'var(--error)'; st.innerText = "Gagal Cloud."; }
+                } else { st.style.color = 'var(--text-muted)'; st.innerHTML = '<i class="fas fa-check"></i> Tersimpan (Lokal)'; setTimeout(() => st.style.opacity = '0', 2000); }
+            }, 1000);
+        };
+
+        window.saveToCookbook = async (idx) => {
+            if(!currentUser) return alert("Silakan Login!");
+            const rec = currentRecipes[idx];
+            if(savedRecipes.some(s => s.name === rec.name)) return alert("Sudah ada.");
+            try { 
+                const safeRef = doc(db, 'users_cookbook', currentUser.uid);
+                await setDoc(safeRef, { myRecipes: arrayUnion(rec) }, { merge: true }); 
+                document.querySelectorAll('.save-btn')[idx].classList.add('saved'); 
+            } catch(e) { alert("Gagal: " + e.message); }
+        };
+
+        window.showRecipeDetail = (idx, isSaved=false) => {
+            const r = isSaved ? savedRecipes[idx] : currentRecipes[idx];
+            const content = document.getElementById('detail-content');
+            let steps = r.steps ? r.steps.map((s,n)=>`<div class="detail-step"><div class="step-num">${n+1}</div><div class="step-txt">${s}</div></div>`).join('') : "<p>No steps.</p>";
+            content.innerHTML=`<h2 class="detail-title">${r.name}</h2><div style="background:var(--glass-surface);padding:15px;margin-bottom:15px;border-radius:10px;"><strong>Bahan:</strong> ${r.missing}</div><h4>Instruksi:</h4><br>${steps}`;
+            document.getElementById('detail-modal').classList.add('active');
+        };
+
+        window.openSettings = () => { document.getElementById('settings-modal').classList.add('active'); document.getElementById('api-key-input').value = geminiKey; };
+        window.openCookbook = () => { document.getElementById('cookbook-modal').classList.add('active'); renderCookbook(); };
+        window.closeModal = (id) => document.getElementById(id).classList.remove('active');
+        
+        function renderCookbook() {
+            const el = document.getElementById('cookbook-list');
+            if(!currentUser) return el.innerHTML="<p style='text-align:center'>Login required.</p>";
+            if(savedRecipes.length===0) return el.innerHTML="<p style='text-align:center;opacity:0.5'>Belum ada resep.</p>";
+            el.innerHTML = savedRecipes.map((r,i) => `<div class="cookbook-item" onclick="window.showRecipeDetail(${i}, true)"><b>${r.name}</b> <i class="fas fa-chevron-right" style="font-size:0.8rem"></i></div>`).join('');
+        }
+
+        window.toggleTheme=()=>{document.documentElement.classList.toggle('light-mode');localStorage.setItem('3rg4_recipe_theme',document.documentElement.classList.contains('light-mode')?'light':'dark');};
+        function initTheme(){if(localStorage.getItem('3rg4_recipe_theme')==='light')document.documentElement.classList.add('light-mode'); window.updateAccent(localStorage.getItem('3rg4_recipe_accent')||defaultColors[0]);}
+        window.updateAccent=(c)=>{document.documentElement.style.setProperty('--accent-glow',c);localStorage.setItem('3rg4_recipe_accent',c);if(currentUser && db)setDoc(userRef,{accent:c},{merge:true}); c==='#f87171'?document.documentElement.style.setProperty('--warning-text','#fca5a5'):document.documentElement.style.setProperty('--warning-text','#fbbf24');};
+        function renderColorPicker(){document.getElementById('color-picker-area').innerHTML=defaultColors.map(c=>`<div class="color-swatch" style="background:${c}" onclick="window.updateAccent('${c}')"></div>`).join('');}
+        function updateModeIndicator(){ const b=document.getElementById('mode-indicator'); if(geminiKey&&currentUser){b.innerText="CLOUD";b.className='badge b-status online'}else if(geminiKey){b.innerText="LOKAL";b.className='badge b-status online'}else{b.innerText="OFFLINE";b.className='badge b-status'} }
+    </script>
+</body>
+</html>
