@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3RG4 | Kitchen AI</title>
     
-    <!-- FONTS & ICONS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;600;700;800&family=Fira+Code:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* --- STYLE CSS --- */
         :root {
             --accent-glow: #38bdf8; --bg-color: #0f172a; --text-main: #f8fafc; --text-muted: #94a3b8;
             --glass-surface: rgba(255, 255, 255, 0.05); --glass-strong: rgba(20, 30, 48, 0.75);
@@ -24,16 +22,14 @@
             --glass-border: rgba(255, 255, 255, 0.8); --input-bg: rgba(255, 255, 255, 0.8);
             --modal-bg: #ffffff; --warning-bg: rgba(245, 158, 11, 0.1); --warning-text: #d97706;
         }
-        
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Figtree', sans-serif; outline: none; }
         body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; overflow-x: hidden; transition: 0.4s; }
-        
         .ambient-light { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5; animation: float 15s infinite; transition: background 0.5s; }
         .orb-1 { width: 60vw; height: 60vw; top: -10%; left: -10%; background: var(--accent-glow); }
         .orb-2 { width: 50vw; height: 50vw; bottom: 0; right: 0; background: var(--accent-glow); filter: hue-rotate(45deg); animation-delay: -5s; }
         
-        /* NAVBAR CAPSULE STYLE */
+        /* NAVBAR CAPSULE */
         nav { 
             position: fixed; top: 25px; left: 50%; transform: translateX(-50%); width: 90%; 
             max-width: 620px; height: 60px; padding: 0 30px; 
@@ -45,7 +41,6 @@
         nav .logo { font-family: 'Fira Code', monospace; font-weight: 800; font-size: 1.3rem; letter-spacing: -0.02em; color: var(--text-main); }
         nav .nav-content { display: flex; align-items: center; gap: 20px; height: 100%; }
 
-        /* LINK FIX: Beranda ke index.html */
         .nav-links { display: flex; gap: 15px; border-right: 1px solid var(--glass-border); padding-right: 15px; height: 20px; align-items: center;}
         .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 500; font-size: 0.85rem; transition: 0.3s; }
         .nav-links a:hover { color: var(--text-main); }
@@ -61,7 +56,6 @@
 
         .hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 100px 20px 50px; }
         .acrylic-panel { background: var(--glass-surface); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-top: 1px solid rgba(255,255,255,0.2); border-radius: 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); width: 100%; max-width: 550px; padding: 40px; text-align: center; transition: 0.3s; }
-        
         .main-input, select.main-input { width: 100%; padding: 15px 20px; border-radius: 12px; border: 1px solid var(--glass-border); background: var(--input-bg); color: var(--text-main); font-size: 1rem; font-weight: 500; transition: 0.3s; }
         select.main-input option { background: var(--modal-bg); color: var(--text-main); }
         .recipe-input-group { position: relative; width: 100%; margin-top: 25px; display:flex; gap:10px; }
@@ -109,12 +103,12 @@
 <body>
     <div class="ambient-light"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
     
-    <!-- NAVBAR CAPSULE -->
     <nav>
         <div class="logo">3RG4</div>
         <div class="nav-content">
             <div class="nav-links">
-                <a href="index.html">Beranda</a> <!-- KEMBALI KE PORTOFOLIO -->
+                <!-- HREF = INDEX.HTML AGAR KEMBALI KE PORTOFOLIO -->
+                <a href="index.html">Beranda</a>
                 <a href="#" class="active">Aplikasi</a>
             </div>
             <div class="nav-actions">
@@ -140,7 +134,7 @@
                 <span id="mode-indicator" class="badge b-status">DATABASE</span>
                 <div style="display: flex; gap: 10px;">
                      <button class="action-btn" onclick="window.resetApp()" style="font-size: 0.8rem; padding: 10px 15px;">Reset</button>
-                    <button class="action-btn primary" onclick="window.generateRecipe()">GENERATE <i class="fas fa-magic"></i></button>
+                    <button class="action-btn primary" onclick="window.generateRecipe()">MASAK <i class="fas fa-magic"></i></button>
                 </div>
             </div>
             <div class="ai-loading" id="loader"><i class="fas fa-circle-notch fa-spin"></i> Meracik Resep<span class="dots"></span></div>
@@ -152,12 +146,12 @@
         <div class="recipe-grid" id="recipe-list">
             <div class="empty-state" style="text-align:center; padding:50px 0; color:var(--text-muted); opacity:0.6;">
                 <i class="fas fa-utensils" style="font-size: 4rem; margin-bottom: 20px;"></i>
-                <p>Masukkan bahan di atas dan tekan Generate.</p>
+                <p>Masukkan bahan di atas dan tekan Masak.</p>
             </div>
         </div>
     </section>
 
-    <!-- SETTINGS (AUTO SAVE, ONLY GEMINI 2.5) -->
+    <!-- SETTINGS MODAL -->
     <div class="modal-overlay" id="settings-modal">
         <div class="modal-content">
             <span style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:1.5rem;" onclick="window.closeModal('settings-modal')">&times;</span>
@@ -194,7 +188,7 @@
     </div>
 
     <script type="module">
-        // --- !!! ISI CONFIG FIREBASE !!! ---
+        // --- !!! TEMPEL FIREBASE CONFIG ANDA DI BAWAH !!! ---
         const firebaseConfig = {
         apiKey: "AIzaSyDkSwr7n2niyN5MFzr6LMOIv-4Vpqa9LlY",
         authDomain: "studio-7547085914-216a7.firebaseapp.com",
@@ -210,7 +204,7 @@
 
         let app, auth, db, userRef, currentUser;
         try {
-            if(!firebaseConfig.apiKey.includes("ISI_API")) {
+            if(!firebaseConfig.apiKey.includes("ISI_DENGAN")) {
                 app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
                 db = getFirestore(app);
@@ -227,11 +221,7 @@
 
         window.onload = () => {
             initTheme(); renderColorPicker(); updateModeIndicator();
-            const ms = document.getElementById('model-select'); 
-            if(ms) { 
-                ms.value = selectedModel;
-                if(!ms.value) { ms.value = 'gemini-2.5-flash'; window.handleAutoSave(); }
-            }
+            const ms = document.getElementById('model-select'); if(ms) { ms.value = selectedModel; if(!ms.value) {ms.value='gemini-2.5-flash'; window.handleAutoSave();}}
             document.getElementById('ing-input').addEventListener('keypress', e => { if(e.key === 'Enter') window.addIngredient(); });
 
             if(auth) {
@@ -265,52 +255,45 @@
             });
         }
 
-        /* ACTIONS */
-        window.handleAuth = async () => { if(!auth) return alert("Firebase Config belum diisi."); await signInWithPopup(auth, new GoogleAuthProvider()); };
-        window.handleLogout = async () => { if(confirm("Logout?")) { await signOut(auth); window.location.reload(); } };
+        window.handleAuth = async () => { if(!auth) return alert("Firebase Config Missing!"); await signInWithPopup(auth, new GoogleAuthProvider()); };
+        window.handleLogout = async () => { if(confirm("Keluar?")) { await signOut(auth); window.location.reload(); } };
 
         window.addIngredient = () => { const v=document.getElementById('ing-input').value.trim(); if(v && !myIngredients.includes(v)) { myIngredients.push(v); renderTags(); document.getElementById('ing-input').value=''; }};
         window.removeIng = (i) => { myIngredients.splice(i,1); renderTags(); };
         window.resetApp = () => { myIngredients=[]; renderTags(); document.getElementById('recipe-list').innerHTML=`<div class="empty-state"><i class="fas fa-utensils" style="font-size:4rem;opacity:0.3;margin-bottom:15px"></i><p>Siap.</p></div>`; };
         function renderTags() { document.getElementById('tag-container').innerHTML = myIngredients.map((x,i)=>`<div class="ing-tag" onclick="window.removeIng(${i})">${x} &times;</div>`).join(''); }
 
-        /* GENERATE LOGIC */
         window.generateRecipe = async () => {
-            if(myIngredients.length === 0) return alert("Isi bahan!");
+            if(myIngredients.length === 0) return alert("Masukkan bahan!");
             const ldr = document.getElementById('loader'); const lst = document.getElementById('recipe-list');
             lst.innerHTML=''; ldr.style.display='block';
 
             if(!geminiKey) {
                 await new Promise(r=>setTimeout(r,1000)); ldr.style.display='none';
-                currentRecipes=[{name:"Mode Demo",desc:"Login/API Key diperlukan.",missing:"API Key",steps:["Settings > Login/Key"]}];
+                currentRecipes=[{name:"Mode Demo",desc:"Login/API Key diperlukan.",missing:"API Key",steps:["Settings > Key"]}];
                 renderList(currentRecipes); return;
             }
 
             try {
-                // Prompt Indonesia
-                const prompt = `Peran: Chef. Bahan: ${myIngredients.join(', ')}.
-                Buat 2 resep INDONESIA. Strict JSON Array MURNI. No Markdown.
-                Format: [{"name":"Nama","desc":"Deskripsi","missing":"Bahan Kurang","steps":["1","2"]}]`;
-
+                const prompt = `Peran: Chef Indo. Bahan: ${myIngredients.join(', ')}. Buat 2 resep indo. Strict JSON Array [{"name":"","desc":"","missing":"","steps":["1"]}] No Markdown.`;
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${geminiKey}`;
                 const r = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
                 const d = await r.json();
 
                 if(d.error) throw new Error(d.error.message);
-                if(!d.candidates) throw new Error("No response");
-
-                let raw = d.candidates[0].content.parts[0].text;
-                raw = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
+                
+                let raw = d.candidates[0].content.parts[0].text.replace(/```json|```/g,'').trim();
                 const start = raw.indexOf('['); const end = raw.lastIndexOf(']');
+                
                 if(start !== -1 && end !== -1) {
                     raw = raw.substring(start, end+1).replace(/}\s*{/g, '},{').replace(/,\s*]/g, ']'); 
-                    try { currentRecipes = JSON.parse(raw); renderList(currentRecipes); } 
-                    catch(e) { throw new Error("JSON Format Salah."); }
-                } else { throw new Error("Response Invalid."); }
+                    currentRecipes = JSON.parse(raw);
+                    renderList(currentRecipes);
+                } else { throw new Error("JSON invalid."); }
 
             } catch(e) {
                 let msg=e.message; 
-                if(msg.includes('404')) msg=`Model ${selectedModel} belum rilis umum. Ganti Setting.`;
+                if(msg.includes('404')) msg="Model belum tersedia. Coba ganti model.";
                 lst.innerHTML=`<div style="text-align:center;padding:20px;border:1px solid #f87171;border-radius:12px;color:#f87171">Error: ${msg}</div>`;
                 document.getElementById('mode-indicator').innerText='ERROR';
             } finally { ldr.style.display='none'; }
@@ -337,10 +320,10 @@
             if(m) { localStorage.setItem('3rg4_gemini_model', m); selectedModel=m; }
             updateModeIndicator();
 
-            st.style.opacity = '1'; st.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> ...'; st.style.color = 'var(--warning-text)';
+            st.style.opacity = '1'; st.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Menyimpan...'; st.style.color = 'var(--warning-text)';
             clearTimeout(autoSaveTimeout);
             autoSaveTimeout = setTimeout(async () => {
-                if(currentUser && userRef) {
+                if(auth.currentUser && userRef) {
                     try { await setDoc(userRef, { geminiKey: k, selectedModel: m }, { merge: true }); st.style.color = 'var(--success)'; st.innerHTML = '<i class="fas fa-check"></i> Tersimpan'; setTimeout(() => st.style.opacity = '0', 2000); } 
                     catch(e) { st.style.color = 'var(--error)'; st.innerText = "Gagal Cloud."; }
                 } else { st.style.color = 'var(--text-muted)'; st.innerHTML = '<i class="fas fa-check"></i> Tersimpan (Lokal)'; setTimeout(() => st.style.opacity = '0', 2000); }
@@ -348,14 +331,13 @@
         };
 
         window.saveToCookbook = async (idx) => {
-            if(!currentUser) return alert("Silakan Login!");
+            if(!auth || !auth.currentUser) return alert("Login dulu!");
             const rec = currentRecipes[idx];
-            if(savedRecipes.some(s => s.name === rec.name)) return alert("Sudah ada.");
-            try { 
-                const safeRef = doc(db, 'users_cookbook', currentUser.uid);
-                await setDoc(safeRef, { myRecipes: arrayUnion(rec) }, { merge: true }); 
-                document.querySelectorAll('.save-btn')[idx].classList.add('saved'); 
-            } catch(e) { alert("Gagal: " + e.message); }
+            if(savedRecipes.some(s => s.name === rec.name)) return alert("Sudah tersimpan.");
+            try {
+                await setDoc(doc(db, 'users_cookbook', auth.currentUser.uid), { myRecipes: arrayUnion(rec) }, { merge: true });
+                document.querySelectorAll('.save-btn')[idx].classList.add('saved');
+            } catch(e) { console.error(e); }
         };
 
         window.showRecipeDetail = (idx, isSaved=false) => {
@@ -372,16 +354,16 @@
         
         function renderCookbook() {
             const el = document.getElementById('cookbook-list');
-            if(!currentUser) return el.innerHTML="<p style='text-align:center'>Login required.</p>";
+            if(!auth.currentUser) return el.innerHTML="<p style='text-align:center'>Login required.</p>";
             if(savedRecipes.length===0) return el.innerHTML="<p style='text-align:center;opacity:0.5'>Belum ada resep.</p>";
             el.innerHTML = savedRecipes.map((r,i) => `<div class="cookbook-item" onclick="window.showRecipeDetail(${i}, true)"><b>${r.name}</b> <i class="fas fa-chevron-right" style="font-size:0.8rem"></i></div>`).join('');
         }
 
         window.toggleTheme=()=>{document.documentElement.classList.toggle('light-mode');localStorage.setItem('3rg4_recipe_theme',document.documentElement.classList.contains('light-mode')?'light':'dark');};
         function initTheme(){if(localStorage.getItem('3rg4_recipe_theme')==='light')document.documentElement.classList.add('light-mode'); window.updateAccent(localStorage.getItem('3rg4_recipe_accent')||defaultColors[0]);}
-        window.updateAccent=(c)=>{document.documentElement.style.setProperty('--accent-glow',c);localStorage.setItem('3rg4_recipe_accent',c);if(currentUser && db)setDoc(userRef,{accent:c},{merge:true}); c==='#f87171'?document.documentElement.style.setProperty('--warning-text','#fca5a5'):document.documentElement.style.setProperty('--warning-text','#fbbf24');};
+        window.updateAccent=(c)=>{document.documentElement.style.setProperty('--accent-glow',c);localStorage.setItem('3rg4_recipe_accent',c);if(auth.currentUser && db)setDoc(userRef,{accent:c},{merge:true}); c==='#f87171'?document.documentElement.style.setProperty('--warning-text','#fca5a5'):document.documentElement.style.setProperty('--warning-text','#fbbf24');};
         function renderColorPicker(){document.getElementById('color-picker-area').innerHTML=defaultColors.map(c=>`<div class="color-swatch" style="background:${c}" onclick="window.updateAccent('${c}')"></div>`).join('');}
-        function updateModeIndicator(){ const b=document.getElementById('mode-indicator'); if(geminiKey&&currentUser){b.innerText="CLOUD";b.className='badge b-status online'}else if(geminiKey){b.innerText="LOKAL";b.className='badge b-status online'}else{b.innerText="OFFLINE";b.className='badge b-status'} }
+        function updateModeIndicator(){ const b=document.getElementById('mode-indicator'); if(geminiKey&&auth.currentUser){b.innerText="CLOUD";b.className='badge b-status online'}else if(geminiKey){b.innerText="LOKAL";b.className='badge b-status online'}else{b.innerText="OFFLINE";b.className='badge b-status'} }
     </script>
 </body>
 </html>
