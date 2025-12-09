@@ -20,7 +20,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
     <style>
-        /* --- CSS VARS --- */
+        /* --- CSS VARS (ORIGINAL) --- */
         :root {
             --accent-glow: #38bdf8; 
             --bg-color: #0f172a;
@@ -48,7 +48,8 @@
         }
 
         body.preload * { transition: none !important; }
-
+        html { scroll-behavior: smooth; }
+        
         :root.perf-mode { --glass-surface: #1e293b; --modal-bg: #1e293b; --glass-border: #334155; }
         :root.light-mode.perf-mode { --glass-surface: #ffffff; --modal-bg: #ffffff; --glass-border: #cbd5e1; }
         body.perf-mode .ambient-light, body.perf-mode .interactive-card::before { display: none; }
@@ -56,7 +57,6 @@
             backdrop-filter: none !important; box-shadow: none !important; 
         }
 
-        html { scroll-behavior: smooth; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Figtree', sans-serif; outline: none; }
         
         body { 
@@ -86,22 +86,15 @@
         }
 
         #splash-screen.splash-exit {
-            opacity: 0;
-            filter: blur(20px) brightness(1.2);
-            transform: scale(1.1);
-            pointer-events: none;
+            opacity: 0; filter: blur(20px) brightness(1.2); transform: scale(1.1); pointer-events: none;
         }
 
         .splash-text { font-size: 3rem; font-weight: 800; color: var(--text-main); margin-bottom: 10px; letter-spacing: -0.02em;}
         .splash-text span { display: inline-block; opacity: 0; filter: blur(10px); transform: scale(1.1); animation: blurIn 0.8s forwards ease-in-out; }
         
         .loader {
-            width: 40px; height: 40px;
-            border: 4px solid rgba(255,255,255,0.1);
-            border-top: 4px solid var(--accent-glow);
-            border-radius: 50%;
-            animation: spin 1s linear infinite, fadeIn 0.5s forwards 1s;
-            margin: 20px 0; opacity: 0; 
+            width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--accent-glow);
+            border-radius: 50%; animation: spin 1s linear infinite, fadeIn 0.5s forwards 1s; margin: 20px 0; opacity: 0; 
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes fadeIn { to { opacity: 1; } }
@@ -111,11 +104,11 @@
             animation: floatUp 1s ease-out forwards; animation-delay: 0.5s; 
             max-width: 500px; padding: 20px; 
             border: 1px solid var(--glass-border); border-radius: 15px; 
-            background: rgba(255,255,255,0.03); backdrop-filter: blur(10px);
-            margin-top: 15px;
+            background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); margin-top: 15px;
         }
         .quote-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--text-main); margin-bottom: 10px; font-style: italic; line-height: 1.4; }
         .quote-author { color: var(--accent-glow); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-family: 'Figtree', sans-serif;}
+        
         @keyframes blurIn { to { opacity: 1; filter: blur(0); transform: scale(1); } }
         @keyframes floatUp { to { opacity: 1; transform: translateY(0); } }
 
@@ -130,7 +123,8 @@
         /* NAV */
         nav { 
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 600px; 
-            padding: 12px 30px; z-index: 5000; display: flex; justify-content: space-between; align-items: center; 
+            padding: 12px 30px; z-index: 5000; 
+            display: flex; justify-content: space-between; align-items: center; 
             border-radius: 50px; background: rgba(255,255,255,0.01); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
             border: 1px solid var(--glass-border); transition: top 0.3s, padding 0.3s;
         }
@@ -186,7 +180,7 @@
         .social-icon { color: var(--text-muted); font-size: 1.4rem; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 50%; transition: 0.3s; text-decoration: none; border: 1px solid transparent; }
         .social-icon:hover { color: var(--accent-glow); background: rgba(255,255,255,0.1); transform: translateY(-3px); }
 
-        /* SECTIONS & GRID */
+        /* GRID SYSTEM */
         section { max-width: 900px; margin: 0 auto 60px; width: 90%; scroll-margin-top: 100px; }
         .section-header { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 25px; border-bottom: 2px solid var(--accent-glow); padding-bottom: 5px; display: inline-block; color: var(--text-main); padding-right: 50px;}
 
@@ -235,6 +229,7 @@
         .contact-form { margin-top: 20px; display: grid; gap: 15px; }
         textarea.gb-input { height: 100px; resize: vertical; }
 
+        /* CHANGELOG & UPDATES */
         .timeline { position: relative; margin-left: 10px; padding-left: 20px; border-left: 2px solid var(--glass-border); }
         .timeline-item { position: relative; margin-bottom: 30px; }
         .timeline-item::after { content: ''; position: absolute; left: -27px; top: 5px; width: 12px; height: 12px; background: var(--bg-color); border: 2px solid var(--accent-glow); border-radius: 50%; z-index: 2; }
@@ -244,32 +239,33 @@
         .version-date { font-size: 0.8rem; color: var(--text-muted); font-weight: 700; opacity: 0.8; }
         .version-desc { font-size: 0.95rem; line-height: 1.5; font-weight: 400;}
 
-        /* MODALS */
+        /* MODALS & AUTH */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-content { background: var(--modal-bg); color: var(--text-main); width: 90%; max-width: 450px; padding: 30px; border-radius: 20px; text-align: center; border: 1px solid var(--glass-border); box-shadow: 0 25px 50px rgba(0,0,0,0.5); transform: scale(0.9); transition: transform 0.3s; position: relative; max-height: 80vh; overflow-y: auto;}
         .modal-overlay.active .modal-content { transform: scale(1); }
         .close-modal { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 1.5rem; color: var(--text-muted); }
         
-        /* Updated Login Modal Input Style */
         input.login-field { width: 100%; padding: 12px; margin-bottom: 10px; background: var(--input-bg); border: 1px solid var(--glass-border); color: var(--text-main); border-radius: 8px; font-family: 'Figtree', sans-serif;}
         
         [contenteditable="true"] { border: 1px dashed var(--accent-glow); background: rgba(56, 189, 248, 0.1); padding: 0 5px; border-radius: 4px; display: inline-block; min-width: 10px;}
         [contenteditable="true"]:empty:before { content: "Edit..."; opacity: 0.5; }
 
-        /* SETTINGS */
+        /* SETTINGS & LANG */
         .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin: 15px 0;}
         .color-swatch { width: 45px; height: 45px; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition:0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
         .color-swatch:hover { transform:scale(1.1); border-color:var(--text-main); }
         
+        .lang-options { display: flex; gap: 10px; margin-top: 10px; justify-content: center;}
+        .lang-btn { flex: 1; padding: 8px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text-muted); cursor: pointer; font-weight: 600; }
+        .lang-btn.active { background: var(--accent-glow); color: #fff; border-color: var(--accent-glow); }
+
         #settings-modal .modal-content { background: #1e293b !important; color: #f8fafc !important; text-align: left; }
         .setting-action-btn { width: 100%; margin-top: 15px; padding: 12px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; background: rgba(255,255,255,0.05); color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s;}
-        .setting-action-btn:hover { border-color: var(--accent-glow); background: rgba(255,255,255,0.1); }
         
         #edit-music-btn { display: none; background: transparent; color: var(--text-muted); border: 1px dashed var(--glass-border); cursor: pointer; margin-top: 8px; border-radius: 4px; padding: 4px 12px; font-size: 0.75rem; width: auto; margin-left: auto; margin-right: auto;}
         #save-about-btn { display: none; background: var(--success); color: #fff; width: 100%; margin-top: 20px; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 700; transition:0.3s;}
-        #save-about-btn:hover { opacity: 0.9; }
-
+        
         .inbox-list { text-align: left; margin-top: 15px; }
         .msg-card { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 2px solid var(--accent-firebase); word-break: break-all;}
         
@@ -298,6 +294,7 @@
 </head>
 <body class="no-scroll">
 
+    <!-- SPLASH -->
     <div id="splash-screen">
         <h1 class="splash-text"></h1>
         <div class="loader"></div>
@@ -307,13 +304,15 @@
         </div>
     </div>
 
+    <!-- ORBS -->
     <div class="ambient-light"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
 
+    <!-- NAV -->
     <nav class="acrylic-panel">
         <h3>Lumina</h3>
         <ul>
-            <li><a href="#menu-utama">Home</a></li>
-            <li><a href="#apps-section">Apps</a></li>
+            <li><a href="#menu-utama" id="nav-home">Home</a></li>
+            <li><a href="#apps-section" id="nav-apps">Apps</a></li>
             <li><a href="#social-section"><i class="fas fa-comments"></i></a></li>
             <li><a onclick="openModal('settings-modal')" style="cursor: pointer;"><i class="fas fa-cog"></i></a></li>
             <li>
@@ -326,6 +325,7 @@
         </ul>
     </nav>
 
+    <!-- HERO -->
     <div class="hero">
         <div class="hero-card acrylic-panel interactive-card hidden">
             <div class="profile-container" onclick="handleProfileClick()">
@@ -336,7 +336,7 @@
             <h1 id="user-name">User Name</h1>
             <p id="user-bio" style="font-size: 1.1rem; color: var(--text-muted); margin-top: 10px;">Web Developer</p>
             
-            <button class="more-info-btn" onclick="openModal('about-modal')">
+            <button class="more-info-btn" onclick="openModal('about-modal')" id="btn-more-info">
                 <i class="fas fa-info-circle"></i> More Info
             </button>
 
@@ -358,27 +358,30 @@
         </div>
     </div>
 
+    <!-- DASHBOARD -->
     <section id="menu-utama">
-        <h2 class="section-header hidden">Dashboard</h2>
+        <h2 class="section-header hidden" id="label-dashboard">Dashboard</h2>
         <div class="grid">
+            <!-- FIXED LOGIC BUTTON: handleAuthClick -->
             <div class="option-card acrylic-panel interactive-card hidden" onclick="handleAuthClick()" id="card-edit">
                 <div class="status-badge" id="lock-badge"><i class="fas fa-lock"></i> Secured</div>
                 <div class="card-icon"><i class="fas fa-user-shield"></i></div>
-                <div class="card-title">Admin Access</div>
-                <div class="card-desc">Login securely</div>
+                <div class="card-title" id="title-admin">Admin Access</div>
+                <div class="card-desc" id="desc-admin">Login securely</div>
             </div>
             <div class="option-card acrylic-panel interactive-card hidden" onclick="document.getElementById('apps-section').scrollIntoView()">
                 <div class="card-icon"><i class="fas fa-cubes"></i></div>
-                <div class="card-title">My Apps</div>
-                <div class="card-desc">See my work</div>
+                <div class="card-title" id="title-apps">My Apps</div>
+                <div class="card-desc" id="desc-apps">See my work</div>
             </div>
         </div>
     </section>
 
+    <!-- SNIPPETS -->
     <section id="snippets-section">
         <div class="acrylic-panel hidden" style="padding: 30px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h2 class="section-header" style="margin-bottom:0; border:none;">Code Snippets</h2>
+                <h2 class="section-header" style="margin-bottom:0; border:none;" id="label-snippets">Code Snippets</h2>
                 <button id="add-snippet-btn" onclick="addSnippet()" style="display:none; color:var(--success); background:none; border:none; font-size:1.5rem; cursor:pointer;"><i class="fas fa-plus-circle"></i></button>
             </div>
             <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;">Quick solutions.</p>
@@ -386,18 +389,20 @@
         </div>
     </section>
 
+    <!-- APPS GRID -->
     <section id="apps-section">
         <div class="acrylic-panel hidden" style="padding: 30px; position: relative;">
-            <h2 class="section-header">My Apps</h2>
+            <h2 class="section-header" id="label-my-apps">My Apps</h2>
             <i id="add-app-btn" class="fas fa-plus-circle" onclick="addApp()" style="position:absolute; top:30px; right:30px; font-size:1.8rem; color:var(--success); cursor:pointer; display:none;"></i>
             <div class="apps-grid" id="apps-list"></div>
         </div>
     </section>
 
+    <!-- GITHUB -->
     <section id="activity-section">
         <div class="acrylic-panel hidden" style="padding: 30px;">
             <div style="display:flex; justify-content: space-between;">
-                <h2 class="section-header" style="margin-bottom:20px;">Recent Projects</h2>
+                <h2 class="section-header" style="margin-bottom:20px;" id="label-repos">Recent Projects</h2>
                 <i class="fas fa-cog" id="gh-config-btn" onclick="configGithub()" style="display:none; color:var(--text-muted); cursor:pointer;"></i>
             </div>
             <div id="repo-list" class="repo-grid">
@@ -406,6 +411,7 @@
         </div>
     </section>
 
+    <!-- GUESTBOOK & CONTACT -->
     <section id="social-section">
         <div class="grid" style="margin-top:0;">
             <div class="acrylic-panel hidden" style="padding: 30px; text-align:left;">
@@ -421,33 +427,39 @@
             </div>
 
             <div class="acrylic-panel hidden" style="padding: 30px; text-align:left;">
-                <h2 class="section-header" style="font-size:1.2rem;">Work With Me</h2>
+                <h2 class="section-header" style="font-size:1.2rem;" id="label-work">Work With Me</h2>
                 <div class="contact-form">
                     <input type="text" id="c-name" class="gb-input" placeholder="Name">
                     <input type="email" id="c-email" class="gb-input" placeholder="Email">
                     <textarea id="c-msg" class="gb-input" placeholder="Project details..."></textarea>
-                    <button class="gb-btn" style="width:100%;" onclick="sendMessage()">Send Message</button>
+                    <button class="gb-btn" style="width:100%;" onclick="sendMessage()" id="btn-send">Send Message</button>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- CHANGELOG -->
     <section id="changelog-section">
-        <div class="acrylic-panel hidden" style="padding: 30px;">
-            <h2 class="section-header">Updates</h2>
+        <div class="acrylic-panel hidden" style="padding: 30px; position:relative;">
+            <h2 class="section-header" id="label-updates">Updates</h2>
+            <!-- EDIT LOG BUTTON -->
+            <i id="add-log-btn" class="fas fa-plus-circle" onclick="addChangelogItem()" style="position:absolute; top:30px; right:30px; font-size:1.8rem; color:var(--success); cursor:pointer; display:none;"></i>
+            
             <div class="timeline" id="changelog-list"></div>
         </div>
     </section>
 
     <footer><p>&copy; 2025 Lumina. Built with code.</p></footer>
 
-    <!-- ABOUT MODAL -->
+    <!-- == MODALS == -->
+
+    <!-- ABOUT ME -->
     <div class="modal-overlay" id="about-modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('about-modal')">&times;</span>
             <div style="text-align: center; margin-bottom: 20px;">
                 <i class="fas fa-id-card" style="font-size: 3rem; color: var(--accent-glow);"></i>
-                <h3 style="margin-top: 15px; font-weight: 800;">About Me</h3>
+                <h3 style="margin-top: 15px; font-weight: 800;" id="label-about-h">About Me</h3>
             </div>
             
             <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 15px;">
@@ -478,23 +490,40 @@
         </div>
     </div>
 
-    <!-- AUTH MODAL UPDATED: EMAIL & PASS -->
+    <!-- MODAL AUTH DENGAN MENU LOGOUT -->
     <div class="modal-overlay" id="login-modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('login-modal')">&times;</span>
             <h3>Admin Access</h3>
-            <p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:15px;">Secure Firebase Login</p>
-            <input type="email" id="auth-email" class="login-field" placeholder="admin@email.com">
-            <input type="password" id="auth-pass" class="login-field" placeholder="Password">
-            <button onclick="loginToFirebase()" class="gb-btn" style="width:100%; margin-top:10px;">
-                <i class="fas fa-sign-in-alt"></i> LOGIN
-            </button>
-            <button onclick="logoutFirebase()" class="gb-btn" style="width:100%; margin-top:10px; background:var(--error); display:none;" id="btn-logout">
-                LOGOUT
-            </button>
+            
+            <!-- STATE 1: FORM LOGIN -->
+            <div id="login-form-container">
+                <p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:15px;">Secure Firebase Login</p>
+                <input type="email" id="auth-email" class="login-field" placeholder="admin@email.com">
+                <input type="password" id="auth-pass" class="login-field" placeholder="Password">
+                <button onclick="loginToFirebase()" class="gb-btn" style="width:100%; margin-top:10px;">
+                    <i class="fas fa-sign-in-alt"></i> LOGIN
+                </button>
+            </div>
+
+            <!-- STATE 2: MENU ADMIN (TERSEMBUNYI JIKA BELUM LOGIN) -->
+            <div id="admin-menu-container" style="display:none;">
+                <p style="color:#34d399; margin-bottom:15px; font-weight:700;"><i class="fas fa-check-circle"></i> Logged in</p>
+                
+                <button onclick="handleEditAuth(true)" class="gb-btn" style="width:100%; margin-bottom:10px; background:var(--accent-glow);">
+                    <i class="fas fa-save"></i> SIMPAN PERUBAHAN
+                </button>
+                <button onclick="openModal('inbox-modal')" class="gb-btn" style="width:100%; margin-bottom:10px; background:var(--bg-color); border:1px solid var(--glass-border);">
+                    <i class="fas fa-envelope"></i> BUKA INBOX
+                </button>
+                <button onclick="logoutFirebase()" class="gb-btn" style="width:100%; background:var(--error);">
+                    <i class="fas fa-sign-out-alt"></i> LOGOUT / EXIT EDIT
+                </button>
+            </div>
         </div>
     </div>
 
+    <!-- INBOX MODAL -->
     <div class="modal-overlay" id="inbox-modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('inbox-modal')">&times;</span>
@@ -503,6 +532,7 @@
         </div>
     </div>
 
+    <!-- SETTINGS + LANG SWITCHER -->
     <div class="modal-overlay" id="settings-modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('settings-modal')">&times;</span>
@@ -510,6 +540,13 @@
             <div style="margin:20px 0; text-align:left;">
                 <label style="font-size:0.9rem; color:var(--text-muted); display:block; margin-bottom:10px;">Accent Color</label>
                 <div class="color-grid" id="accent-grid"></div>
+
+                <!-- Bahasa / Lang -->
+                <label style="font-size:0.9rem; color:var(--text-muted); display:block; margin-bottom:10px; margin-top:20px;">Language / Bahasa</label>
+                <div class="lang-options">
+                    <button class="lang-btn active" id="lang-id" onclick="setLanguage('id')">ID 🇮🇩</button>
+                    <button class="lang-btn" id="lang-en" onclick="setLanguage('en')">EN 🇬🇧</button>
+                </div>
             </div>
             <button class="setting-action-btn" onclick="togglePerf()">
                 <i class="fas fa-tachometer-alt"></i> Toggle Performance Mode
@@ -517,6 +554,7 @@
         </div>
     </div>
 
+    <!-- CROPPER -->
     <div class="modal-overlay" id="cropper-modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('cropper-modal')">&times;</span>
@@ -528,19 +566,18 @@
     </div>
 
     <script type="module">
-        // PENTING: AKTIFKAN EMAIL AUTH DI FIREBASE CONSOLE!
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, collection, addDoc, query, orderBy, limit, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // CONFIG
+        /* --- CONFIG FIREBASE --- */
         const firebaseConfig = {
-        apiKey: "AIzaSyDfpLYr8g8ltUpdV_1HuN-S_m8vnMqqtYI",
-        authDomain: "lumina-portofolio.firebaseapp.com",
-        projectId: "lumina-portofolio",
-        storageBucket: "lumina-portofolio.firebasestorage.app",
-        messagingSenderId: "797132104566",
-        appId: "1:797132104566:web:a62ecbb9827dc5b0209057"
+            apiKey: "AIzaSyDfpLYr8g8ltUpdV_1HuN-S_m8vnMqqtYI",
+            authDomain: "lumina-portofolio.firebaseapp.com",
+            projectId: "lumina-portofolio",
+            storageBucket: "lumina-portofolio.firebasestorage.app",
+            messagingSenderId: "797132104566",
+            appId: "1:797132104566:web:a62ecbb9827dc5b0209057"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -557,23 +594,56 @@
         ];
         const globalPlaylist = ["2IgI5W5v7bY2p8E4cW4A4h", "60ycX53i166L7q2Y1K2t1c", "6kqK3e3N3yK8aN3i6O1L8i"];
 
+        /* --- DICTIONARY BAHASA --- */
+        const translations = {
+            id: {
+                nav_home: "Beranda", nav_apps: "Aplikasi",
+                btn_more: '<i class="fas fa-info-circle"></i> Selengkapnya',
+                dash_label: "Menu Utama",
+                admin_title: "Akses Admin", admin_desc: "Masuk untuk edit",
+                apps_title: "Aplikasi Saya", apps_desc: "Lihat hasil karya",
+                snip_label: "Kode Snippet", apps_label: "Project Saya",
+                repo_label: "Project Terbaru", work_label: "Hubungi Saya",
+                updates_label: "Update", send_btn: "Kirim Pesan", about_h: "Tentang Saya"
+            },
+            en: {
+                nav_home: "Home", nav_apps: "Apps",
+                btn_more: '<i class="fas fa-info-circle"></i> More Info',
+                dash_label: "Dashboard",
+                admin_title: "Admin Access", admin_desc: "Login securely",
+                apps_title: "My Apps", apps_desc: "See my work",
+                snip_label: "Code Snippets", apps_label: "My Apps",
+                repo_label: "Recent Projects", work_label: "Work With Me",
+                updates_label: "Updates", send_btn: "Send Message", about_h: "About Me"
+            }
+        };
+
         /* --- INIT --- */
         window.addEventListener('DOMContentLoaded', async () => {
             splashEffect();
             generateQuote();
             
-            // Cek Status Login Auth di Startup
+            // Check Language Setting
+            const savedLang = localStorage.getItem('lumina_lang') || 'en';
+            setLanguage(savedLang);
+
+            // Auth State Listener
             onAuthStateChanged(auth, (user) => {
+                const loginForm = document.getElementById('login-form-container');
+                const adminMenu = document.getElementById('admin-menu-container');
+
                 if (user) {
-                    console.log("Admin Logged In:", user.email);
+                    // LOGIN SUCCESS (ADMIN)
                     enableEditing();
                     listenToInbox();
-                    document.getElementById('auth-email').style.display='none';
-                    document.getElementById('auth-pass').style.display='none';
-                    document.getElementById('btn-logout').style.display='block';
+                    
+                    if(loginForm) loginForm.style.display = 'none';
+                    if(adminMenu) adminMenu.style.display = 'block';
                 } else {
-                    console.log("Visitor Mode");
+                    // LOGGED OUT (VISITOR)
                     disableEditing();
+                    if(loginForm) loginForm.style.display = 'block';
+                    if(adminMenu) adminMenu.style.display = 'none';
                 }
             });
 
@@ -584,23 +654,22 @@
             setupObservers();
         });
 
-        /* --- FIREBASE AUTH HANDLERS --- */
+        /* --- AUTH FUNCTIONS --- */
+        window.handleAuthClick = () => { openModal('login-modal'); } // Selalu buka modal, konten diatur AuthState
+
         window.loginToFirebase = async () => {
             const e = document.getElementById('auth-email').value;
             const p = document.getElementById('auth-pass').value;
             try {
                 await signInWithEmailAndPassword(auth, e, p);
-                alert("Login Sukses!");
-                closeModal('login-modal');
-            } catch(error) {
-                alert("Login Gagal: " + error.message);
-            }
+                // AuthState listener handles UI update
+            } catch(error) { alert("Login Gagal: " + error.message); }
         };
 
         window.logoutFirebase = async () => {
             if(confirm("Logout admin?")) {
                 await signOut(auth);
-                window.location.reload();
+                window.location.reload(); // Refresh untuk membersihkan state edit visual
             }
         };
 
@@ -608,60 +677,99 @@
             isEditing = true;
             document.body.classList.add('admin-mode');
             const badge = document.getElementById('lock-badge');
-            if(badge) {
-                badge.innerHTML = '<i class="fas fa-lock-open"></i> Unlocked';
-                badge.style.background = '#34d399';
-            }
+            if(badge) { badge.innerHTML = '<i class="fas fa-lock-open"></i> Unlocked'; badge.style.background = '#34d399'; }
             const uIcon = document.getElementById('user-icon');
             if(uIcon) uIcon.classList.replace('fa-user', 'fa-user-astronaut');
 
-            ['add-app-btn', 'add-tech-btn', 'add-snippet-btn', 'gh-config-btn', 'edit-music-btn', 'save-about-btn'].forEach(id => {
+            // Show Edit Buttons (Added Log Button)
+            ['add-app-btn', 'add-tech-btn', 'add-snippet-btn', 'gh-config-btn', 'edit-music-btn', 'save-about-btn', 'add-log-btn'].forEach(id => {
                 const el = document.getElementById(id); if(el) el.style.display='block';
             });
             ['user-name', 'user-bio'].forEach(id => document.getElementById(id).contentEditable = "true");
-
             ['about-fullname', 'about-birth', 'about-loc', 'about-uni', 'about-note'].forEach(id => {
-                const el = document.getElementById(id);
-                if(el){ el.contentEditable = "true"; el.style.borderBottom = "1px dashed var(--accent-glow)"; }
+                const el = document.getElementById(id); if(el){ el.contentEditable = "true"; el.style.borderBottom = "1px dashed var(--accent-glow)"; }
             });
 
             document.querySelector('.profile-overlay').style.display='flex';
-            document.querySelectorAll('.delete-btn, .tech-delete, .gb-del').forEach(b => {
-                b.style.display = 'block'; 
-            });
-
+            document.querySelectorAll('.delete-btn, .tech-delete, .gb-del').forEach(b => { b.style.display = 'block'; });
             document.querySelectorAll('.social-icon').forEach(l => {
                 l.onclick = (e) => { e.preventDefault(); const n = prompt("Edit Link URL:", l.getAttribute('href')); if(n) l.setAttribute('href', n); };
             });
-
             document.querySelectorAll('.app-item').forEach(el => {
                 el.classList.add('editing');
                 el.querySelectorAll('.app-name, .app-desc').forEach(t => t.contentEditable="true");
             });
         }
 
-        function disableEditing() {
-            isEditing = false;
-            // Secara visual kembalikan ke kondisi 'visitor'
+        function disableEditing() { isEditing = false; }
+
+        /* --- LANGUAGE LOGIC --- */
+        window.setLanguage = (lang) => {
+            localStorage.setItem('lumina_lang', lang);
+            // Toggle active class on buttons
+            document.getElementById('lang-id').classList.toggle('active', lang === 'id');
+            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+            
+            // Apply Texts
+            const t = translations[lang];
+            if(t) {
+                if(document.getElementById('nav-home')) document.getElementById('nav-home').innerText = t.nav_home;
+                if(document.getElementById('nav-apps')) document.getElementById('nav-apps').innerText = t.nav_apps;
+                if(document.getElementById('btn-more-info')) document.getElementById('btn-more-info').innerHTML = t.btn_more;
+                if(document.getElementById('label-dashboard')) document.getElementById('label-dashboard').innerText = t.dash_label;
+                if(document.getElementById('title-admin')) document.getElementById('title-admin').innerText = t.admin_title;
+                if(document.getElementById('desc-admin')) document.getElementById('desc-admin').innerText = t.admin_desc;
+                if(document.getElementById('title-apps')) document.getElementById('title-apps').innerText = t.apps_title;
+                if(document.getElementById('desc-apps')) document.getElementById('desc-apps').innerText = t.apps_desc;
+                if(document.getElementById('label-snippets')) document.getElementById('label-snippets').innerText = t.snip_label;
+                if(document.getElementById('label-my-apps')) document.getElementById('label-my-apps').innerText = t.apps_label;
+                if(document.getElementById('label-repos')) document.getElementById('label-repos').innerText = t.repo_label;
+                if(document.getElementById('label-work')) document.getElementById('label-work').innerText = t.work_label;
+                if(document.getElementById('btn-send')) document.getElementById('btn-send').innerText = t.send_btn;
+                if(document.getElementById('label-about-h')) document.getElementById('label-about-h').innerText = t.about_h;
+                if(document.getElementById('label-updates')) document.getElementById('label-updates').innerText = t.updates_label;
+            }
         }
 
-        /* --- LOAD & SAVE DATA --- */
+        /* --- CHANGELOG ADD --- */
+        window.addChangelogItem = () => {
+            if(!isEditing) return;
+            const type = prompt("Tipe (feat / fix):", "feat");
+            const text = prompt("Deskripsi Update:");
+            if(text) {
+                const d = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+                const cls = (type && type.includes('fix')) ? 'cat-fix' : 'cat-feat';
+                const tag = (type && type.includes('fix')) ? 'FIX' : 'FEAT';
+                const newLog = `
+                <div class="timeline-item">
+                    <div><span class="category-badge ${cls}">${tag}</span><span class="version-date">${d}</span></div>
+                    <p class="version-desc">${text}</p>
+                </div>`;
+                // Add to top
+                document.getElementById('changelog-list').innerHTML = newLog + document.getElementById('changelog-list').innerHTML;
+            }
+        }
+
+        /* --- LOAD & SAVE (CORE) --- */
         async function loadFromDB() {
             try {
                 const snap = await getDoc(docRef);
                 const data = snap.exists() ? snap.data() : {};
+                
+                // Safe Set Text helper
+                const safeTxt = (id, val) => { if(val && document.getElementById(id)) document.getElementById(id).innerText = val; };
 
-                if(data.name) document.getElementById('user-name').innerText = data.name;
-                if(data.bio) document.getElementById('user-bio').innerText = data.bio;
+                safeTxt('user-name', data.name);
+                safeTxt('user-bio', data.bio);
                 if(data.photoBase64) document.getElementById('hero-img').src = data.photoBase64;
                 if(data.themeAccent) updateAccent(data.themeAccent);
                 
                 if(data.aboutMe) {
-                    if(data.aboutMe.fullname) document.getElementById('about-fullname').textContent = data.aboutMe.fullname;
-                    if(data.aboutMe.birth) document.getElementById('about-birth').textContent = data.aboutMe.birth;
-                    if(data.aboutMe.loc) document.getElementById('about-loc').textContent = data.aboutMe.loc;
-                    if(data.aboutMe.uni) document.getElementById('about-uni').textContent = data.aboutMe.uni;
-                    if(data.aboutMe.note) document.getElementById('about-note').textContent = data.aboutMe.note;
+                    safeTxt('about-fullname', data.aboutMe.fullname);
+                    safeTxt('about-birth', data.aboutMe.birth);
+                    safeTxt('about-loc', data.aboutMe.loc);
+                    safeTxt('about-uni', data.aboutMe.uni);
+                    safeTxt('about-note', data.aboutMe.note);
                 }
 
                 const savedManualId = data.manualSongId;
@@ -699,37 +807,16 @@
                 loadRecentRepos(ghUser); 
 
                 setTimeout(() => init3DTilt(), 1000);
-
             } catch(e) { console.error("Load Err:", e); }
         }
 
-        window.handleAuthClick = () => { if(isEditing) openModal('inbox-modal'); else openModal('login-modal'); }
-
         window.handleEditAuth = async (isFromModal = false) => {
-            // Perubahan disini: Tidak ada prompt login/pin lagi karena sudah handle via Auth State
-            if(!isEditing) { 
-                alert("Anda tidak memiliki akses (Admin Only)");
-                return; 
-            }
-
-            // Changelog logic
-            if(!isFromModal && confirm("Tambah Log Update?")) {
-                const type = prompt("Tipe (fitur / fix)?", "fitur");
-                const text = prompt("Deskripsi:");
-                if(text) {
-                    const d = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
-                    const cls = (type && type.includes('fix')) ? 'cat-fix' : 'cat-feat';
-                    const newLogHTML = `<div class="timeline-item"><div><span class="category-badge ${cls}">${type.toUpperCase()}</span><span class="version-date">${d}</span></div><p class="version-desc">${text}</p></div>`;
-                    document.getElementById('changelog-list').innerHTML = newLogHTML + document.getElementById('changelog-list').innerHTML;
-                }
-            }
-
+            if(!isEditing) { alert("Access Denied"); return; }
             if(!confirm("Simpan ke Server?")) return;
             document.body.style.cursor = 'wait';
 
             try {
-                // CLONING DATA
-                const tStack = Array.from(document.querySelectorAll('#tech-list i')).map(el => el.className);
+                // CLEAN UP DOM FOR SAVING
                 const appsClone = document.getElementById('apps-list').cloneNode(true);
                 appsClone.querySelectorAll('.hide').forEach(e => e.classList.remove('hide'));
                 appsClone.querySelectorAll('.editing').forEach(e => e.classList.remove('editing'));
@@ -739,6 +826,7 @@
                 const snipClone = document.getElementById('snippets-list').cloneNode(true);
                 snipClone.querySelectorAll('[contenteditable]').forEach(e => e.removeAttribute('contenteditable'));
                 
+                const tStack = Array.from(document.querySelectorAll('#tech-list i')).map(el => el.className);
                 const getSafeText = (id) => { const el = document.getElementById(id); return el ? el.textContent.trim() : ""; };
 
                 const payload = {
@@ -766,21 +854,18 @@
                     }
                 };
                 
-                // Firestore Security Rule akan menolak request ini jika user tidak login / bukan admin
                 await setDoc(docRef, payload, { merge: true });
-                alert("Berhasil disimpan aman di Server!");
+                alert("Saved!");
+                closeModal('login-modal'); // Tutup menu jika dibuka dari situ
                 window.location.reload();
-
-            } catch(e) { alert("Gagal Simpan (Akses Ditolak): " + e.message); document.body.style.cursor = 'default'; }
+            } catch(e) { alert("Error: " + e.message); document.body.style.cursor = 'default'; }
         }
 
-        /* --- OTHER UTILS UNCHANGED --- */
+        /* --- STANDARD UTILS --- */
         function setDailyMusic(list) {
             const index = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24)) % list.length;
-            setSpotifyFrame(list[index]);
-            document.getElementById('spotify-embed').setAttribute('data-manual-id', 'auto');
+            setSpotifyFrame(list[index]); document.getElementById('spotify-embed').setAttribute('data-manual-id', 'auto');
         }
-
         function getSpotifyId(input) {
             if(!input) return null;
             try {
@@ -791,27 +876,17 @@
             } catch(e) {}
             return null;
         }
-
         function setSpotifyFrame(id) {
             if(!id || id === 'auto') return;
             const frame = document.getElementById('spotify-embed');
-            document.getElementById('loading-music').style.display='none';
-            document.getElementById('music-error').style.display='none';
-            frame.style.display='block';
-            frame.src = `https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0`;
+            document.getElementById('loading-music').style.display='none'; document.getElementById('music-error').style.display='none';
+            frame.style.display='block'; frame.src = `https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0`;
         }
-
         window.editDailyMusic = () => {
             if(!isEditing) return;
             const userInput = prompt("Link Spotify Lagu:");
             if(userInput === "") { setDailyMusic(globalPlaylist); alert("Mode Auto."); return; }
-            if(userInput) {
-                const validId = getSpotifyId(userInput);
-                if(validId) {
-                    setSpotifyFrame(validId);
-                    document.getElementById('spotify-embed').setAttribute('data-manual-id', validId);
-                } else alert("Link Invalid.");
-            }
+            if(userInput) { const validId = getSpotifyId(userInput); if(validId) { setSpotifyFrame(validId); document.getElementById('spotify-embed').setAttribute('data-manual-id', validId); } }
         }
 
         window.addApp=()=>{
@@ -819,7 +894,7 @@
             if(n){
                 const d=document.createElement('div');
                 d.className='app-item editing interactive-card';
-                d.innerHTML=`<div class="app-header"><h4 class="app-name" contenteditable="true">${n}</h4><span class="app-tag">PROJECT</span></div><p class="app-desc" contenteditable="true">Deskripsi singkat...</p><button class="delete-btn" style="display:block" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button><a href="#" class="app-visit-btn" onclick="editLink(event,this)">Visit</a>`;
+                d.innerHTML=`<div class="app-header"><h4 class="app-name" contenteditable="true">${n}</h4><span class="app-tag">PROJECT</span></div><p class="app-desc" contenteditable="true">Deskripsi...</p><button class="delete-btn" style="display:block" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button><a href="#" class="app-visit-btn" onclick="editLink(event,this)">Visit</a>`;
                 document.getElementById('apps-list').prepend(d);
             }
         };
@@ -831,8 +906,7 @@
             try {
                 const res = await fetch(`https://api.github.com/users/${user}/repos?sort=updated&per_page=6`);
                 const repos = await res.json();
-                const list = document.getElementById('repo-list');
-                list.innerHTML = '';
+                const list = document.getElementById('repo-list'); list.innerHTML = '';
                 if(repos.length===0){list.innerHTML='<p style="color:grey">Empty.</p>';return;}
                 repos.forEach(r => {
                     list.innerHTML += `<a href="${r.html_url}" target="_blank"><div class="repo-card interactive-card"><div class="repo-name"><i class="fas fa-book-bookmark"></i> ${r.name}</div><div class="repo-desc">${r.description?r.description.substring(0,50)+'...':'No Desc'}</div><div class="repo-meta"><span>${r.language||'Code'}</span><span>★ ${r.stargazers_count}</span></div></div></a>`;
@@ -840,22 +914,12 @@
             } catch(e) {}
         }
         window.configGithub=()=>{if(isEditing){const n=prompt("GH User:");if(n){localStorage.setItem('gh_user',n);loadRecentRepos(n);}}};
-
         function renderTechStack(arr) { document.getElementById('tech-list').innerHTML = arr.map(i=>`<div class="tech-item"><i class="${i.replace('<span class="tech-delete" style="display:flex" onclick="this.parentElement.remove()">x</span>','')}"></i><span class="tech-delete" onclick="this.parentElement.remove()">x</span></div>`).join(''); }
         function renderDefaultSnippets(){ document.getElementById('snippets-list').innerHTML = `<div class="snippet-card"><h4>Hello</h4><div class="snippet-code">console.log('Hi');</div></div>`; }
-
-        window.splashEffect=()=>{
-            const t="Lumina";const c=document.querySelector('.splash-text');c.innerHTML='';
-            t.split('').forEach((s,i)=>{const n=document.createElement('span');n.innerText=s;n.style.animationDelay=i*0.1+'s';c.appendChild(n);});
-        }
+        window.splashEffect=()=>{ const t="Lumina";const c=document.querySelector('.splash-text');c.innerHTML=''; t.split('').forEach((s,i)=>{const n=document.createElement('span');n.innerText=s;n.style.animationDelay=i*0.1+'s';c.appendChild(n);}); }
         function removeSplash(){
-            const s = document.getElementById('splash-screen');
-            s.classList.add('splash-exit');
-            setTimeout(() => {
-                s.style.display = 'none';
-                document.documentElement.classList.remove('preload');
-                document.body.classList.remove('preload', 'no-scroll');
-            }, 800); 
+            const s = document.getElementById('splash-screen'); s.classList.add('splash-exit');
+            setTimeout(() => { s.style.display = 'none'; document.documentElement.classList.remove('preload'); document.body.classList.remove('preload', 'no-scroll'); }, 800); 
         }
         window.generateQuote=()=>{const r=quoteDB[Math.floor(Math.random()*quoteDB.length)];document.getElementById('splash-quote-text').innerText=`"${r.t}"`;document.getElementById('splash-quote-author').innerText=`- ${r.a}`;}
         
@@ -869,7 +933,6 @@
         
         const cols=['#38bdf8','#818cf8','#a78bfa','#f472b6','#f87171','#fb923c','#facc15','#4ade80'];
         document.getElementById('accent-grid').innerHTML=cols.map(c=>`<div class="color-swatch" style="background:${c}" onclick="updateAccent('${c}')"></div>`).join('');
-        
         window.updateAccent=(c)=>{ document.documentElement.style.setProperty('--accent-glow',c); localStorage.setItem('lumina_accent',c); }
         window.toggleTheme=()=>{ const h=document.documentElement; h.classList.toggle('light-mode'); localStorage.setItem('theme', h.classList.contains('light-mode')?'light':'dark'); }
         window.togglePerf=()=>{const p=document.body.classList.toggle('perf-mode');localStorage.setItem('lumina_perf',p);if(!p)init3DTilt();}
@@ -880,7 +943,6 @@
         }
 
         window.editLink=(e,el)=>{if(isEditing){e.preventDefault();const n=prompt("Link:",el.getAttribute('href'));if(n)el.setAttribute('href',n);}};
-        
         window.openModal=id=>{document.getElementById(id).classList.add('active');if(id=='login-modal')setTimeout(()=>document.getElementById('auth-email').focus(),100);}
         window.closeModal=id=>document.getElementById(id).classList.remove('active');
         window.handleProfileClick=()=>{if(isEditing)openModal('cropper-modal');}
@@ -888,9 +950,7 @@
         window.applyCrop=()=>{if(cropper){document.getElementById('hero-img').src=cropper.getCroppedCanvas({width:300,height:300}).toDataURL('image/jpeg',0.6);closeModal('cropper-modal');}}
         document.getElementById('image-upload').addEventListener('change',e=>{if(e.target.files.length){const r=new FileReader();r.onload=v=>{document.getElementById('image-to-crop').src=v.target.result;if(cropper)cropper.destroy();cropper=new Cropper(document.getElementById('image-to-crop'),{aspectRatio:1,viewMode:1});};r.readAsDataURL(e.target.files[0]);}});
         
-        /* GUESTBOOK & MESSAGES */
         function setupGuestbook() {
-            // Note: Guestbook bisa dibaca publik
             const q = query(collection(db, "lumina_guestbook"), orderBy("date", "desc"), limit(10));
             onSnapshot(q, (snap) => {
                 const div = document.getElementById('gb-display');
@@ -898,29 +958,17 @@
                 div.innerHTML='';
                 snap.forEach(d=>{
                     const dat = d.data();
-                    // Cek jika editing mode aktif, tampilkan tombol hapus
                     const del = isEditing ? `<i class="fas fa-trash gb-del" style="display:inline; margin-left:10px; color:#f87171; cursor:pointer;" onclick="delGuest('${d.id}')"></i>` : '';
                     div.innerHTML+=`<div class="gb-item"><div><span class="gb-meta">${dat.name} <small style="font-weight:400; opacity:0.7;">${dat.date?new Date(dat.date.seconds*1000).toLocaleDateString():''} </small></span><span class="gb-text">${dat.msg}</span></div>${del}</div>`;
                 });
-            }, err => { document.getElementById('gb-display').innerHTML=`<p style='color:red; text-align:center'>Loading...</p>`; });
+            }, err => { document.getElementById('gb-display').innerHTML=`<p style='color:red; text-align:center'>...</p>`; });
         }
         
-        window.postGuestbook=async()=>{
-            const n=document.getElementById('gb-name').value;
-            const m=document.getElementById('gb-msg').value;
-            if(!m)return;
-            // Public Write Permission Enabled in Rules
-            await addDoc(collection(db,"lumina_guestbook"),{name:n||'Anon',msg:m,date:new Date()});
-            document.getElementById('gb-msg').value='';
-        };
-        
-        window.delGuest=async(id)=>{
-            if(!isEditing) return; // Client check
-            if(confirm("Hapus?")) await deleteDoc(doc(db,"lumina_guestbook",id));
-        };
+        window.postGuestbook=async()=>{const n=document.getElementById('gb-name').value;const m=document.getElementById('gb-msg').value;if(!m)return;await addDoc(collection(db,"lumina_guestbook"),{name:n||'Anon',msg:m,date:new Date()});document.getElementById('gb-msg').value='';};
+        window.delGuest=async(id)=>{ if(!isEditing) return; if(confirm("Hapus?")) await deleteDoc(doc(db,"lumina_guestbook",id));};
         
         function listenToInbox(){
-            if(!isEditing) return; // Hanya admin yang boleh subscribe listener ini
+            if(!isEditing) return;
             const q=query(collection(db,"lumina_messages"),orderBy("date","desc"),limit(10));
             onSnapshot(q,(snap)=>{
                 let h=''; let count=0;
@@ -929,18 +977,7 @@
                 if(count>0) document.getElementById('inbox-indicator').style.display='block';
             });
         }
-        
-        window.sendMessage=async()=>{
-            const n=document.getElementById('c-name').value;
-            const e=document.getElementById('c-email').value;
-            const m=document.getElementById('c-msg').value;
-            if(n&&e&&m){
-                // Public create access allowed
-                await addDoc(collection(db,"lumina_messages"),{name:n,email:e,msg:m,date:new Date()});
-                alert("Pesan terkirim!");
-                document.getElementById('c-msg').value='';
-            } else alert("Mohon lengkapi form.");
-        };
+        window.sendMessage=async()=>{const n=document.getElementById('c-name').value;const e=document.getElementById('c-email').value;const m=document.getElementById('c-msg').value;if(n&&e&&m){await addDoc(collection(db,"lumina_messages"),{name:n,email:e,msg:m,date:new Date()});alert("Terkirim!");document.getElementById('c-msg').value='';} else alert("Mohon lengkapi.");};
         window.setupObservers=()=>{const o=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('show');o.unobserve(x.target)}}),{threshold:0.1});document.querySelectorAll('.hidden').forEach(x=>o.observe(x));}
     </script>
 </body>
