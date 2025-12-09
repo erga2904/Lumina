@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lumina | Pro Portfolio</title>
+    <!-- GANTI JUDUL -->
+    <title>3RG4 | Pro Portfolio</title>
     
     <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -128,7 +129,7 @@
             border-radius: 50px; background: rgba(255,255,255,0.01); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
             border: 1px solid var(--glass-border); transition: top 0.3s, padding 0.3s;
         }
-        nav h3 { font-weight: 800; font-size: 1.2rem; color: var(--text-main); margin: 0; letter-spacing: -0.02em; }
+        nav h3 { font-weight: 800; font-size: 1.2rem; color: var(--text-main); margin: 0; letter-spacing: -0.02em; font-family: 'Fira Code', monospace; /* FONT KODING UTK LOGO */ }
         nav ul { display: flex; gap: 20px; list-style: none; align-items: center; margin: 0; }
         nav a { text-decoration: none; color: var(--text-main); font-size: 0.95rem; font-weight: 600; opacity: 0.7; transition: 0.3s; cursor: pointer; position: relative;}
         nav a:hover { opacity: 1; color: var(--accent-glow); }
@@ -138,10 +139,10 @@
             nav {
                 transform: translateX(-50%) !important; left: 50% !important; margin: 0 !important;
                 position: fixed; top: 15px; width: 95% !important; max-width: 100%;
-                padding: 10px 15px !important; border-radius: 16px !important; /* SQUARE-ISH BORDER RADIUS */
+                padding: 10px 15px !important; border-radius: 16px !important; 
                 display: flex; justify-content: space-between; align-items: center;
             }
-            nav h3 { font-size: 1rem; margin-right: auto; padding-right: 10px; } /* FORCE LEFT ALIGN */
+            nav h3 { font-size: 1rem; margin-right: auto; padding-right: 10px; } 
             nav ul { gap: 10px !important; }
             nav a { font-size: 0.8rem; padding: 5px; }
             
@@ -286,6 +287,7 @@
         .notes-section h4 { font-weight: 700; color: var(--accent-glow); margin-bottom: 8px; }
         .notes-content { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; white-space: pre-wrap; }
         
+        /* GANTI COPYRIGHT */
         footer { padding: 40px 0; text-align: center; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--glass-border); margin-top: 60px; background: var(--bg-color); z-index: 5; font-weight: 500;}
     </style>
     
@@ -319,7 +321,7 @@
 
     <!-- NAV -->
     <nav class="acrylic-panel">
-        <h3>Lumina</h3>
+        <h3>3RG4</h3>
         <ul>
             <li><a href="#menu-utama" id="nav-home">Home</a></li>
             <li><a href="#apps-section" id="nav-apps">Apps</a></li>
@@ -453,11 +455,13 @@
             <h2 class="section-header" id="label-updates">Updates</h2>
             <!-- EDIT LOG BUTTON -->
             <i id="add-log-btn" class="fas fa-plus-circle" onclick="addChangelogItem()" style="position:absolute; top:30px; right:30px; font-size:1.8rem; color:var(--success); cursor:pointer; display:none;"></i>
+            
             <div class="timeline" id="changelog-list"></div>
         </div>
     </section>
 
-    <footer><p>&copy; 2025 Lumina. Built with code.</p></footer>
+    <!-- GANTI COPYRIGHT FOOTER -->
+    <footer><p>&copy; 2025 3RG4. Built with code.</p></footer>
 
     <!-- == MODALS == -->
 
@@ -631,8 +635,8 @@
             splashEffect();
             generateQuote();
             
-            // Check Language Setting
-            const savedLang = localStorage.getItem('lumina_lang') || 'en';
+            // Check Language Setting (Renamed Storage Key to 3rg4_lang)
+            const savedLang = localStorage.getItem('3rg4_lang') || 'en';
             setLanguage(savedLang);
 
             // Auth State Listener
@@ -641,14 +645,12 @@
                 const adminMenu = document.getElementById('admin-menu-container');
 
                 if (user) {
-                    // LOGIN SUCCESS (ADMIN)
                     enableEditing();
                     listenToInbox();
                     
                     if(loginForm) loginForm.style.display = 'none';
                     if(adminMenu) adminMenu.style.display = 'block';
                 } else {
-                    // LOGGED OUT (VISITOR)
                     disableEditing();
                     if(loginForm) loginForm.style.display = 'block';
                     if(adminMenu) adminMenu.style.display = 'none';
@@ -663,21 +665,20 @@
         });
 
         /* --- AUTH FUNCTIONS --- */
-        window.handleAuthClick = () => { openModal('login-modal'); } // Selalu buka modal, konten diatur AuthState
+        window.handleAuthClick = () => { openModal('login-modal'); }
 
         window.loginToFirebase = async () => {
             const e = document.getElementById('auth-email').value;
             const p = document.getElementById('auth-pass').value;
             try {
                 await signInWithEmailAndPassword(auth, e, p);
-                // AuthState listener handles UI update
             } catch(error) { alert("Login Gagal: " + error.message); }
         };
 
         window.logoutFirebase = async () => {
             if(confirm("Logout admin?")) {
                 await signOut(auth);
-                window.location.reload(); // Refresh untuk membersihkan state edit visual
+                window.location.reload(); 
             }
         };
 
@@ -689,7 +690,6 @@
             const uIcon = document.getElementById('user-icon');
             if(uIcon) uIcon.classList.replace('fa-user', 'fa-user-astronaut');
 
-            // Show Edit Buttons (Added Log Button)
             ['add-app-btn', 'add-tech-btn', 'add-snippet-btn', 'gh-config-btn', 'edit-music-btn', 'save-about-btn', 'add-log-btn'].forEach(id => {
                 const el = document.getElementById(id); if(el) el.style.display='block';
             });
@@ -713,12 +713,10 @@
 
         /* --- LANGUAGE LOGIC --- */
         window.setLanguage = (lang) => {
-            localStorage.setItem('lumina_lang', lang);
-            // Toggle active class on buttons
+            localStorage.setItem('3rg4_lang', lang);
             document.getElementById('lang-id').classList.toggle('active', lang === 'id');
             document.getElementById('lang-en').classList.toggle('active', lang === 'en');
             
-            // Apply Texts
             const t = translations[lang];
             if(t) {
                 if(document.getElementById('nav-home')) document.getElementById('nav-home').innerText = t.nav_home;
@@ -753,7 +751,6 @@
                     <div><span class="category-badge ${cls}">${tag}</span><span class="version-date">${d}</span></div>
                     <p class="version-desc">${text}</p>
                 </div>`;
-                // Add to top
                 document.getElementById('changelog-list').innerHTML = newLog + document.getElementById('changelog-list').innerHTML;
             }
         }
@@ -764,7 +761,6 @@
                 const snap = await getDoc(docRef);
                 const data = snap.exists() ? snap.data() : {};
                 
-                // Safe Set Text helper
                 const safeTxt = (id, val) => { if(val && document.getElementById(id)) document.getElementById(id).innerText = val; };
 
                 safeTxt('user-name', data.name);
@@ -824,7 +820,6 @@
             document.body.style.cursor = 'wait';
 
             try {
-                // CLEAN UP DOM FOR SAVING
                 const appsClone = document.getElementById('apps-list').cloneNode(true);
                 appsClone.querySelectorAll('.hide').forEach(e => e.classList.remove('hide'));
                 appsClone.querySelectorAll('.editing').forEach(e => e.classList.remove('editing'));
@@ -847,7 +842,7 @@
                     snippetsHtml: snipClone.innerHTML,
                     changelogHtml: document.getElementById('changelog-list').innerHTML,
                     ghUsername: localStorage.getItem('gh_user'),
-                    themeAccent: localStorage.getItem('lumina_accent') || '#38bdf8',
+                    themeAccent: localStorage.getItem('3rg4_accent') || '#38bdf8',
                     aboutMe: {
                         fullname: getSafeText('about-fullname'),
                         birth: getSafeText('about-birth'),
@@ -864,12 +859,12 @@
                 
                 await setDoc(docRef, payload, { merge: true });
                 alert("Saved!");
-                closeModal('login-modal'); // Tutup menu jika dibuka dari situ
+                closeModal('login-modal');
                 window.location.reload();
             } catch(e) { alert("Error: " + e.message); document.body.style.cursor = 'default'; }
         }
 
-        /* --- STANDARD UTILS --- */
+        /* --- UTILS --- */
         function setDailyMusic(list) {
             const index = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24)) % list.length;
             setSpotifyFrame(list[index]); document.getElementById('spotify-embed').setAttribute('data-manual-id', 'auto');
@@ -924,7 +919,10 @@
         window.configGithub=()=>{if(isEditing){const n=prompt("GH User:");if(n){localStorage.setItem('gh_user',n);loadRecentRepos(n);}}};
         function renderTechStack(arr) { document.getElementById('tech-list').innerHTML = arr.map(i=>`<div class="tech-item"><i class="${i.replace('<span class="tech-delete" style="display:flex" onclick="this.parentElement.remove()">x</span>','')}"></i><span class="tech-delete" onclick="this.parentElement.remove()">x</span></div>`).join(''); }
         function renderDefaultSnippets(){ document.getElementById('snippets-list').innerHTML = `<div class="snippet-card"><h4>Hello</h4><div class="snippet-code">console.log('Hi');</div></div>`; }
-        window.splashEffect=()=>{ const t="Lumina";const c=document.querySelector('.splash-text');c.innerHTML=''; t.split('').forEach((s,i)=>{const n=document.createElement('span');n.innerText=s;n.style.animationDelay=i*0.1+'s';c.appendChild(n);}); }
+        
+        // GANTI TEXT SPLASH MENJADI 3RG4
+        window.splashEffect=()=>{ const t="3RG4";const c=document.querySelector('.splash-text');c.innerHTML=''; t.split('').forEach((s,i)=>{const n=document.createElement('span');n.innerText=s;n.style.animationDelay=i*0.1+'s';c.appendChild(n);}); }
+        
         function removeSplash(){
             const s = document.getElementById('splash-screen'); s.classList.add('splash-exit');
             setTimeout(() => { s.style.display = 'none'; document.documentElement.classList.remove('preload'); document.body.classList.remove('preload', 'no-scroll'); }, 800); 
@@ -941,13 +939,15 @@
         
         const cols=['#38bdf8','#818cf8','#a78bfa','#f472b6','#f87171','#fb923c','#facc15','#4ade80'];
         document.getElementById('accent-grid').innerHTML=cols.map(c=>`<div class="color-swatch" style="background:${c}" onclick="updateAccent('${c}')"></div>`).join('');
-        window.updateAccent=(c)=>{ document.documentElement.style.setProperty('--accent-glow',c); localStorage.setItem('lumina_accent',c); }
+        
+        // RENAMED KEYS
+        window.updateAccent=(c)=>{ document.documentElement.style.setProperty('--accent-glow',c); localStorage.setItem('3rg4_accent',c); }
         window.toggleTheme=()=>{ const h=document.documentElement; h.classList.toggle('light-mode'); localStorage.setItem('theme', h.classList.contains('light-mode')?'light':'dark'); }
-        window.togglePerf=()=>{const p=document.body.classList.toggle('perf-mode');localStorage.setItem('lumina_perf',p);if(!p)init3DTilt();}
+        window.togglePerf=()=>{const p=document.body.classList.toggle('perf-mode');localStorage.setItem('3rg4_perf',p);if(!p)init3DTilt();}
         window.initTheme=()=>{
             const theme = localStorage.getItem('theme'); if(theme === 'light') document.documentElement.classList.add('light-mode');
-            const accent = localStorage.getItem('lumina_accent'); if(accent) updateAccent(accent);
-            if(localStorage.getItem('lumina_perf')=='true') togglePerf();
+            const accent = localStorage.getItem('3rg4_accent'); if(accent) updateAccent(accent);
+            if(localStorage.getItem('3rg4_perf')=='true') togglePerf();
         }
 
         window.editLink=(e,el)=>{if(isEditing){e.preventDefault();const n=prompt("Link:",el.getAttribute('href'));if(n)el.setAttribute('href',n);}};
