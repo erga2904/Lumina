@@ -138,10 +138,10 @@
             nav {
                 transform: translateX(-50%) !important; left: 50% !important; margin: 0 !important;
                 position: fixed; top: 15px; width: 95% !important; max-width: 100%;
-                padding: 10px 15px !important; border-radius: 16px !important; /* SQUARE-ISH BORDER RADIUS */
+                padding: 10px 15px !important; border-radius: 16px !important; 
                 display: flex; justify-content: space-between; align-items: center;
             }
-            nav h3 { font-size: 1rem; margin-right: auto; padding-right: 10px; } /* FORCE LEFT ALIGN */
+            nav h3 { font-size: 1rem; margin-right: auto; padding-right: 10px; }
             nav ul { gap: 10px !important; }
             nav a { font-size: 0.8rem; padding: 5px; }
             
@@ -202,16 +202,22 @@
         .card-title { font-weight: 700; font-size: 1.15rem; }
 
         /* APPS GRID */
-        .apps-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        .app-item { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-left: 4px solid var(--accent-glow); padding: 25px; border-radius: 15px; display: flex; flex-direction: column; position: relative; }
+        .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .app-item { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-left: 4px solid var(--accent-glow); padding: 25px; border-radius: 15px; display: flex; flex-direction: column; position: relative; height: auto; min-height: 220px; transition: 0.3s; }
         .app-item.hide { display: none !important; }
         .app-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;}
         .app-tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; background: rgba(255,255,255,0.08); text-transform: uppercase; font-weight: 700; color: var(--accent-glow); letter-spacing: 0.05em; }
-        .app-name { font-size: 1.25rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.01em; }
-        .app-desc { font-size: 1rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.6; font-weight: 400; }
+        .app-name { font-size: 1.25rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.01em; outline: none; }
+        .app-desc { 
+            font-size: 1rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; font-weight: 400; 
+            flex-grow: 1; word-wrap: break-word; word-break: break-word; white-space: pre-wrap; 
+            position: relative; z-index: 10; min-height: 40px; display: block; outline: none;
+        }
+        [contenteditable="true"]:focus { outline: 2px dashed var(--accent-glow); background: rgba(0,0,0,0.2); border-radius: 5px; padding: 5px; }
+        
         .app-visit-btn { display: inline-block; padding: 8px 20px; border-radius: 50px; border: 1px solid var(--glass-border); color: var(--text-main); text-decoration: none; font-size: 0.95rem; align-self: flex-start; transition: 0.3s; background: rgba(255,255,255,0.05); font-weight: 600; }
         .app-visit-btn:hover { background: var(--accent-glow); border-color: var(--accent-glow); color: #fff; }
-        .delete-btn { position: absolute; bottom: 20px; right: 20px; background: none; border: none; color: #ff4757; font-size: 1.2rem; cursor: pointer; display: none; }
+        .delete-btn { position: absolute; bottom: 20px; right: 20px; background: none; border: none; color: #ff4757; font-size: 1.2rem; cursor: pointer; display: none; z-index: 20; }
         .app-item.editing .delete-btn { display: block; }
 
         /* REPO */
@@ -258,9 +264,6 @@
         
         input.login-field { width: 100%; padding: 12px; margin-bottom: 10px; background: var(--input-bg); border: 1px solid var(--glass-border); color: var(--text-main); border-radius: 8px; font-family: 'Figtree', sans-serif;}
         
-        [contenteditable="true"] { border: 1px dashed var(--accent-glow); background: rgba(56, 189, 248, 0.1); padding: 0 5px; border-radius: 4px; display: inline-block; min-width: 10px;}
-        [contenteditable="true"]:empty:before { content: "Edit..."; opacity: 0.5; }
-
         /* SETTINGS & LANG */
         .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin: 15px 0;}
         .color-swatch { width: 45px; height: 45px; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition:0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
@@ -319,7 +322,7 @@
 
     <!-- NAV -->
     <nav class="acrylic-panel">
-        <h3>3RG4</h3>
+        <h3>Lumina</h3>
         <ul>
             <li><a href="#menu-utama" id="nav-home">Home</a></li>
             <li><a href="#apps-section" id="nav-apps">Apps</a></li>
@@ -344,7 +347,7 @@
             </div>
             
             <h1 id="user-name">User Name</h1>
-            <p id="user-bio" style="font-size: 1.1rem; color: var(--text-muted); margin-top: 10px;">Web Developer</p>
+            <p id="user-bio" style="font-size: 1.1rem; color: var(--text-muted); margin-top: 10px; font-weight: 500;">Web Developer</p>
             
             <button class="more-info-btn" onclick="openModal('about-modal')" id="btn-more-info">
                 <i class="fas fa-info-circle"></i> More Info
@@ -398,12 +401,24 @@
         </div>
     </section>
 
-    <!-- APPS GRID -->
+    <!-- APPS GRID (AUTO ADD KITCHEN AI) -->
     <section id="apps-section">
         <div class="acrylic-panel hidden" style="padding: 30px; position: relative;">
             <h2 class="section-header" id="label-my-apps">My Apps</h2>
             <i id="add-app-btn" class="fas fa-plus-circle" onclick="addApp()" style="position:absolute; top:30px; right:30px; font-size:1.8rem; color:var(--success); cursor:pointer; display:none;"></i>
-            <div class="apps-grid" id="apps-list"></div>
+            
+            <div class="apps-grid" id="apps-list">
+                <!-- STATIC EXAMPLE (DEFAULT JIKA DB KOSONG) -->
+                <div class="app-item interactive-card">
+                    <div class="app-header">
+                        <h4 class="app-name">Kitchen AI</h4>
+                        <span class="app-tag">DEMO</span>
+                    </div>
+                    <div class="app-desc">Aplikasi Resep Cerdas berbasis AI Gemini 2.5</div>
+                    <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                    <a href="recipe.html" class="app-visit-btn" target="_blank">Visit</a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -457,7 +472,7 @@
         </div>
     </section>
 
-    <footer><p>&copy; 2025 3RG4. Built with code.</p></footer>
+    <footer><p>&copy; 2025 Lumina. Built with code.</p></footer>
 
     <!-- == MODALS == -->
 
@@ -631,24 +646,20 @@
             splashEffect();
             generateQuote();
             
-            // Check Language Setting
             const savedLang = localStorage.getItem('lumina_lang') || 'en';
             setLanguage(savedLang);
 
-            // Auth State Listener
             onAuthStateChanged(auth, (user) => {
                 const loginForm = document.getElementById('login-form-container');
                 const adminMenu = document.getElementById('admin-menu-container');
 
                 if (user) {
-                    // LOGIN SUCCESS (ADMIN)
                     enableEditing();
                     listenToInbox();
                     
                     if(loginForm) loginForm.style.display = 'none';
                     if(adminMenu) adminMenu.style.display = 'block';
                 } else {
-                    // LOGGED OUT (VISITOR)
                     disableEditing();
                     if(loginForm) loginForm.style.display = 'block';
                     if(adminMenu) adminMenu.style.display = 'none';
@@ -670,14 +681,13 @@
             const p = document.getElementById('auth-pass').value;
             try {
                 await signInWithEmailAndPassword(auth, e, p);
-                // AuthState listener handles UI update
             } catch(error) { alert("Login Gagal: " + error.message); }
         };
 
         window.logoutFirebase = async () => {
             if(confirm("Logout admin?")) {
                 await signOut(auth);
-                window.location.reload(); // Refresh untuk membersihkan state edit visual
+                window.location.reload(); 
             }
         };
 
@@ -689,7 +699,6 @@
             const uIcon = document.getElementById('user-icon');
             if(uIcon) uIcon.classList.replace('fa-user', 'fa-user-astronaut');
 
-            // Show Edit Buttons (Added Log Button)
             ['add-app-btn', 'add-tech-btn', 'add-snippet-btn', 'gh-config-btn', 'edit-music-btn', 'save-about-btn', 'add-log-btn'].forEach(id => {
                 const el = document.getElementById(id); if(el) el.style.display='block';
             });
@@ -703,22 +712,36 @@
             document.querySelectorAll('.social-icon').forEach(l => {
                 l.onclick = (e) => { e.preventDefault(); const n = prompt("Edit Link URL:", l.getAttribute('href')); if(n) l.setAttribute('href', n); };
             });
-            document.querySelectorAll('.app-item').forEach(el => {
-                el.classList.add('editing');
-                el.querySelectorAll('.app-name, .app-desc').forEach(t => t.contentEditable="true");
-            });
+            
+            document.querySelectorAll('.app-item').forEach(el => makeAppEditable(el));
         }
 
         function disableEditing() { isEditing = false; }
 
-        /* --- LANGUAGE LOGIC --- */
+        /* --- HELPER EDIT APP --- */
+        function makeAppEditable(el) {
+            el.classList.add('editing');
+            // Membuat konten nama dan deskripsi bisa diedit
+            el.querySelectorAll('.app-name, .app-desc').forEach(t => t.contentEditable = "true");
+            
+            // Edit link tombol
+            const visitBtn = el.querySelector('.app-visit-btn');
+            if(visitBtn) {
+                visitBtn.onclick = (e) => {
+                    if(isEditing) {
+                        e.preventDefault();
+                        const url = prompt("Edit URL Aplikasi:", visitBtn.getAttribute('href'));
+                        if(url) visitBtn.href = url;
+                    }
+                };
+            }
+        }
+
         window.setLanguage = (lang) => {
             localStorage.setItem('lumina_lang', lang);
-            // Toggle active class on buttons
             document.getElementById('lang-id').classList.toggle('active', lang === 'id');
             document.getElementById('lang-en').classList.toggle('active', lang === 'en');
             
-            // Apply Texts
             const t = translations[lang];
             if(t) {
                 if(document.getElementById('nav-home')) document.getElementById('nav-home').innerText = t.nav_home;
@@ -739,7 +762,6 @@
             }
         }
 
-        /* --- CHANGELOG ADD --- */
         window.addChangelogItem = () => {
             if(!isEditing) return;
             const type = prompt("Tipe (feat / fix):", "feat");
@@ -753,7 +775,6 @@
                     <div><span class="category-badge ${cls}">${tag}</span><span class="version-date">${d}</span></div>
                     <p class="version-desc">${text}</p>
                 </div>`;
-                // Add to top
                 document.getElementById('changelog-list').innerHTML = newLog + document.getElementById('changelog-list').innerHTML;
             }
         }
@@ -763,8 +784,6 @@
             try {
                 const snap = await getDoc(docRef);
                 const data = snap.exists() ? snap.data() : {};
-                
-                // Safe Set Text helper
                 const safeTxt = (id, val) => { if(val && document.getElementById(id)) document.getElementById(id).innerText = val; };
 
                 safeTxt('user-name', data.name);
@@ -795,6 +814,7 @@
                     document.getElementById('link-email').href = data.links.mail || '#';
                 }
 
+                // LOAD APPS & ADD DEFAULT KITCHEN AI IF EMPTY
                 if(data.appsHtml) {
                     const appList = document.getElementById('apps-list');
                     appList.innerHTML = data.appsHtml;
@@ -803,6 +823,19 @@
                         e.querySelectorAll('[contenteditable]').forEach(c => c.removeAttribute('contenteditable'));
                         const d = e.querySelector('.delete-btn'); if(d) d.style.display='none';
                     });
+                } else {
+                    const appList = document.getElementById('apps-list');
+                    appList.innerHTML = `
+                    <div class="app-item interactive-card">
+                        <div class="app-header">
+                            <h4 class="app-name">Kitchen AI</h4>
+                            <span class="app-tag">DEMO</span>
+                        </div>
+                        <div class="app-desc">Aplikasi Resep Pintar berbasis AI.</div>
+                        <button class="delete-btn" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                        <a href="recipe.html" class="app-visit-btn" target="_blank">Visit</a>
+                    </div>
+                    `;
                 }
 
                 if(data.snippetsHtml) document.getElementById('snippets-list').innerHTML = data.snippetsHtml;
@@ -902,8 +935,17 @@
             if(n){
                 const d=document.createElement('div');
                 d.className='app-item editing interactive-card';
-                d.innerHTML=`<div class="app-header"><h4 class="app-name" contenteditable="true">${n}</h4><span class="app-tag">PROJECT</span></div><p class="app-desc" contenteditable="true">Deskripsi...</p><button class="delete-btn" style="display:block" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button><a href="#" class="app-visit-btn" onclick="editLink(event,this)">Visit</a>`;
+                d.innerHTML=`
+                    <div class="app-header">
+                        <h4 class="app-name" contenteditable="true">${n}</h4>
+                        <span class="app-tag">DEV</span>
+                    </div>
+                    <div class="app-desc" contenteditable="true">Deskripsi project...</div>
+                    <button class="delete-btn" style="display:block" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                    <a href="#" class="app-visit-btn">Visit Link</a>
+                `;
                 document.getElementById('apps-list').prepend(d);
+                makeAppEditable(d);
             }
         };
         
