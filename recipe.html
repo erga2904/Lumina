@@ -5,119 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3RG4 | Kitchen AI</title>
     
-    <!-- FONTS SAMA SEPERTI PORTOFOLIO -->
+    <!-- FONTS & ICONS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;600;700;800&family=Fira+Code:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- CROPPER JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
     <style>
-        /* --- VISUAL IDENTITY (MIRIP PORTOFOLIO) --- */
+        /* --- STYLE CSS --- */
         :root {
-            --accent-glow: #38bdf8; 
-            --bg-color: #0f172a; 
-            --text-main: #f8fafc; 
-            --text-muted: #94a3b8;
-            --glass-surface: rgba(255, 255, 255, 0.05); 
-            --glass-strong: rgba(15, 23, 42, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.1); 
-            --input-bg: rgba(0, 0, 0, 0.4); 
-            --modal-bg: #1e293b;
-            --success: #34d399; 
-            --warning-bg: rgba(251, 191, 36, 0.1); 
-            --warning-text: #fbbf24; 
-            --error: #f87171;
+            --accent-glow: #38bdf8; --bg-color: #0f172a; --text-main: #f8fafc; --text-muted: #94a3b8;
+            --glass-surface: rgba(255, 255, 255, 0.05); --glass-strong: rgba(20, 30, 48, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.1); --input-bg: rgba(0, 0, 0, 0.4); --modal-bg: #1e293b;
+            --success: #34d399; --warning-bg: rgba(251, 191, 36, 0.1); --warning-text: #fbbf24; --error: #f87171;
         }
         :root.light-mode {
-            --bg-color: #f1f5f9; 
-            --text-main: #1e293b; 
-            --text-muted: #64748b;
-            --glass-surface: rgba(255, 255, 255, 0.6); 
-            --glass-strong: rgba(255, 255, 255, 0.9);
-            --glass-border: rgba(0, 0, 0, 0.08); 
-            --input-bg: rgba(255, 255, 255, 0.8);
-            --modal-bg: #ffffff; 
-            --warning-bg: rgba(245, 158, 11, 0.1); 
-            --warning-text: #d97706;
+            --bg-color: #f1f5f9; --text-main: #1e293b; --text-muted: #64748b;
+            --glass-surface: rgba(255, 255, 255, 0.6); --glass-strong: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(0, 0, 0, 0.08); --input-bg: rgba(255, 255, 255, 0.8);
+            --modal-bg: #ffffff; --warning-bg: rgba(245, 158, 11, 0.1); --warning-text: #d97706;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Figtree', sans-serif; outline: none; }
         body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; overflow-x: hidden; transition: background 0.4s ease; }
         
-        /* ORBS */
         .ambient-light { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4; animation: float 15s infinite; transition: background 0.5s; }
         .orb-1 { width: 60vw; height: 60vw; top: -15%; left: -15%; background: var(--accent-glow); }
         .orb-2 { width: 50vw; height: 50vw; bottom: 0; right: 0; background: var(--accent-glow); filter: hue-rotate(45deg); animation-delay: -5s; }
         @keyframes float { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,40px)} }
         
-        /* NAVBAR CAPSULE COMPACT */
-        nav { 
-            position: fixed; top: 25px; left: 50%; transform: translateX(-50%); 
-            width: 90%; max-width: 620px; height: 60px; padding: 0 30px; 
-            z-index: 100; display: flex; justify-content: space-between; align-items: center; 
-            border-radius: 100px; 
-            background: rgba(255, 255, 255, 0.03); 
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border); 
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-        
-        /* LOGO & MENU */
+        /* NAVBAR CAPSULE */
+        nav { position: fixed; top: 25px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 620px; height: 60px; padding: 0 30px; z-index: 100; display: flex; justify-content: space-between; align-items: center; border-radius: 100px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
         nav .logo { font-family: 'Fira Code', monospace; font-weight: 800; font-size: 1.3rem; letter-spacing: -0.02em; color: var(--text-main); }
         nav .nav-content { display: flex; align-items: center; gap: 20px; height: 100%; }
-
         .nav-links { display: flex; gap: 15px; border-right: 1px solid var(--glass-border); padding-right: 15px; height: 20px; align-items: center;}
         .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
         .nav-links a:hover { color: var(--text-main); }
         .nav-links a.active { color: var(--text-main); font-weight: 800; }
-
         .nav-actions { display: flex; align-items: center; gap: 12px; font-size: 1.1rem; }
         .nav-actions i { color: var(--text-muted); cursor: pointer; transition: 0.2s; }
         .nav-actions i:hover { color: var(--text-main); transform: scale(1.1); }
-        .nav-actions i.active { color: var(--accent-glow); }
-
+        
         .auth-user-icon { cursor: pointer; display: block; font-size: 1.1rem !important; }
         #user-avatar-nav { width: 30px; height: 30px; border-radius: 50%; display: none; border: 2px solid var(--accent-glow); object-fit: cover; cursor: pointer; transition: 0.2s;}
-        #user-avatar-nav:hover { transform: scale(1.1); }
-
-        /* HERO & CONTENT */
-        .hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 120px 20px 50px; }
-        .acrylic-panel { 
-            background: var(--glass-surface); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); 
-            border-top: 1px solid rgba(255,255,255,0.1); border-radius: 24px; 
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1); width: 100%; max-width: 550px; padding: 40px; text-align: center; 
-        }
         
-        .main-input, select.main-input { 
-            width: 100%; padding: 15px 20px; border-radius: 12px; border: 1px solid var(--glass-border); 
-            background: var(--input-bg); color: var(--text-main); font-size: 1rem; font-weight: 500; transition: 0.3s;
-        }
-        .main-input:focus { border-color: var(--accent-glow); box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2); }
+        /* HERO */
+        .hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 120px 20px 50px; }
+        .acrylic-panel { background: var(--glass-surface); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-top: 1px solid rgba(255,255,255,0.1); border-radius: 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); width: 100%; max-width: 550px; padding: 40px; text-align: center; }
+        .main-input, select.main-input { width: 100%; padding: 15px 20px; border-radius: 12px; border: 1px solid var(--glass-border); background: var(--input-bg); color: var(--text-main); font-size: 1rem; font-weight: 500; transition: 0.3s; }
         select.main-input option { background: var(--modal-bg); color: var(--text-main); }
         .recipe-input-group { position: relative; width: 100%; margin-top: 25px; display:flex; gap:10px; }
-        
-        .action-btn { padding: 12px 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 12px; color: var(--text-main); cursor: pointer; font-weight: 700; transition: 0.3s; display:flex; align-items:center; gap:8px; font-size: 0.9rem; }
-        .action-btn:hover { background: var(--accent-glow); border-color: var(--accent-glow); color: #fff; transform: translateY(-2px); }
+        .action-btn { padding: 12px 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 12px; color: var(--text-main); cursor: pointer; font-weight: 700; transition: 0.3s; display:flex; align-items:center; gap:8px; font-size: 0.9rem; border:1px solid transparent; }
+        .action-btn:hover { background: var(--accent-glow); color: #fff; transform: translateY(-2px); }
         .action-btn.primary { background: var(--accent-glow); color: white; border: none; box-shadow: 0 5px 15px -5px var(--accent-glow); }
-        .action-btn.detail { width: 100%; justify-content: center; background: transparent; border: 1px solid var(--text-muted); opacity: 0.8; margin-bottom: 15px;}
+        .action-btn.detail { width: 100%; justify-content: center; background: transparent; border: 1px solid var(--text-muted); opacity: 0.8; margin-top: 20px;}
         .action-btn.detail:hover { opacity: 1; border-color: var(--text-main); background: var(--glass-surface); transform: translateY(-2px);}
         
-        /* TAGS & GRID */
         .tags-area { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; justify-content: center; min-height: 30px;}
         .ing-tag { background: transparent; border: 1px dashed var(--accent-glow); color: var(--accent-glow); font-family: 'Fira Code', monospace; font-size: 0.8rem; padding: 5px 12px; border-radius: 50px; cursor: pointer; transition: 0.2s; }
-        .ing-tag:hover { border-color: var(--error); color: var(--error); background: rgba(248, 113, 113, 0.1); }
         
         section { max-width: 900px; margin: 0 auto 100px; width: 95%; }
-        .recipe-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .recipe-card { background: var(--glass-strong); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); padding: 30px; border-radius: 20px; display: flex; flex-direction: column; position: relative; animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 10px 40px rgba(0,0,0,0.1); transition: transform 0.3s; }
-        .recipe-card:hover { transform: translateY(-5px); border-color: var(--accent-glow); }
-        .recipe-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 10px; color: var(--text-main); line-height: 1.2;}
-        .recipe-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 25px; flex: 1; font-weight: 400;}
-        .recipe-meta-box { margin-top: auto; background: var(--warning-bg); border: 1px solid rgba(251, 191, 36, 0.2); color: var(--warning-text); padding: 15px; border-radius: 12px; font-size: 0.85rem; font-family: 'Fira Code', monospace; }
+        .recipe-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
         
-        .save-btn { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-muted); transition:0.2s; }
-        .save-btn:hover { color: var(--accent-glow); border-color: var(--accent-glow); transform: scale(1.1); }
-        .save-btn.saved { background: var(--accent-glow); color: #fff; border: none; box-shadow: 0 0 15px var(--accent-glow); }
+        .recipe-card { background: var(--glass-strong); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); padding: 30px; border-radius: 20px; display: flex; flex-direction: column; position: relative; animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .recipe-card:hover { transform: translateY(-5px); border-color: var(--accent-glow); }
+        .recipe-name { font-size: 1.5rem; font-weight: 800; margin-bottom: 12px; color: var(--text-main); line-height: 1.3;}
+        .recipe-desc { font-size: 1rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 25px; flex: 1; }
+        .recipe-meta-box { margin-top: auto; background: var(--warning-bg); border: 1px solid rgba(251, 191, 36, 0.2); color: var(--warning-text); padding: 18px; border-radius: 12px; font-size: 0.9rem; font-family: 'Fira Code', monospace; line-height: 1.6; }
+        .save-btn { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-muted); transition:0.2s; z-index:10; }
+        .save-btn.saved { background: var(--accent-glow); color: #fff; border: none; box-shadow: 0 0 20px var(--accent-glow); }
         
         @keyframes slideUp { from {opacity:0; transform:translateY(30px);} to {opacity:1; transform:translateY(0);} }
         .ai-loading { display: none; margin-top: 25px; color: var(--accent-glow); font-family:'Fira Code'; font-size: 0.9rem; letter-spacing: 1px;}
@@ -125,43 +85,55 @@
         @keyframes dots { 0%, 20% { content: '.'; } 40% { content: '..'; } 60% { content: '...'; } 80%, 100% { content: ''; } }
         
         /* MODALS */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 200; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 200; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s; }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
-        .modal-content { background: var(--modal-bg); color: var(--text-main); width: 90%; max-width: 500px; padding: 30px; border-radius: 20px; border: 1px solid var(--glass-border); position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.4); max-height: 85vh; overflow-y: auto;}
+        .modal-content { background: var(--modal-bg); color: var(--text-main); width: 90%; max-width: 500px; padding: 40px; border-radius: 24px; border: 1px solid var(--glass-border); position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.6); transform: scale(0.95); transition: 0.3s; max-height: 85vh; overflow-y: auto;}
+        .modal-overlay.active .modal-content { transform: scale(1); }
+
+        .auth-header { text-align: center; margin-bottom: 25px; }
+        .auth-header h2 { margin: 0; font-weight: 800; font-size: 1.8rem; }
+        .auth-form { display: flex; flex-direction: column; gap: 15px; }
+        .auth-toggle { text-align: center; margin-top: 15px; font-size: 0.9rem; color: var(--text-muted); }
+        .auth-toggle span { color: var(--accent-glow); cursor: pointer; font-weight: 700; }
         
-        .cookbook-item { display:flex; justify-content:space-between; align-items:center; padding:15px; border-bottom:1px solid var(--glass-border); cursor: pointer; transition: 0.2s; }
-        .cookbook-item:hover { background: var(--glass-surface); padding-left: 20px;}
-        .detail-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 20px; padding-right: 30px; color: var(--accent-glow);}
-        .detail-step { display: flex; gap: 15px; margin-bottom: 15px; }
-        .step-num { min-width: 25px; height: 25px; background: var(--accent-glow); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; margin-top: 2px; }
-        .step-txt { font-size: 0.95rem; line-height: 1.6; color: var(--text-main); opacity: 0.9;}
-        .color-swatch { width: 100%; aspect-ratio: 1/1; border-radius: 8px; cursor: pointer; transition: 0.2s; border: 2px solid transparent; }
-        .color-swatch:hover { transform: scale(1.15); border-color: var(--text-main); }
+        /* PROFILE */
+        .profile-section { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .profile-large { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-glow); box-shadow: 0 0 30px rgba(56,189,248,0.3); }
+        .btn-upload { font-size: 0.85rem; padding: 10px 20px; background: rgba(255,255,255,0.05); border: 1px dashed var(--glass-border); border-radius: 8px; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
+        .btn-upload:hover { background: rgba(255,255,255,0.1); color: var(--text-main); }
+        .hidden-file-input { display: none; }
+
+        /* CROPPER OVERRIDE */
+        .cropper-container { border-radius: 15px; overflow: hidden; margin-top: 15px; background: #000; }
+        #image-to-crop { display: block; max-width: 100%; }
+
+        .detail-wrapper { display: flex; flex-direction: column; gap: 20px; }
+        .step-list { display: flex; flex-direction: column; gap: 20px; margin-top: 15px; }
+        .step-item { display: flex; align-items: flex-start; gap: 15px; }
+        .step-num { flex-shrink: 0; width: 32px; height: 32px; background: var(--accent-glow); color: #0f172a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.95rem; font-family: 'Fira Code', monospace; box-shadow: 0 0 15px var(--accent-glow); margin-top: 2px; }
+        .step-text { line-height: 1.7; font-size: 1rem; color: var(--text-main); opacity: 0.95; }
+
+        .cookbook-item { display:flex; justify-content:space-between; align-items:center; padding:18px; border-bottom:1px solid var(--glass-border); cursor: pointer; transition: 0.2s; font-size: 1rem;}
+        .color-swatch { width: 100%; aspect-ratio: 1/1; border-radius: 10px; cursor: pointer; transition: 0.2s; border: 2px solid transparent; }
         .badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--glass-border); font-weight: 700;}
         .b-status.online { background: rgba(56, 189, 248, 0.15); color: var(--accent-glow); }
-        .b-status.error { background: rgba(248, 113, 113, 0.15); color: var(--error); }
     </style>
 </head>
 <body>
     <div class="ambient-light"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
     
-    <!-- NAVBAR CAPSULE (LINKED TO PORTFOLIO) -->
     <nav>
         <div class="logo">3RG4</div>
         <div class="nav-content">
-            <!-- LINK UTAMA -->
             <div class="nav-links">
-                <!-- href='index.html' ini mengarah kembali ke file portofolio -->
-                <a href="index.html">Beranda</a> 
+                <a href="index.html">Beranda</a>
                 <a href="#" class="active">Aplikasi</a>
             </div>
-
-            <!-- ICONS MENU -->
             <div class="nav-actions">
-                <i class="fas fa-book" onclick="window.openCookbook()" title="Resep Tersimpan"></i>
-                <i class="fas fa-cog" onclick="window.openSettings()" title="Pengaturan"></i>
-                <i class="fas fa-user auth-user-icon" id="auth-icon" onclick="window.handleAuth()" title="Login"></i>
-                <img id="user-avatar-nav" src="" onclick="window.handleLogout()" title="Logout">
+                <i class="fas fa-book" onclick="window.openCookbook()" title="Buku Resep"></i>
+                <i class="fas fa-cog" onclick="window.openSettings()" title="Settings"></i>
+                <i class="fas fa-user auth-user-icon" id="auth-icon" onclick="window.openAuthModal()" title="Login"></i>
+                <img id="user-avatar-nav" src="" onclick="window.openProfileModal()" title="Akun">
                 <i class="fas fa-adjust" onclick="window.toggleTheme()" title="Ganti Tema"></i>
             </div>
         </div>
@@ -171,9 +143,9 @@
     <div class="hero">
         <div class="acrylic-panel">
             <h1 style="font-weight: 800; font-size: 2.5rem; letter-spacing: -1px; margin-bottom: 5px;">Kitchen AI</h1>
-            <p style="color: var(--text-muted);">Apa bahan di kulkasmu hari ini?</p>
+            <p style="color: var(--text-muted);">Masukkan bahan...</p>
             <div class="recipe-input-group">
-                <input type="text" id="ing-input" class="main-input" placeholder="Tulis bahan: Tempe, Telur..." autofocus>
+                <input type="text" id="ing-input" class="main-input" placeholder="Contoh: Ayam, Telur, Sawi..." autofocus>
                 <button class="action-btn" onclick="window.addIngredient()"><i class="fas fa-plus"></i></button>
             </div>
             <div class="tags-area" id="tag-container"></div>
@@ -184,59 +156,79 @@
                     <button class="action-btn primary" onclick="window.generateRecipe()">MASAK <i class="fas fa-magic"></i></button>
                 </div>
             </div>
-            <div class="ai-loading" id="loader"><i class="fas fa-circle-notch fa-spin"></i> Chef Sedang Berpikir...<span class="dots"></span></div>
+            <div class="ai-loading" id="loader"><i class="fas fa-circle-notch fa-spin"></i> Meracik Resep...<span class="dots"></span></div>
         </div>
     </div>
 
     <section>
-        <h2 style="font-size:1.8rem; font-weight:800; border-bottom:3px solid var(--accent-glow); display:inline-block; margin-bottom:30px;">Rekomendasi</h2>
+        <h2 style="font-size:1.8rem; font-weight:800; border-bottom:3px solid var(--accent-glow); display:inline-block; margin-bottom:30px;">Hasil Racikan</h2>
         <div class="recipe-grid" id="recipe-list">
             <div class="empty-state" style="text-align:center; padding:50px 0; color:var(--text-muted); opacity:0.6;">
                 <i class="fas fa-utensils" style="font-size: 4rem; margin-bottom: 20px;"></i>
-                <p>Masukkan bahan dan biarkan AI bekerja.</p>
+                <p>Belum ada masakan tersaji.</p>
             </div>
         </div>
     </section>
 
-    <!-- SETTINGS MODAL (AUTO SAVE & GEMINI 2.5) -->
-    <div class="modal-overlay" id="settings-modal">
+    <!-- AUTH MODAL -->
+    <div class="modal-overlay" id="auth-modal">
         <div class="modal-content">
-            <span style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:1.5rem;" onclick="window.closeModal('settings-modal')">&times;</span>
-            <h3 style="margin-bottom:20px;">Pengaturan</h3>
-            <div style="display:grid; grid-template-columns: repeat(6,1fr); gap:10px; margin-bottom:15px;" id="color-picker-area"></div>
-            
-            <label style="display:block; margin-top:15px; font-weight:700; font-size:0.8rem; color:var(--text-muted);">MODEL AI</label>
-            <select id="model-select" class="main-input" style="padding:10px; margin-bottom:5px;" onchange="window.handleAutoSave()">
-                <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
-                <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
-            </select>
-            <p style="font-size:0.7rem; color:var(--text-muted); margin-bottom:10px;">*Menggunakan Model 2.5 Eksperimental</p>
-
-            <label style="display:block; font-weight:700; font-size:0.8rem; color:var(--text-muted);">API KEY</label>
-            <input type="password" id="api-key-input" class="main-input" placeholder="Google Gemini Key..." style="font-size:0.85rem;" oninput="window.handleAutoSave()">
-            
-            <p id="cloud-status" style="font-size:0.8rem; color:var(--text-muted); text-align:right; margin-top:20px; transition:0.3s; display:flex; align-items:center; justify-content:flex-end; gap:5px; opacity:0;"><i class="fas fa-check-circle"></i> Tersimpan</p>
+            <span style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:1.5rem;" onclick="window.closeModal('auth-modal')">&times;</span>
+            <div class="auth-header">
+                <h2 id="auth-title">Login</h2>
+                <p id="auth-subtitle">Masuk untuk simpan resep favorit.</p>
+            </div>
+            <form class="auth-form" onsubmit="event.preventDefault(); window.processAuth();">
+                <input type="email" id="auth-email" class="main-input" placeholder="Alamat Email" required>
+                <input type="password" id="auth-pass" class="main-input" placeholder="Password (Min. 6 Karakter)" required>
+                <button type="submit" class="action-btn primary" style="width:100%; justify-content:center;">
+                    <span id="auth-btn-text">MASUK</span>
+                </button>
+            </form>
+            <div class="auth-toggle"><p id="auth-toggle-text">Belum punya akun? <span onclick="window.toggleAuthMode()">Daftar disini</span></p></div>
         </div>
     </div>
 
-    <!-- MODALS -->
-    <div class="modal-overlay" id="cookbook-modal">
+    <!-- PROFILE MODAL -->
+    <div class="modal-overlay" id="profile-modal">
         <div class="modal-content">
-            <span style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:1.5rem;" onclick="window.closeModal('cookbook-modal')">&times;</span>
-            <h3 style="margin-bottom:20px;"><i class="fas fa-book"></i> Resep Saya</h3>
-            <div id="cookbook-list" style="max-height:60vh; overflow-y:auto;">Loading...</div>
+            <span style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:1.5rem;" onclick="window.closeModal('profile-modal')">&times;</span>
+            <h3 style="margin-bottom:20px;">Profil Saya</h3>
+            <div class="profile-section">
+                <img id="profile-preview-large" src="" class="profile-large">
+                <h4 id="profile-email-disp" style="margin:0; font-weight:700;">user@email.com</h4>
+                <input type="file" id="file-input" class="hidden-file-input" accept="image/*" onchange="window.initCropper(this)">
+                <button class="btn-upload" onclick="document.getElementById('file-input').click()"><i class="fas fa-camera"></i> Ganti Foto</button>
+            </div>
+            <hr style="border-top:1px solid var(--glass-border); margin:25px 0;">
+            <button class="action-btn" onclick="window.handleLogout()" style="width:100%; justify-content:center; color:var(--error); border-color:var(--error);"><i class="fas fa-sign-out-alt"></i> Logout Akun</button>
         </div>
     </div>
-    <div class="modal-overlay" id="detail-modal">
-        <div class="modal-content">
-            <span style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:1.5rem;" onclick="window.closeModal('detail-modal')">&times;</span>
-            <div id="detail-content"></div>
-            <button class="action-btn" onclick="window.closeModal('detail-modal')" style="width:100%; margin-top:20px; justify-content:center;">Tutup</button>
+
+    <!-- CROPPER MODAL (WITH SPINNER) -->
+    <div class="modal-overlay" id="cropper-modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <h3 style="margin-bottom:15px;">Sesuaikan Foto</h3>
+            <div style="max-height: 400px; width: 100%; background: #000; display:flex; justify-content:center;">
+                <img id="image-to-crop" style="max-width: 100%;">
+            </div>
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button class="action-btn" style="flex:1; justify-content:center;" onclick="window.closeModal('cropper-modal')">Batal</button>
+                <!-- Tombol Simpan ID -->
+                <button id="btn-save-crop" class="action-btn primary" style="flex:1; justify-content:center;" onclick="window.saveCroppedImage()">
+                    Simpan Foto
+                </button>
+            </div>
         </div>
     </div>
+
+    <!-- SETTINGS & OTHERS -->
+    <div class="modal-overlay" id="settings-modal"><div class="modal-content"><span style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:1.5rem;" onclick="window.closeModal('settings-modal')">&times;</span><h3>Settings</h3><div style="display:grid; grid-template-columns: repeat(6,1fr); gap:10px; margin-bottom:15px;" id="color-picker-area"></div><label style="display:block;margin-top:15px;font-size:0.8rem;color:var(--text-muted);">MODEL AI (2.5 SERIES)</label><select id="model-select" class="main-input" style="padding:10px; margin-bottom:5px;" onchange="window.handleAutoSave()"><option value="gemini-2.5-flash">Gemini 2.5 Flash</option><option value="gemini-2.5-pro">Gemini 2.5 Pro</option></select><label style="display:block;margin-top:10px;font-size:0.8rem;color:var(--text-muted);">API KEY</label><input type="password" id="api-key-input" class="main-input" oninput="window.handleAutoSave()"><p id="cloud-status" style="font-size:0.8rem;color:var(--text-muted);text-align:right;opacity:0;">Tersimpan</p></div></div>
+    <div class="modal-overlay" id="cookbook-modal"><div class="modal-content"><span style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:1.5rem;" onclick="window.closeModal('cookbook-modal')">&times;</span><h3>Resepku</h3><div id="cookbook-list" style="max-height:60vh;overflow-y:auto;">Loading...</div></div></div>
+    <div class="modal-overlay" id="detail-modal"><div class="modal-content"><span style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:1.5rem;" onclick="window.closeModal('detail-modal')">&times;</span><div id="detail-content"></div><button class="action-btn" onclick="window.closeModal('detail-modal')" style="width:100%;margin-top:20px;justify-content:center;">Tutup</button></div></div>
 
     <script type="module">
-        // --- GANTI CONFIG DI SINI (FIREBASE) ---
+        // --- !!! PASTE CONFIG FIREBASE !!! ---
         const firebaseConfig = {
         apiKey: "AIzaSyDkSwr7n2niyN5MFzr6LMOIv-4Vpqa9LlY",
         authDomain: "studio-7547085914-216a7.firebaseapp.com",
@@ -247,174 +239,210 @@
         };
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, arrayUnion, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, arrayUnion, onSnapshot, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         let app, auth, db, userRef, currentUser;
+        let isLoginMode=true, cropperInstance=null;
+
         try {
-            if(!firebaseConfig.apiKey.includes("ISI_DENGAN")) {
+            if(!firebaseConfig.apiKey.includes("ISI_API")) {
                 app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
                 db = getFirestore(app);
             }
-        } catch(e) { console.error(e); }
+        } catch(e){}
 
-        let myIngredients = [];
-        let currentRecipes = [];
-        let savedRecipes = [];
-        let geminiKey = localStorage.getItem('3rg4_recipe_apikey') || "";
-        let selectedModel = localStorage.getItem('3rg4_gemini_model') || 'gemini-2.5-flash';
-        let autoSaveTimeout;
-        const defaultColors = ['#38bdf8', '#a78bfa', '#f472b6', '#fb923c', '#facc15', '#4ade80', '#2dd4bf', '#f87171'];
+        let myIngredients=[], currentRecipes=[], savedRecipes=[], geminiKey=localStorage.getItem('3rg4_recipe_apikey')||"", selectedModel=localStorage.getItem('3rg4_gemini_model')||'gemini-2.5-flash', autoSaveTimeout;
+        const defaultColors=['#38bdf8','#a78bfa','#f472b6','#fb923c','#facc15','#4ade80','#2dd4bf','#f87171'];
 
         window.onload = () => {
             initTheme(); renderColorPicker(); updateModeIndicator();
-            const ms = document.getElementById('model-select'); 
-            if(ms) { ms.value = selectedModel; if(!ms.value) { ms.value = 'gemini-2.5-flash'; window.handleAutoSave(); }}
-            document.getElementById('ing-input').addEventListener('keypress', e => { if(e.key === 'Enter') window.addIngredient(); });
+            const ms = document.getElementById('model-select'); if(ms){ ms.value=selectedModel; if(!ms.value){ ms.value='gemini-2.5-flash'; window.handleAutoSave();}}
+            document.getElementById('ing-input').addEventListener('keypress',e=>{if(e.key==='Enter')window.addIngredient()});
 
             if(auth) {
                 onAuthStateChanged(auth, async (user) => {
                     currentUser = user;
-                    const authIcon = document.getElementById('auth-icon');
-                    const authAvatar = document.getElementById('user-avatar-nav');
+                    const aIco = document.getElementById('auth-icon');
+                    const aImg = document.getElementById('user-avatar-nav');
                     if (user) {
-                        authIcon.style.display = 'none';
-                        authAvatar.src = user.photoURL; authAvatar.style.display = 'block';
+                        aIco.style.display='none';
+                        document.getElementById('profile-email-disp').innerText = user.email;
+                        
+                        // Default to UI Avatar initially
+                        let photo = user.photoURL || `https://ui-avatars.com/api/?name=${user.email}&background=random`;
+                        
+                        // Cek Database dulu, siapa tau ada gambar custom (Base64 panjang)
+                        try {
+                            const userSnap = await getDoc(doc(db, 'users_cookbook', user.uid));
+                            if (userSnap.exists() && userSnap.data().photoURL) {
+                                photo = userSnap.data().photoURL;
+                            }
+                        } catch(e) {}
+
+                        aImg.src = photo; 
+                        document.getElementById('profile-preview-large').src = photo; 
+                        aImg.style.display = 'block'; 
+                        window.closeModal('auth-modal');
+                        
                         await loadUserData(user.uid);
-                    } else {
-                        authIcon.style.display = 'block';
-                        authAvatar.style.display = 'none';
-                    }
+                    } else { aIco.style.display='block'; aImg.style.display='none'; }
                     updateModeIndicator();
                 });
             }
         };
 
         async function loadUserData(uid) {
-            userRef = doc(db, 'users_cookbook', uid);
-            onSnapshot(userRef, (ds) => {
-                if (ds.exists()) {
-                    const d = ds.data();
-                    if(d.geminiKey && !geminiKey) { geminiKey = d.geminiKey; localStorage.setItem('3rg4_recipe_apikey', geminiKey); updateModeIndicator(); }
+            userRef=doc(db,'users_cookbook',uid);
+            onSnapshot(userRef, (ds)=>{
+                if(ds.exists()){
+                    const d=ds.data();
+                    if(d.geminiKey&&!geminiKey){geminiKey=d.geminiKey;localStorage.setItem('3rg4_recipe_apikey',geminiKey);updateModeIndicator();}
                     if(d.accent) window.updateAccent(d.accent);
-                    savedRecipes = d.myRecipes || [];
-                    if(document.getElementById('cookbook-modal').classList.contains('active')) renderCookbook();
+                    
+                    // Priority load photo from DB if exists
+                    if(d.photoURL) {
+                        document.getElementById('user-avatar-nav').src=d.photoURL;
+                        document.getElementById('profile-preview-large').src=d.photoURL;
+                    }
+                    
+                    savedRecipes=d.myRecipes||[]; if(document.getElementById('cookbook-modal').classList.contains('active')) renderCookbook();
                 }
             });
         }
 
-        /* ACTIONS */
-        window.handleAuth = async () => { if(!auth) return alert("Konfigurasi Firebase belum diisi."); await signInWithPopup(auth, new GoogleAuthProvider()); };
-        window.handleLogout = async () => { if(confirm("Keluar dari akun?")) { await signOut(auth); window.location.reload(); } };
+        /* --- AUTH --- */
+        window.openAuthModal=()=>{ document.getElementById('auth-modal').classList.add('active'); isLoginMode=true; window.updateAuthUI(); };
+        window.openProfileModal=()=>{ if(!currentUser) return; document.getElementById('profile-modal').classList.add('active'); };
+        window.closeModal=id=>document.getElementById(id).classList.remove('active');
+        window.toggleAuthMode=()=>{ isLoginMode=!isLoginMode; window.updateAuthUI(); };
+        
+        window.updateAuthUI=()=>{
+            document.getElementById('auth-title').innerText = isLoginMode?"Login":"Buat Akun";
+            document.getElementById('auth-btn-text').innerText = isLoginMode?"MASUK":"DAFTAR";
+            document.getElementById('auth-toggle-text').innerHTML = isLoginMode ? 'Belum punya akun? <span onclick="window.toggleAuthMode()">Daftar</span>' : 'Sudah punya akun? <span onclick="window.toggleAuthMode()">Login</span>';
+        };
+
+        window.processAuth=async()=>{
+            if(!auth) return alert("Firebase Config Missing!");
+            const e=document.getElementById('auth-email').value, p=document.getElementById('auth-pass').value;
+            if(!e||!p)return alert("Lengkapi data");
+            const btn=document.getElementById('auth-btn-text'), org=btn.innerText; btn.innerText="Loading...";
+            try {
+                if(isLoginMode) await signInWithEmailAndPassword(auth,e,p);
+                else { const c=await createUserWithEmailAndPassword(auth,e,p); await updateProfile(c.user,{photoURL:`https://ui-avatars.com/api/?name=${e}&background=random`}); }
+            } catch(er){ alert(er.message); btn.innerText=org; }
+        };
+        window.handleLogout=async()=>{ if(confirm("Keluar akun?")){await signOut(auth);window.location.reload();} };
+
+        /* --- CROPPER FIXED LOGIC (COMPRESS + IGNORE AUTH ERR) --- */
+        window.initCropper = (input) => {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    window.closeModal('profile-modal');
+                    const modal = document.getElementById('cropper-modal');
+                    const img = document.getElementById('image-to-crop');
+                    img.src = e.target.result;
+                    modal.classList.add('active');
+                    if(cropperInstance) cropperInstance.destroy();
+                    setTimeout(() => { cropperInstance = new Cropper(img, { aspectRatio: 1, viewMode: 1 }); }, 200); 
+                }; reader.readAsDataURL(input.files[0]);
+            }
+            input.value = ''; 
+        };
+
+        window.saveCroppedImage = async () => {
+            if (!cropperInstance) return;
+            const btn = document.getElementById('btn-save-crop');
+            const originalText = btn.innerText;
+            
+            // UI Feedback
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+            btn.disabled = true;
+
+            // Compress to 200x200 0.6 quality (Super Light)
+            const canvas = cropperInstance.getCroppedCanvas({ width: 200, height: 200 });
+            const base64 = canvas.toDataURL('image/jpeg', 0.6);
+
+            // Instant UI Update
+            document.getElementById('profile-preview-large').src = base64;
+            document.getElementById('user-avatar-nav').src = base64;
+
+            try {
+                if (auth.currentUser && userRef) {
+                    // 1. Save to Database (Reliable storage for big string)
+                    // Gunakan {merge: true} pada setDoc untuk memastikan dokumen terbuat jika belum ada
+                    await setDoc(userRef, { photoURL: base64 }, { merge: true });
+
+                    // 2. Try Update Profile Auth (Might fail if > 2kb, but we catch it)
+                    try {
+                        await updateProfile(auth.currentUser, { photoURL: base64 });
+                    } catch(ignoredError) {
+                        // Ignore Auth profile error, data is safe in DB
+                    }
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Gagal menyimpan ke cloud: " + e.message);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                window.closeModal('cropper-modal');
+                window.openProfileModal();
+            }
+        };
 
         window.addIngredient = () => { const v=document.getElementById('ing-input').value.trim(); if(v && !myIngredients.includes(v)) { myIngredients.push(v); renderTags(); document.getElementById('ing-input').value=''; }};
         window.removeIng = (i) => { myIngredients.splice(i,1); renderTags(); };
         window.resetApp = () => { myIngredients=[]; renderTags(); document.getElementById('recipe-list').innerHTML=`<div class="empty-state"><i class="fas fa-utensils" style="font-size:4rem;opacity:0.3;margin-bottom:15px"></i><p>Siap.</p></div>`; };
         function renderTags() { document.getElementById('tag-container').innerHTML = myIngredients.map((x,i)=>`<div class="ing-tag" onclick="window.removeIng(${i})">${x} &times;</div>`).join(''); }
 
-        /* GENERATE LOGIC */
         window.generateRecipe = async () => {
-            if(myIngredients.length === 0) return alert("Masukkan minimal 1 bahan.");
+            if(myIngredients.length === 0) return alert("Isi bahan!");
             const ldr = document.getElementById('loader'); const lst = document.getElementById('recipe-list');
             lst.innerHTML=''; ldr.style.display='block';
-
-            if(!geminiKey) {
-                await new Promise(r=>setTimeout(r,1000)); ldr.style.display='none';
-                currentRecipes=[{name:"Mode Demo",desc:"Masukkan API Key atau Login untuk akses.",missing:"API Key",steps:["Klik Ikon Gear"]}];
-                renderList(currentRecipes); return;
-            }
-
+            if(!geminiKey) { await new Promise(r=>setTimeout(r,1000)); ldr.style.display='none'; currentRecipes=[{name:"Mode Demo",desc:"Login & Isi API Key.",missing:"API Key",steps:["Settings"]}]; renderList(currentRecipes); return; }
             try {
-                // Strict Prompt: WAJIB INDONESIA
-                const prompt = `Peran: Chef Indonesia. Bahan: ${myIngredients.join(', ')}.
-                Tugas: Buat 2 resep masakan kreatif berbahasa Indonesia.
-                Format JSON MURNI: [{"name":"Nama Masakan","desc":"Deskripsi Singkat","missing":"Bahan Tambahan","steps":["Langkah 1","Langkah 2"]}]`;
-
+                const prompt = `Peran: Chef Indonesia. Bahan: ${myIngredients.join(', ')}. 2 Resep Indo Kreatif. Format JSON Array Murni: [{"name":"","desc":"","missing":"","steps":["1"]}]`;
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${geminiKey}`;
                 const r = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
                 const d = await r.json();
-
                 if(d.error) throw new Error(d.error.message);
-                if(!d.candidates) throw new Error("No response");
-
-                let raw = d.candidates[0].content.parts[0].text;
-                raw = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
-                const start = raw.indexOf('['); const end = raw.lastIndexOf(']');
-                if(start!==-1 && end!==-1) {
-                    raw = raw.substring(start, end+1).replace(/}\s*{/g, '},{').replace(/,\s*]/g, ']');
-                    currentRecipes = JSON.parse(raw);
-                    renderList(currentRecipes);
-                } else throw new Error("Format JSON salah.");
-
-            } catch(e) {
-                let msg=e.message; if(msg.includes('404')) msg="Model belum dirilis / 404."; if(msg.includes('429')) msg="Kuota habis.";
-                lst.innerHTML=`<div style="text-align:center;padding:20px;color:#f87171">Error: ${msg}</div>`;
-                document.getElementById('mode-indicator').innerText='ERROR';
-            } finally { ldr.style.display='none'; }
+                const txt = d.candidates[0].content.parts[0].text.replace(/```json/gi,'').replace(/```/g,'').trim();
+                const start=txt.indexOf('['), end=txt.lastIndexOf(']');
+                currentRecipes = JSON.parse(txt.substring(start, end+1).replace(/}\s*{/g,'},{'));
+                renderList(currentRecipes);
+            } catch(e) { lst.innerHTML=`<div style='text-align:center;padding:20px;color:#f87171'>Error: ${e.message}</div>`; } finally { ldr.style.display='none'; }
         };
 
-        function renderList(arr) {
-            document.getElementById('recipe-list').innerHTML = arr.map((x,i) => `
-                <div class="recipe-card">
-                    <div class="save-btn" onclick="window.saveToCookbook(${i})"><i class="fas fa-bookmark"></i></div>
-                    <h3 class="recipe-name">${x.name}</h3>
-                    <p class="recipe-desc">${x.desc}</p>
-                    <button class="action-btn detail" onclick="window.showRecipeDetail(${i})">Detail Masakan <i class="fas fa-arrow-right"></i></button>
-                    <div class="recipe-meta-box"><i class="fas fa-shopping-basket"></i> Kurang: ${x.missing}</div>
-                </div>
-            `).join('');
-        }
-
-        window.handleAutoSave = () => {
-            const k = document.getElementById('api-key-input').value.trim();
-            const m = document.getElementById('model-select').value;
-            const st = document.getElementById('cloud-status');
-            if(k) { localStorage.setItem('3rg4_recipe_apikey', k); geminiKey=k; }
-            if(m) { localStorage.setItem('3rg4_gemini_model', m); selectedModel=m; }
-            updateModeIndicator();
-            st.style.opacity='1'; st.innerHTML='<i class="fas fa-sync fa-spin"></i> ...'; 
-            clearTimeout(autoSaveTimeout);
-            autoSaveTimeout = setTimeout(async () => {
-                if(auth.currentUser && userRef) { 
-                    try { await setDoc(userRef, { geminiKey: k, selectedModel: m }, { merge: true }); st.innerHTML = '<i class="fas fa-check"></i> Tersimpan'; setTimeout(()=>st.style.opacity='0',2000); } 
-                    catch(e){ st.innerText = "Gagal Sync"; }
-                } else { st.innerHTML = '<i class="fas fa-check"></i> Tersimpan (Lokal)'; setTimeout(()=>st.style.opacity='0',2000); }
-            }, 1000);
+        function renderList(arr) { document.getElementById('recipe-list').innerHTML = arr.map((x,i)=>`<div class="recipe-card"><div class="save-btn" onclick="window.saveToCookbook(${i})"><i class="fas fa-bookmark"></i></div><h3>${x.name}</h3><p>${x.desc}</p><button class="action-btn detail" onclick="window.showRecipeDetail(${i})">Detail</button><div class="recipe-meta-box">Kurang: ${x.missing}</div></div>`).join(''); }
+        
+        window.saveToCookbook=async(i)=>{ if(!auth.currentUser)return alert("Login!"); try{ await setDoc(doc(db,'users_cookbook',currentUser.uid),{myRecipes:arrayUnion(currentRecipes[i])},{merge:true}); document.querySelectorAll('.save-btn')[i].classList.add('saved');}catch(e){console.error(e);alert("Gagal.");} };
+        
+        window.showRecipeDetail=(i,s=false)=>{ 
+            const r=s?savedRecipes[i]:currentRecipes[i]; 
+            const stepHtml = (r.steps||[]).map((st,idx)=>`<div class="step-item"><div class="step-num">${idx+1}</div><div class="step-text">${st}</div></div>`).join('');
+            document.getElementById('detail-content').innerHTML=`<div class="detail-wrapper"><div style="text-align:center;"><h2>${r.name}</h2><p style="opacity:0.7">${r.desc}</p></div><div style="background:var(--glass-surface);padding:18px;border-radius:12px;"><strong>Bahan Tambahan:</strong> ${r.missing}</div><div>${stepHtml}</div></div>`; 
+            document.getElementById('detail-modal').classList.add('active'); 
+        };
+        
+        window.openSettings=()=>{document.getElementById('settings-modal').classList.add('active');document.getElementById('api-key-input').value=geminiKey;};
+        window.openCookbook=()=>{document.getElementById('cookbook-modal').classList.add('active'); renderCookbook();};
+        function renderCookbook(){ document.getElementById('cookbook-list').innerHTML = currentUser ? savedRecipes.map((r,i)=>`<div class="cookbook-item" onclick="window.showRecipeDetail(${i},true)"><b>${r.name}</b> <i class="fas fa-chevron-right" style="opacity:0.5"></i></div>`).join('') : "Login dulu."; }
+        
+        window.handleAutoSave=()=>{ 
+            const k=document.getElementById('api-key-input').value.trim(); const m=document.getElementById('model-select').value;
+            if(k)geminiKey=k; if(m)selectedModel=m; 
+            localStorage.setItem('3rg4_recipe_apikey',k); localStorage.setItem('3rg4_gemini_model',m);
+            clearTimeout(autoSaveTimeout); 
+            autoSaveTimeout=setTimeout(async()=>{ if(auth.currentUser) await setDoc(userRef,{geminiKey:k,selectedModel:m},{merge:true}); document.getElementById('cloud-status').style.opacity=1; setTimeout(()=>document.getElementById('cloud-status').style.opacity=0,2000); },1000);
         };
 
-        window.saveToCookbook = async (idx) => {
-            if(!auth || !auth.currentUser) return alert("Silakan Login dulu.");
-            const rec = currentRecipes[idx];
-            if(savedRecipes.some(s => s.name === rec.name)) return alert("Sudah tersimpan.");
-            try {
-                const freshRef = doc(db, 'users_cookbook', auth.currentUser.uid);
-                await setDoc(freshRef, { myRecipes: arrayUnion(rec) }, { merge: true });
-                document.querySelectorAll('.save-btn')[idx].classList.add('saved');
-            } catch(e) { alert("Gagal Simpan: " + e.message); }
-        };
-
-        window.showRecipeDetail = (idx, isSaved=false) => {
-            const r = isSaved ? savedRecipes[idx] : currentRecipes[idx];
-            const content = document.getElementById('detail-content');
-            let steps = r.steps ? r.steps.map((s,n)=>`<div class="detail-step"><div class="step-num">${n+1}</div><div class="step-txt">${s}</div></div>`).join('') : "<p>-</p>";
-            content.innerHTML=`<h2 class="detail-title">${r.name}</h2><div style="background:var(--glass-surface);padding:15px;margin-bottom:15px;border-radius:10px;"><strong>Info:</strong> ${r.missing}</div><h4>Instruksi:</h4><br>${steps}`;
-            document.getElementById('detail-modal').classList.add('active');
-        };
-
-        window.openSettings = () => { document.getElementById('settings-modal').classList.add('active'); document.getElementById('api-key-input').value = geminiKey; };
-        window.openCookbook = () => { document.getElementById('cookbook-modal').classList.add('active'); renderCookbook(); };
-        window.closeModal = (id) => document.getElementById(id).classList.remove('active');
-        function renderCookbook() {
-            const el = document.getElementById('cookbook-list');
-            if(!auth.currentUser) return el.innerHTML="<p style='text-align:center'>Login untuk melihat.</p>";
-            if(savedRecipes.length===0) return el.innerHTML="<p style='text-align:center;opacity:0.5'>Belum ada resep.</p>";
-            el.innerHTML = savedRecipes.map((r,i) => `<div class="cookbook-item" onclick="window.showRecipeDetail(${i}, true)"><b>${r.name}</b> <i class="fas fa-chevron-right" style="font-size:0.8rem"></i></div>`).join('');
-        }
-
-        window.toggleTheme=()=>{document.documentElement.classList.toggle('light-mode');localStorage.setItem('3rg4_recipe_theme',document.documentElement.classList.contains('light-mode')?'light':'dark');};
+        window.toggleTheme=()=>{document.documentElement.classList.toggle('light-mode'); localStorage.setItem('3rg4_recipe_theme',document.documentElement.classList.contains('light-mode')?'light':'dark');};
         function initTheme(){if(localStorage.getItem('3rg4_recipe_theme')==='light')document.documentElement.classList.add('light-mode'); window.updateAccent(localStorage.getItem('3rg4_recipe_accent')||defaultColors[0]);}
-        window.updateAccent=(c)=>{document.documentElement.style.setProperty('--accent-glow',c);localStorage.setItem('3rg4_recipe_accent',c);if(auth.currentUser && db)setDoc(userRef,{accent:c},{merge:true}); c==='#f87171'?document.documentElement.style.setProperty('--warning-text','#fca5a5'):document.documentElement.style.setProperty('--warning-text','#fbbf24');};
+        window.updateAccent=(c)=>{document.documentElement.style.setProperty('--accent-glow',c);localStorage.setItem('3rg4_recipe_accent',c);if(currentUser)setDoc(userRef,{accent:c},{merge:true}); c==='#f87171'?document.documentElement.style.setProperty('--warning-text','#fca5a5'):document.documentElement.style.setProperty('--warning-text','#fbbf24');};
         function renderColorPicker(){document.getElementById('color-picker-area').innerHTML=defaultColors.map(c=>`<div class="color-swatch" style="background:${c}" onclick="window.updateAccent('${c}')"></div>`).join('');}
         function updateModeIndicator(){ const b=document.getElementById('mode-indicator'); if(geminiKey&&auth.currentUser){b.innerText="CLOUD";b.className='badge b-status online'}else if(geminiKey){b.innerText="LOKAL";b.className='badge b-status online'}else{b.innerText="OFFLINE";b.className='badge b-status'} }
     </script>
