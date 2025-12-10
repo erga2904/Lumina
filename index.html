@@ -138,10 +138,10 @@
             nav {
                 transform: translateX(-50%) !important; left: 50% !important; margin: 0 !important;
                 position: fixed; top: 15px; width: 95% !important; max-width: 100%;
-                padding: 10px 15px !important; border-radius: 16px !important; 
+                padding: 10px 15px !important; border-radius: 16px !important; /* SQUARE-ISH BORDER RADIUS */
                 display: flex; justify-content: space-between; align-items: center;
             }
-            nav h3 { font-size: 1rem; margin-right: auto; padding-right: 10px; }
+            nav h3 { font-size: 1rem; margin-right: auto; padding-right: 10px; } /* FORCE LEFT ALIGN */
             nav ul { gap: 10px !important; }
             nav a { font-size: 0.8rem; padding: 5px; }
             
@@ -201,24 +201,59 @@
         .status-badge { position: absolute; top: 15px; right: 15px; font-size: 0.7rem; background: rgba(0,0,0,0.4); padding: 4px 10px; border-radius: 20px; color: #fff; font-weight: 700;}
         .card-title { font-weight: 700; font-size: 1.15rem; }
 
-        /* APPS GRID */
+        /* --- APPS GRID --- */
         .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .app-item { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-left: 4px solid var(--accent-glow); padding: 25px; border-radius: 15px; display: flex; flex-direction: column; position: relative; height: auto; min-height: 220px; transition: 0.3s; }
-        .app-item.hide { display: none !important; }
+
+        .app-item { 
+            background: rgba(255,255,255,0.03); 
+            border: 1px solid var(--glass-border); 
+            border-left: 4px solid var(--accent-glow); 
+            padding: 25px; 
+            border-radius: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
+            height: auto; 
+            min-height: 220px;
+            transition: 0.3s;
+        }
+
         .app-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;}
         .app-tag { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; background: rgba(255,255,255,0.08); text-transform: uppercase; font-weight: 700; color: var(--accent-glow); letter-spacing: 0.05em; }
         .app-name { font-size: 1.25rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.01em; outline: none; }
+        
+        /* DESCRIPTION BOX */
         .app-desc { 
-            font-size: 1rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; font-weight: 400; 
+            font-size: 1rem; color: var(--text-muted); 
+            margin-bottom: 25px; /* JARAK DITAMBAH AGAR TIDAK DEMPET */
+            line-height: 1.6; font-weight: 400; 
             flex-grow: 1; word-wrap: break-word; word-break: break-word; white-space: pre-wrap; 
             position: relative; z-index: 10; min-height: 40px; display: block; outline: none;
         }
-        [contenteditable="true"]:focus { outline: 2px dashed var(--accent-glow); background: rgba(0,0,0,0.2); border-radius: 5px; padding: 5px; }
-        
+
+        /* STYLE KHUSUS NOTE / PERINGATAN (NEW) */
+        .app-note {
+            background: rgba(var(--accent-glow), 0.1);
+            border: 1px dashed var(--accent-glow);
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+        .app-note a { color: var(--accent-glow); text-decoration: underline; font-weight: 700; pointer-events: all; }
+
         .app-visit-btn { display: inline-block; padding: 8px 20px; border-radius: 50px; border: 1px solid var(--glass-border); color: var(--text-main); text-decoration: none; font-size: 0.95rem; align-self: flex-start; transition: 0.3s; background: rgba(255,255,255,0.05); font-weight: 600; }
         .app-visit-btn:hover { background: var(--accent-glow); border-color: var(--accent-glow); color: #fff; }
+        
         .delete-btn { position: absolute; bottom: 20px; right: 20px; background: none; border: none; color: #ff4757; font-size: 1.2rem; cursor: pointer; display: none; z-index: 20; }
         .app-item.editing .delete-btn { display: block; }
+        .app-item.hide { display: none !important; }
+
+        [contenteditable="true"]:focus { outline: 2px dashed var(--accent-glow); background: rgba(0,0,0,0.2); border-radius: 5px; padding: 5px; }
 
         /* REPO */
         .repo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; }
@@ -264,6 +299,9 @@
         
         input.login-field { width: 100%; padding: 12px; margin-bottom: 10px; background: var(--input-bg); border: 1px solid var(--glass-border); color: var(--text-main); border-radius: 8px; font-family: 'Figtree', sans-serif;}
         
+        [contenteditable="true"] { border: 1px dashed var(--accent-glow); background: rgba(56, 189, 248, 0.1); padding: 0 5px; border-radius: 4px; display: inline-block; min-width: 10px;}
+        [contenteditable="true"]:empty:before { content: "Edit..."; opacity: 0.5; }
+
         /* SETTINGS & LANG */
         .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin: 15px 0;}
         .color-swatch { width: 45px; height: 45px; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition:0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
@@ -401,20 +439,25 @@
         </div>
     </section>
 
-    <!-- APPS GRID (AUTO ADD KITCHEN AI) -->
+    <!-- APPS GRID (KITCHEN AI) -->
     <section id="apps-section">
         <div class="acrylic-panel hidden" style="padding: 30px; position: relative;">
             <h2 class="section-header" id="label-my-apps">My Apps</h2>
             <i id="add-app-btn" class="fas fa-plus-circle" onclick="addApp()" style="position:absolute; top:30px; right:30px; font-size:1.8rem; color:var(--success); cursor:pointer; display:none;"></i>
             
             <div class="apps-grid" id="apps-list">
-                <!-- STATIC EXAMPLE (DEFAULT JIKA DB KOSONG) -->
-                <div class="app-item interactive-card">
+                <!-- STATIC EXAMPLE DEFAULT IF DB EMPTY -->
+                <div class="app-item">
                     <div class="app-header">
                         <h4 class="app-name">Kitchen AI</h4>
                         <span class="app-tag">DEMO</span>
                     </div>
-                    <div class="app-desc">Aplikasi Resep Cerdas berbasis AI Gemini 2.5</div>
+                    <div class="app-desc">Aplikasi Resep Pintar berbasis AI Gemini 2.5</div>
+                    <!-- Peringatan Glowing yang bisa diklik link-nya -->
+                    <div class="app-note" contenteditable="false">
+                        <i class="fas fa-exclamation-triangle"></i> Butuh API Key: 
+                        <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a>
+                    </div>
                     <button class="delete-btn"><i class="fas fa-trash"></i></button>
                     <a href="recipe.html" class="app-visit-btn" target="_blank">Visit</a>
                 </div>
@@ -617,13 +660,11 @@
         ];
         const globalPlaylist = ["2IgI5W5v7bY2p8E4cW4A4h", "60ycX53i166L7q2Y1K2t1c", "6kqK3e3N3yK8aN3i6O1L8i"];
 
-        /* --- DICTIONARY BAHASA --- */
         const translations = {
             id: {
                 nav_home: "Beranda", nav_apps: "Aplikasi",
                 btn_more: '<i class="fas fa-info-circle"></i> Selengkapnya',
-                dash_label: "Menu Utama",
-                admin_title: "Akses Admin", admin_desc: "Masuk untuk edit",
+                dash_label: "Menu Utama", admin_title: "Akses Admin", admin_desc: "Masuk untuk edit",
                 apps_title: "Aplikasi Saya", apps_desc: "Lihat hasil karya",
                 snip_label: "Kode Snippet", apps_label: "Project Saya",
                 repo_label: "Project Terbaru", work_label: "Hubungi Saya",
@@ -632,8 +673,7 @@
             en: {
                 nav_home: "Home", nav_apps: "Apps",
                 btn_more: '<i class="fas fa-info-circle"></i> More Info',
-                dash_label: "Dashboard",
-                admin_title: "Admin Access", admin_desc: "Login securely",
+                dash_label: "Dashboard", admin_title: "Admin Access", admin_desc: "Login securely",
                 apps_title: "My Apps", apps_desc: "See my work",
                 snip_label: "Code Snippets", apps_label: "My Apps",
                 repo_label: "Recent Projects", work_label: "Work With Me",
@@ -641,22 +681,16 @@
             }
         };
 
-        /* --- INIT --- */
         window.addEventListener('DOMContentLoaded', async () => {
-            splashEffect();
-            generateQuote();
-            
+            splashEffect(); generateQuote();
             const savedLang = localStorage.getItem('lumina_lang') || 'en';
             setLanguage(savedLang);
 
             onAuthStateChanged(auth, (user) => {
                 const loginForm = document.getElementById('login-form-container');
                 const adminMenu = document.getElementById('admin-menu-container');
-
                 if (user) {
-                    enableEditing();
-                    listenToInbox();
-                    
+                    enableEditing(); listenToInbox();
                     if(loginForm) loginForm.style.display = 'none';
                     if(adminMenu) adminMenu.style.display = 'block';
                 } else {
@@ -667,37 +701,23 @@
             });
 
             await Promise.all([new Promise(r=>setTimeout(r,2000)), loadFromDB()]);
-            removeSplash(); 
-            initTheme();
-            setupGuestbook();
-            setupObservers();
+            removeSplash(); initTheme(); setupGuestbook(); setupObservers();
         });
 
-        /* --- AUTH FUNCTIONS --- */
-        window.handleAuthClick = () => { openModal('login-modal'); } // Selalu buka modal, konten diatur AuthState
-
+        window.handleAuthClick = () => { openModal('login-modal'); }
         window.loginToFirebase = async () => {
             const e = document.getElementById('auth-email').value;
             const p = document.getElementById('auth-pass').value;
-            try {
-                await signInWithEmailAndPassword(auth, e, p);
-            } catch(error) { alert("Login Gagal: " + error.message); }
+            try { await signInWithEmailAndPassword(auth, e, p); } catch(error) { alert("Gagal: " + error.message); }
         };
-
-        window.logoutFirebase = async () => {
-            if(confirm("Logout admin?")) {
-                await signOut(auth);
-                window.location.reload(); 
-            }
-        };
+        window.logoutFirebase = async () => { if(confirm("Logout admin?")) { await signOut(auth); window.location.reload(); } };
 
         function enableEditing() {
             isEditing = true;
             document.body.classList.add('admin-mode');
             const badge = document.getElementById('lock-badge');
             if(badge) { badge.innerHTML = '<i class="fas fa-lock-open"></i> Unlocked'; badge.style.background = '#34d399'; }
-            const uIcon = document.getElementById('user-icon');
-            if(uIcon) uIcon.classList.replace('fa-user', 'fa-user-astronaut');
+            document.getElementById('user-icon').classList.replace('fa-user', 'fa-user-astronaut');
 
             ['add-app-btn', 'add-tech-btn', 'add-snippet-btn', 'gh-config-btn', 'edit-music-btn', 'save-about-btn', 'add-log-btn'].forEach(id => {
                 const el = document.getElementById(id); if(el) el.style.display='block';
@@ -712,28 +732,56 @@
             document.querySelectorAll('.social-icon').forEach(l => {
                 l.onclick = (e) => { e.preventDefault(); const n = prompt("Edit Link URL:", l.getAttribute('href')); if(n) l.setAttribute('href', n); };
             });
-            
             document.querySelectorAll('.app-item').forEach(el => makeAppEditable(el));
+            document.querySelectorAll('.app-note').forEach(el => el.contentEditable="true");
         }
 
         function disableEditing() { isEditing = false; }
 
-        /* --- HELPER EDIT APP --- */
+        /* --- ADD APP FUNCTION UPDATED --- */
+        window.addApp = () => {
+            const n = prompt("Nama Project:"); 
+            if(n){
+                // PROMPT TAMBAHAN: Minta Note/Peringatan
+                const note = prompt("Catatan Peringatan (Misal: Butuh API Key). Kosongkan jika tidak perlu:");
+                
+                const noteHtml = note ? `<div class="app-note" contenteditable="true">${note}</div>` : '';
+
+                const d = document.createElement('div');
+                d.className = 'app-item editing interactive-card';
+                d.innerHTML = `
+                    <div class="app-header">
+                        <h4 class="app-name" contenteditable="true">${n}</h4>
+                        <span class="app-tag">PROJECT</span>
+                    </div>
+                    <p class="app-desc" contenteditable="true">Deskripsi singkat...</p>
+                    
+                    ${noteHtml}
+                    
+                    <button class="delete-btn" style="display:block" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+                    <a href="#" class="app-visit-btn">Visit Link</a>
+                `;
+                document.getElementById('apps-list').prepend(d);
+                makeAppEditable(d);
+            }
+        };
+
         function makeAppEditable(el) {
             el.classList.add('editing');
-            // Membuat konten nama dan deskripsi bisa diedit
-            el.querySelectorAll('.app-name, .app-desc').forEach(t => t.contentEditable = "true");
+            el.querySelectorAll('.app-name, .app-desc').forEach(t => t.contentEditable="true");
+            // NOTE JUGA DIJADIKAN EDITABLE JIKA ADA
+            const noteEl = el.querySelector('.app-note');
+            if(noteEl) noteEl.contentEditable = "true";
             
-            // Edit link tombol
             const visitBtn = el.querySelector('.app-visit-btn');
             if(visitBtn) {
                 visitBtn.onclick = (e) => {
                     if(isEditing) {
                         e.preventDefault();
-                        const url = prompt("Edit URL Aplikasi:", visitBtn.getAttribute('href'));
+                        const url = prompt("Edit URL:", visitBtn.getAttribute('href'));
                         if(url) visitBtn.href = url;
                     }
-                };
+                }
             }
         }
 
@@ -741,7 +789,6 @@
             localStorage.setItem('lumina_lang', lang);
             document.getElementById('lang-id').classList.toggle('active', lang === 'id');
             document.getElementById('lang-en').classList.toggle('active', lang === 'en');
-            
             const t = translations[lang];
             if(t) {
                 if(document.getElementById('nav-home')) document.getElementById('nav-home').innerText = t.nav_home;
@@ -779,7 +826,6 @@
             }
         }
 
-        /* --- LOAD & SAVE (CORE) --- */
         async function loadFromDB() {
             try {
                 const snap = await getDoc(docRef);
@@ -814,7 +860,6 @@
                     document.getElementById('link-email').href = data.links.mail || '#';
                 }
 
-                // LOAD APPS & ADD DEFAULT KITCHEN AI IF EMPTY
                 if(data.appsHtml) {
                     const appList = document.getElementById('apps-list');
                     appList.innerHTML = data.appsHtml;
@@ -824,14 +869,17 @@
                         const d = e.querySelector('.delete-btn'); if(d) d.style.display='none';
                     });
                 } else {
+                    /* DEFAULT KITCHEN AI CARD DENGAN NOTE/PERINGATAN LINK AKTIF */
                     const appList = document.getElementById('apps-list');
                     appList.innerHTML = `
-                    <div class="app-item interactive-card">
-                        <div class="app-header">
-                            <h4 class="app-name">Kitchen AI</h4>
-                            <span class="app-tag">DEMO</span>
+                    <div class="app-item">
+                        <div class="app-header"><h4 class="app-name">Kitchen AI</h4><span class="app-tag">DEMO</span></div>
+                        <p class="app-desc">Aplikasi Resep Pintar berbasis AI.</p>
+                        
+                        <div class="app-note">
+                            *Perlu API Key, buat disini: <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a>
                         </div>
-                        <div class="app-desc">Aplikasi Resep Pintar berbasis AI.</div>
+
                         <button class="delete-btn" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
                         <a href="recipe.html" class="app-visit-btn" target="_blank">Visit</a>
                     </div>
@@ -897,80 +945,24 @@
                 
                 await setDoc(docRef, payload, { merge: true });
                 alert("Saved!");
-                closeModal('login-modal'); // Tutup menu jika dibuka dari situ
+                closeModal('login-modal');
                 window.location.reload();
             } catch(e) { alert("Error: " + e.message); document.body.style.cursor = 'default'; }
         }
 
-        /* --- STANDARD UTILS --- */
-        function setDailyMusic(list) {
-            const index = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24)) % list.length;
-            setSpotifyFrame(list[index]); document.getElementById('spotify-embed').setAttribute('data-manual-id', 'auto');
-        }
-        function getSpotifyId(input) {
-            if(!input) return null;
-            try {
-                const regex = /track\/([a-zA-Z0-9]+)/;
-                const match = input.match(regex);
-                if (match && match[1]) return match[1];
-                if(/^[a-zA-Z0-9]{15,30}$/.test(input)) return input;
-            } catch(e) {}
-            return null;
-        }
-        function setSpotifyFrame(id) {
-            if(!id || id === 'auto') return;
-            const frame = document.getElementById('spotify-embed');
-            document.getElementById('loading-music').style.display='none'; document.getElementById('music-error').style.display='none';
-            frame.style.display='block'; frame.src = `https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0`;
-        }
-        window.editDailyMusic = () => {
-            if(!isEditing) return;
-            const userInput = prompt("Link Spotify Lagu:");
-            if(userInput === "") { setDailyMusic(globalPlaylist); alert("Mode Auto."); return; }
-            if(userInput) { const validId = getSpotifyId(userInput); if(validId) { setSpotifyFrame(validId); document.getElementById('spotify-embed').setAttribute('data-manual-id', validId); } }
-        }
-
-        window.addApp=()=>{
-            const n=prompt("Nama Project:"); 
-            if(n){
-                const d=document.createElement('div');
-                d.className='app-item editing interactive-card';
-                d.innerHTML=`
-                    <div class="app-header">
-                        <h4 class="app-name" contenteditable="true">${n}</h4>
-                        <span class="app-tag">DEV</span>
-                    </div>
-                    <div class="app-desc" contenteditable="true">Deskripsi project...</div>
-                    <button class="delete-btn" style="display:block" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
-                    <a href="#" class="app-visit-btn">Visit Link</a>
-                `;
-                document.getElementById('apps-list').prepend(d);
-                makeAppEditable(d);
-            }
-        };
-        
         window.addTech=()=>{const i=prompt("FontAwesome (fab fa-js):");if(i)document.getElementById('tech-list').innerHTML+=`<div class="tech-item"><i class="${i}"></i><span class="tech-delete" style="display:flex" onclick="this.parentElement.remove()">x</span></div>`;};
         window.addSnippet=()=>{const t=prompt("Title:");if(t)document.getElementById('snippets-list').innerHTML=`<div class="snippet-card"><h4 contenteditable="true">${t}</h4><div class="snippet-code" contenteditable="true">// code</div><span style="position:absolute;top:10px;right:10px;color:red;cursor:pointer;" onclick="this.parentElement.remove()">x</span></div>`+document.getElementById('snippets-list').innerHTML;}
-
-        window.loadRecentRepos = async (user) => {
-            try {
-                const res = await fetch(`https://api.github.com/users/${user}/repos?sort=updated&per_page=6`);
-                const repos = await res.json();
-                const list = document.getElementById('repo-list'); list.innerHTML = '';
-                if(repos.length===0){list.innerHTML='<p style="color:grey">Empty.</p>';return;}
-                repos.forEach(r => {
-                    list.innerHTML += `<a href="${r.html_url}" target="_blank"><div class="repo-card interactive-card"><div class="repo-name"><i class="fas fa-book-bookmark"></i> ${r.name}</div><div class="repo-desc">${r.description?r.description.substring(0,50)+'...':'No Desc'}</div><div class="repo-meta"><span>${r.language||'Code'}</span><span>★ ${r.stargazers_count}</span></div></div></a>`;
-                });
-            } catch(e) {}
-        }
         window.configGithub=()=>{if(isEditing){const n=prompt("GH User:");if(n){localStorage.setItem('gh_user',n);loadRecentRepos(n);}}};
+        
+        function setDailyMusic(list) { const index = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24)) % list.length; setSpotifyFrame(list[index]); document.getElementById('spotify-embed').setAttribute('data-manual-id', 'auto'); }
+        function getSpotifyId(input) { if(!input) return null; try { const regex = /track\/([a-zA-Z0-9]+)/; const match = input.match(regex); if (match && match[1]) return match[1]; if(/^[a-zA-Z0-9]{15,30}$/.test(input)) return input; } catch(e) {} return null; }
+        function setSpotifyFrame(id) { if(!id || id === 'auto') return; const frame = document.getElementById('spotify-embed'); document.getElementById('loading-music').style.display='none'; document.getElementById('music-error').style.display='none'; frame.style.display='block'; frame.src = `https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0`; }
+        window.editDailyMusic = () => { if(!isEditing) return; const userInput = prompt("Link Spotify Lagu:"); if(userInput === "") { setDailyMusic(globalPlaylist); alert("Mode Auto."); return; } if(userInput) { const validId = getSpotifyId(userInput); if(validId) { setSpotifyFrame(validId); document.getElementById('spotify-embed').setAttribute('data-manual-id', validId); } } }
+
         function renderTechStack(arr) { document.getElementById('tech-list').innerHTML = arr.map(i=>`<div class="tech-item"><i class="${i.replace('<span class="tech-delete" style="display:flex" onclick="this.parentElement.remove()">x</span>','')}"></i><span class="tech-delete" onclick="this.parentElement.remove()">x</span></div>`).join(''); }
         function renderDefaultSnippets(){ document.getElementById('snippets-list').innerHTML = `<div class="snippet-card"><h4>Hello</h4><div class="snippet-code">console.log('Hi');</div></div>`; }
         window.splashEffect=()=>{ const t="Lumina";const c=document.querySelector('.splash-text');c.innerHTML=''; t.split('').forEach((s,i)=>{const n=document.createElement('span');n.innerText=s;n.style.animationDelay=i*0.1+'s';c.appendChild(n);}); }
-        function removeSplash(){
-            const s = document.getElementById('splash-screen'); s.classList.add('splash-exit');
-            setTimeout(() => { s.style.display = 'none'; document.documentElement.classList.remove('preload'); document.body.classList.remove('preload', 'no-scroll'); }, 800); 
-        }
+        function removeSplash(){ const s = document.getElementById('splash-screen'); s.classList.add('splash-exit'); setTimeout(() => { s.style.display = 'none'; document.documentElement.classList.remove('preload'); document.body.classList.remove('preload', 'no-scroll'); }, 800); }
         window.generateQuote=()=>{const r=quoteDB[Math.floor(Math.random()*quoteDB.length)];document.getElementById('splash-quote-text').innerText=`"${r.t}"`;document.getElementById('splash-quote-author').innerText=`- ${r.a}`;}
         
         window.init3DTilt=()=>{
