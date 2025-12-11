@@ -3,410 +3,396 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lumina | Studio AI</title>
+    <title>Lumina | AI Studio</title>
     
-    <!-- FONTS -->
     <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* --- CORE DESIGN SYSTEM (PORTFOLIO MATCHING) --- */
+        /* TEMA & VAR */
         :root {
-            --accent-glow: #38bdf8; 
-            --bg-color: #0f172a; 
-            --text-main: #f8fafc; 
+            --accent: #38bdf8;
+            --bg-deep: #0f172a;
+            --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --glass-surface: rgba(30, 41, 59, 0.4); 
-            --glass-strong: rgba(15, 23, 42, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.08); 
-            --input-bg: rgba(0, 0, 0, 0.3); 
-            --success: #34d399; 
-            --warning: #fbbf24; 
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --input-bg: rgba(0, 0, 0, 0.3);
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Figtree', sans-serif; outline: none; }
         
         body { 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            min-height: 100vh; 
-            overflow-x: hidden; 
-            background-image: radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.1) 0px, transparent 50%), 
-                              radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.1) 0px, transparent 50%);
-            padding-bottom: 80px;
+            background-color: var(--bg-deep); color: var(--text-main); 
+            min-height: 100vh; overflow-x: hidden; padding-bottom: 80px;
+            background-image: radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%), 
+                              radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.15) 0px, transparent 50%);
         }
 
-        /* --- NAVBAR CAPSULE --- */
+        /* ORBS ANIMATION */
+        .orb { position: fixed; border-radius: 50%; filter: blur(100px); opacity: 0.4; z-index: -1; animation: float 10s infinite alternate ease-in-out; }
+        .orb-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: var(--accent); }
+        .orb-2 { bottom: -10%; right: -10%; width: 40vw; height: 40vw; background: #818cf8; animation-delay: -5s; }
+        @keyframes float { from { transform: translate(0,0); } to { transform: translate(30px, 50px); } }
+
+        /* NAVBAR */
         nav { 
             position: fixed; top: 25px; left: 50%; transform: translateX(-50%); 
-            width: 90%; max-width: 700px; height: 60px; padding: 0 30px; 
+            width: 90%; max-width: 750px; height: 65px; padding: 0 35px; 
             z-index: 50; display: flex; justify-content: space-between; align-items: center; 
-            border-radius: 100px; 
-            background: rgba(15, 23, 42, 0.6); 
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-            border: 1px solid var(--glass-border); 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border-radius: 100px; background: rgba(15, 23, 42, 0.7); 
+            backdrop-filter: blur(25px); border: 1px solid var(--glass-border); 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
-        nav .logo { font-family: 'Fira Code', monospace; font-weight: 800; font-size: 1.1rem; color: var(--text-main); letter-spacing: -0.5px; }
-        nav .menu a { color: var(--text-muted); text-decoration: none; font-weight: 600; margin-left: 20px; transition:0.3s; font-size:0.9rem;}
-        nav .menu a:hover { color: var(--accent-glow); }
+        nav .logo { font-family: 'Fira Code', monospace; font-weight: 800; font-size: 1.2rem; color: #fff; }
+        nav a { color: var(--text-muted); text-decoration: none; font-weight: 600; margin-left: 20px; transition:0.3s; font-size:0.9rem; }
+        nav a:hover { color: var(--accent); }
 
-        /* --- HERO & CONTAINERS --- */
-        .container { max-width: 900px; margin: 120px auto 0; padding: 0 20px; text-align: center; }
+        /* CONTAINER */
+        .container { max-width: 950px; margin: 130px auto 0; padding: 0 20px; text-align: center; }
         
         .main-card { 
-            background: var(--glass-strong); backdrop-filter: blur(30px);
-            border: 1px solid var(--glass-border); border-radius: 24px; padding: 40px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.2); position: relative; overflow: hidden;
-            text-align: left; transition: transform 0.3s;
+            background: var(--glass-bg); backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border); border-radius: 28px; padding: 45px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3); position: relative; overflow: hidden;
+            text-align: left; margin-bottom: 30px;
         }
         .main-card::before {
-            content: ''; position: absolute; top:0; left:0; width:100%; height:4px;
-            background: linear-gradient(90deg, var(--accent-glow), #818cf8); opacity: 0.8;
+            content: ''; position: absolute; top:0; left:0; width:100%; height:2px;
+            background: linear-gradient(90deg, var(--accent), #818cf8);
         }
 
-        .section-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 15px; font-weight: 700; display: block;}
+        .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 15px; font-weight: 800; opacity: 0.8; }
         
-        /* --- SERVER CONNECTION --- */
-        .connection-box {
-            display: flex; gap: 10px; margin-bottom: 30px; background: rgba(0,0,0,0.2);
-            padding: 8px; border-radius: 16px; border: 1px solid var(--glass-border);
+        /* INPUT & UPLOAD */
+        .input-row {
+            display: flex; gap: 12px; margin-bottom: 35px; background: rgba(0,0,0,0.3);
+            padding: 10px; border-radius: 18px; border: 1px solid var(--glass-border);
         }
-        .connection-box input {
-            flex: 1; background: transparent; border: none; padding: 10px 15px; 
-            color: #fff; font-family: 'Fira Code'; font-size: 0.9rem;
+        .input-row input {
+            flex: 1; background: transparent; border: none; padding: 12px 15px; 
+            color: #fff; font-family: 'Fira Code'; font-size: 0.95rem;
         }
-        .connection-box button {
-            background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--glass-border);
-            padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 600; transition:0.2s;
+        .input-row button {
+            background: rgba(255,255,255,0.08); color: #fff; border: 1px solid var(--glass-border);
+            padding: 0 25px; border-radius: 14px; cursor: pointer; font-weight: 700; transition:0.3s;
         }
-        .connection-box button:hover { background: var(--accent-glow); color: #fff; border-color:transparent;}
+        .input-row button:hover { background: var(--accent); color:#000; border-color:transparent; }
         
-        /* --- UPLOAD ZONE --- */
         .drop-zone {
-            border: 2px dashed var(--glass-border); border-radius: 20px; padding: 50px;
+            border: 2px dashed rgba(255,255,255,0.1); border-radius: 24px; padding: 50px;
             text-align: center; cursor: pointer; transition: 0.3s; position: relative;
-            background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
         }
-        .drop-zone:hover { border-color: var(--accent-glow); background: rgba(56, 189, 248, 0.05); transform: translateY(-3px); }
-        .dz-icon { font-size: 3rem; color: var(--text-muted); margin-bottom: 15px; transition:0.3s; }
-        .drop-zone:hover .dz-icon { color: var(--accent-glow); transform: scale(1.1); }
-        .dz-text { font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; color: var(--text-main); }
-        .dz-sub { color: var(--text-muted); font-size: 0.9rem; }
+        .drop-zone:hover { border-color: var(--accent); background: rgba(56, 189, 248, 0.05); transform: translateY(-3px); }
+        .dz-h { font-size: 1.3rem; font-weight: 700; margin: 15px 0 5px; color: var(--text-main); }
+        .dz-p { color: var(--text-muted); font-size: 0.9rem; }
 
-        /* --- GRIDS & CARDS --- */
-        .grid-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 20px; }
-        
-        .option-card {
+        /* MODELS & FORMAT */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-top: 10px; }
+        .card-opt {
             background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
-            padding: 15px; border-radius: 12px; cursor: pointer; transition: 0.2s; position: relative;
+            padding: 20px; border-radius: 16px; cursor: pointer; transition: 0.3s; position: relative;
         }
-        .option-card:hover { background: rgba(255,255,255,0.06); }
-        .option-card.active { background: rgba(56, 189, 248, 0.1); border-color: var(--accent-glow); }
-        .option-card.active::after { content: '\f00c'; font-family: 'Font Awesome 5 Free'; font-weight: 900; position: absolute; top: 10px; right: 10px; color: var(--accent-glow); }
-        
-        .opt-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 3px; color: var(--text-main); }
-        .opt-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; }
+        .card-opt:hover { background: rgba(255,255,255,0.07); transform:translateY(-2px); }
+        .card-opt.active { background: rgba(56, 189, 248, 0.15); border-color: var(--accent); }
+        .card-opt.active::after { content: '✔'; position: absolute; top: 15px; right: 15px; color: var(--accent); font-weight: 900;}
+        .opt-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 5px; }
+        .opt-desc { font-size: 0.8rem; color: var(--text-muted); }
 
-        /* --- FORMAT PILLS --- */
-        .format-pills { display: flex; gap: 10px; margin-top: 15px; overflow-x: auto; padding-bottom: 5px;}
-        .fmt-pill {
-            padding: 8px 20px; border-radius: 50px; border: 1px solid var(--glass-border);
-            background: rgba(255,255,255,0.02); color: var(--text-muted); cursor: pointer;
-            font-size: 0.85rem; font-weight: 600; transition: 0.2s;
+        .pills { display: flex; gap: 12px; margin-top: 10px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none;}
+        .pill {
+            padding: 12px 25px; border-radius: 12px; border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.03); color: var(--text-muted); cursor: pointer;
+            font-size: 0.9rem; font-weight: 700; transition: 0.3s; white-space: nowrap;
         }
-        .fmt-pill:hover { background: rgba(255,255,255,0.05); }
-        .fmt-pill.active { background: var(--text-main); color: var(--bg-color); border-color: #fff; }
+        .pill:hover { background: rgba(255,255,255,0.08); }
+        .pill.active { background: #fff; color: #000; border-color: #fff; transform: scale(1.05); }
 
-        /* --- START BUTTON --- */
+        /* BTN START */
         .btn-launch { 
-            width: 100%; margin-top: 40px; padding: 18px; 
-            background: linear-gradient(135deg, var(--accent-glow), #4f46e5); 
-            border: none; border-radius: 16px; color: white; font-weight: 800; font-size: 1rem; letter-spacing: 0.5px;
-            cursor: pointer; transition: 0.3s; box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
-            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; margin-top: 45px; padding: 20px; 
+            background: linear-gradient(135deg, var(--accent), #4f46e5); 
+            border: none; border-radius: 18px; color: white; font-weight: 800; font-size: 1.1rem; letter-spacing: 1px;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 10px 40px rgba(56, 189, 248, 0.3);
+            display: flex; align-items: center; justify-content: center; gap: 12px; text-transform: uppercase;
         }
-        .btn-launch:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(79, 70, 229, 0.4); filter: brightness(1.1); }
+        .btn-launch:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(56, 189, 248, 0.5); filter: brightness(1.1); }
 
-        /* --- LOADING OVERLAY --- */
+        /* LOADING */
         #overlay {
-            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.9); z-index: 1000;
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.95); z-index: 1000;
             display: none; flex-direction: column; justify-content: center; align-items: center;
-            backdrop-filter: blur(15px); opacity: 0; transition: opacity 0.4s;
+            backdrop-filter: blur(20px); opacity: 0; transition: opacity 0.5s;
         }
         #overlay.active { opacity: 1; display: flex; }
         
-        .loader-ring {
-            width: 80px; height: 80px; border: 4px solid rgba(255,255,255,0.1);
-            border-top: 4px solid var(--accent-glow); border-radius: 50%;
-            animation: spin 1s infinite cubic-bezier(0.68, -0.55, 0.27, 1.55); margin-bottom: 20px;
-        }
-        @keyframes spin { 100%{transform: rotate(360deg);} }
-        .progress-cont { width: 300px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-top: 15px;}
-        .progress-bar { height: 100%; width: 0%; background: var(--accent-glow); transition: width 0.3s ease; }
+        .spinner { width: 70px; height: 70px; border-radius: 50%; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--accent); animation: spin 1s infinite linear; margin-bottom: 25px; }
+        @keyframes spin { 100%{ transform: rotate(360deg); } }
+        
+        .progress-box { width: 350px; height: 8px; background: rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; margin-top: 15px;}
+        .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), #a78bfa); transition: width 0.3s ease; }
 
-        /* --- RESULTS --- */
-        #results-area { display: none; margin-top: 40px; animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        /* RESULTS (SMOOTH & DISTINCT COLORS) */
+        #res-area { display: none; margin-top: 20px; animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
         @keyframes slideUp { from{opacity:0; transform:translateY(40px);} to{opacity:1; transform:translateY(0);} }
         
-        .stem-item {
-            background: var(--glass-strong); padding: 25px; border-radius: 20px; margin-bottom: 15px;
-            display: flex; align-items: center; gap: 20px; border: 1px solid var(--glass-border);
-            position: relative; overflow: hidden;
+        .stem-card {
+            background: rgba(30, 41, 59, 0.6); padding: 25px; border-radius: 20px; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 25px; border: 1px solid var(--glass-border);
+            transition: 0.3s; position: relative; overflow: hidden;
         }
-        .stem-item::after { content:''; position:absolute; top:0; left:0; width:6px; height:100%; background:var(--accent-glow); opacity:0.8;}
+        .stem-card:hover { border-color: rgba(255,255,255,0.2); transform: scale(1.01); }
+        .stem-card::before { content:''; position:absolute; top:0; left:0; width:5px; height:100%; background:currentColor; }
         
         .stem-icon { 
-            width: 50px; height: 50px; border-radius: 14px; background: rgba(56, 189, 248, 0.15); 
-            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--accent-glow);
+            width: 55px; height: 55px; border-radius: 16px; 
+            display: flex; align-items: center; justify-content: center; font-size: 1.6rem; 
+            flex-shrink: 0; background: rgba(255,255,255,0.05);
         }
-        .dl-btn { 
-            width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--glass-border); 
+        
+        .stem-dl { 
+            width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--glass-border); 
             color: var(--text-muted); display: flex; align-items: center; justify-content: center; text-decoration: none;
-            transition: 0.2s;
+            transition: 0.2s; font-size: 1.2rem; background: rgba(0,0,0,0.2);
         }
-        .dl-btn:hover { background: #fff; color: var(--bg-color); border-color: #fff; }
-
-        audio { height: 40px; opacity: 0.7; transition: 0.2s; flex: 1; }
-        audio:hover { opacity: 1; }
+        .stem-dl:hover { background: #fff; color: #000; transform: rotate(-15deg); border-color:#fff; }
+        audio { height: 40px; width: 100%; opacity: 0.9; }
 
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR -->
     <nav>
-        <div class="logo">LUMINA.AI</div>
+        <div class="logo">Lumina.AI</div>
         <div class="menu">
             <a href="index.html">Home</a>
-            <a href="#" class="active" style="color:var(--text-main)">Separation</a>
+            <a href="#" style="color:#fff;">Studio</a>
         </div>
     </nav>
 
-    <!-- LOADING SCREEN -->
+    <!-- LOADING -->
     <div id="overlay">
-        <div class="loader-ring"></div>
-        <h2 id="ov-status" style="font-weight: 800; color: #fff;">Preparing...</h2>
-        <p id="ov-detail" style="color: var(--text-muted);">Please wait</p>
-        <div class="progress-cont"><div class="progress-bar" id="ov-prog"></div></div>
+        <div class="spinner"></div>
+        <h2 id="ov-stat" style="font-weight: 800; color: #fff; margin-bottom: 5px;">Uploading...</h2>
+        <p id="ov-det" style="color: var(--text-muted);">Please wait</p>
+        <div class="progress-box"><div class="progress-bar" id="ov-bar"></div></div>
+        <div id="ov-pct" style="margin-top: 10px; font-family: 'Fira Code'; color: var(--accent);">0%</div>
     </div>
 
-    <!-- MAIN UI -->
     <div class="container">
         
         <div class="main-card">
-            <span class="section-label">01. Connection</span>
-            
-            <div class="connection-box">
-                <input type="text" id="api-url" placeholder="Paste URL Cloudflare Colab Disini...">
+            <span class="label">01. Connection</span>
+            <div class="input-row">
+                <input type="text" id="api-url" placeholder="Paste URL Cloudflare (.trycloudflare.com) dari Colab...">
                 <button onclick="connect()" id="btn-conn">Connect</button>
             </div>
-
-            <span class="section-label" style="margin-top: 30px;">02. Source Audio</span>
             
+            <div style="margin-top:-25px; text-align:right;">
+                <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=NQkNo_7Jcz1K" target="_blank" style="color:#38bdf8; text-decoration:none; font-size:0.8rem; border-bottom:1px dashed #38bdf8;"><i class="fas fa-external-link-alt"></i> Script Colab</a>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 35px 0;">
+
+            <span class="label">02. Upload</span>
             <div class="drop-zone" onclick="document.getElementById('f-in').click()">
-                <div id="file-info">
-                    <i class="fas fa-cloud-upload-alt dz-icon"></i>
-                    <div class="dz-text">Tap to Select Audio</div>
-                    <div class="dz-sub">Support MP3, WAV, FLAC &bull; Max 500MB</div>
+                <div id="f-info">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 20px;"></i>
+                    <div class="dz-h">Tap to Select Audio File</div>
+                    <div class="dz-p">Max 500MB (MP3/WAV/FLAC)</div>
                 </div>
                 <input type="file" id="f-in" hidden accept="audio/*">
             </div>
 
-            <!-- MODEL SELECTION GRID (INTERACTIVE) -->
-            <span class="section-label" style="margin-top: 30px;">03. Select Model</span>
-            <div class="grid-options" id="model-grid">
-                <!-- Javascript will inject cards here -->
+            <span class="label" style="display:block; margin-top:40px;">03. Model</span>
+            <div class="grid" id="m-grid"></div>
+
+            <span class="label" style="display:block; margin-top:40px;">04. Output Format</span>
+            <div class="pills">
+                <div class="pill active" onclick="setFmt('mp3', this)">MP3</div>
+                <div class="pill" onclick="setFmt('wav', this)">WAV (Lossless)</div>
+                <div class="pill" onclick="setFmt('flac', this)">FLAC</div>
+                <div class="pill" onclick="setFmt('m4a', this)">M4A</div>
             </div>
 
-            <!-- OUTPUT FORMAT -->
-            <span class="section-label" style="margin-top: 30px;">04. Output Format</span>
-            <div class="format-pills">
-                <div class="fmt-pill active" onclick="setFmt('mp3', this)">MP3</div>
-                <div class="fmt-pill" onclick="setFmt('wav', this)">WAV (Lossless)</div>
-                <div class="fmt-pill" onclick="setFmt('flac', this)">FLAC</div>
-                <div class="fmt-pill" onclick="setFmt('m4a', this)">M4A</div>
-            </div>
-
-            <!-- ACTION BUTTON -->
-            <button class="btn-launch" onclick="startAsync()">
-                START PROCESS <i class="fas fa-arrow-right"></i>
-            </button>
+            <button class="btn-launch" onclick="start()">Start Processing <i class="fas fa-arrow-right"></i></button>
         </div>
 
-        <!-- RESULT AREA -->
-        <div id="results-area">
-            <div class="section-label" style="text-align: left; margin-bottom: 20px; font-size: 1rem; color: #fff;">Separation Result</div>
-            <div id="stems-out"></div>
+        <div id="res-area">
+            <h2 style="margin-bottom:20px; font-weight:700; font-size:1.5rem;">Results</h2>
+            <div id="res-list"></div>
         </div>
 
     </div>
 
     <script>
-        // CONFIG
         const MODELS = [
-            { id: 'BS-Roformer-Resurrection-Inst.ckpt', name: 'Roformer Inst', desc: 'Best for Instrumental.' },
-            { id: 'BS-Roformer-Resurrection-v.1.ckpt', name: 'Roformer Vocal', desc: 'Best for Vocal.' },
-            { id: 'Kim_Vocal_2', name: 'Kim Vocal 2', desc: 'Very Clean Vocals.' },
+            { id: 'BS-Roformer-Resurrection-Inst.ckpt', name: 'Roformer Inst (SOTA)', desc: 'Best Instrumental Separation.' },
+            { id: 'BS-Roformer-Resurrection-v.1.ckpt', name: 'Roformer Vocal (SOTA)', desc: 'Best Vocal Isolation.' },
+            { id: 'Kim_Vocal_2', name: 'Kim Vocal 2', desc: 'Ultra Clean Vocals.' },
             { id: 'UVR-MDX-NET-Inst_HQ_3', name: 'Inst HQ 3', desc: 'High Quality Inst.' },
-            { id: '1_HP-Karaoke-UVR', name: 'HP Karaoke', desc: 'Remove Vocals.' },
-            { id: 'htdemucs', name: 'Demucs V4', desc: 'Fastest 4 Stems.' }
+            { id: '1_HP-Karaoke-UVR', name: 'HP Karaoke', desc: 'Vocal Remover.' },
+            { id: 'htdemucs', name: 'Demucs V4', desc: 'Fast Separation (4 Stems).' }
         ];
 
-        let URL = localStorage.getItem('async_v12_url') || "";
+        let URL = localStorage.getItem('L_V12_URL') || "";
         let FILE = null;
-        let SEL_MODEL = MODELS[0].id;
-        let SEL_FMT = 'mp3';
+        let MOD = MODELS[0].id;
+        let FMT = 'mp3';
 
-        // INIT
         window.onload = () => {
-            if(URL) {
-                document.getElementById('api-url').value = URL;
-                // Auto check but silently
-                // connect();
-            }
-            renderModels();
-            
+            if(URL) document.getElementById('api-url').value = URL;
+            renderM();
             document.getElementById('f-in').onchange = (e) => {
                 const f = e.target.files[0];
                 if(f){
-                    FILE = f;
-                    const mb = (f.size/1024/1024).toFixed(1);
-                    document.getElementById('file-info').innerHTML = `
-                        <i class="fas fa-check-circle dz-icon" style="color:var(--success)"></i>
-                        <div class="dz-text">${f.name}</div>
-                        <div class="dz-sub" style="color:#fff;">${mb} MB Ready</div>
+                    FILE=f;
+                    document.getElementById('f-info').innerHTML = `
+                        <i class="fas fa-check-circle" style="font-size:3.5rem; color:#34d399; margin-bottom:15px;"></i>
+                        <div class="dz-h">${f.name}</div>
+                        <div class="dz-p" style="color:#34d399; font-weight:700;">${(f.size/1024/1024).toFixed(2)} MB Ready</div>
                     `;
-                    document.querySelector('.drop-zone').style.borderColor = "var(--success)";
-                    document.querySelector('.drop-zone').style.background = "rgba(52, 211, 153, 0.1)";
+                    document.querySelector('.drop-zone').style.borderColor = "#34d399";
+                    document.querySelector('.drop-zone').style.background = "rgba(52, 211, 153, 0.05)";
                 }
             }
         };
 
-        // UI HELPERS
-        function renderModels() {
-            document.getElementById('model-grid').innerHTML = MODELS.map(m => `
-                <div class="option-card ${m.id === SEL_MODEL ? 'active' : ''}" onclick="setModel('${m.id}')">
-                    <div class="opt-title">${m.name}</div>
+        function renderM() {
+            document.getElementById('m-grid').innerHTML = MODELS.map(m => `
+                <div class="card-opt ${m.id === MOD ? 'active' : ''}" onclick="setMod('${m.id}')">
+                    <div class="opt-name">${m.name}</div>
                     <div class="opt-desc">${m.desc}</div>
                 </div>
             `).join('');
         }
+        function setMod(id){ MOD=id; renderM(); }
+        function setFmt(f, el){ FMT=f; document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active')); el.classList.add('active'); }
 
-        function setModel(id) {
-            SEL_MODEL = id; renderModels();
-        }
-
-        function setFmt(fmt, el) {
-            SEL_FMT = fmt;
-            document.querySelectorAll('.fmt-pill').forEach(x => x.classList.remove('active'));
-            el.classList.add('active');
-        }
-
-        // CONNECT
         async function connect(){
-            let u = document.getElementById('api-url').value.trim().replace(/\/$/,"");
-            if(!u) return alert("URL Kosong!");
+            let u=document.getElementById('api-url').value.trim().replace(/\/$/,""); if(!u)return alert("Empty URL");
             try{
                 document.getElementById('btn-conn').innerText="...";
-                const r = await fetch(`${u}/ping`, {headers:{'ngrok-skip-browser-warning':'1'}});
+                const r=await fetch(`${u}/ping`, {headers:{'ngrok-skip-browser-warning':'1'}});
                 if(r.ok){
-                    const d=await r.json(); URL=u; localStorage.setItem('async_v12_url', u);
-                    document.getElementById('btn-conn').innerText="Online";
+                    const d=await r.json(); URL=u; localStorage.setItem('L_V12_URL', u);
+                    document.getElementById('btn-conn').innerText="Connected";
                     document.getElementById('btn-conn').style.color="#34d399";
-                    document.getElementById('btn-conn').style.borderColor="#34d399";
-                    alert(`Tersambung: ${d.engine}`);
+                    alert(`Connected: ${d.engine}`);
                 }
-            } catch(e) {
-                alert("Gagal. Cek Script Colab V12.");
-                document.getElementById('btn-conn').innerText="Retry";
+            } catch(e) { 
+                alert("Connection Failed. Check Colab Link."); 
+                document.getElementById('btn-conn').innerText="Retry"; 
             }
         }
 
-        // LOGIKA UTAMA (V12 ASYNC)
-        function startAsync() {
-            if(!URL || !FILE) return alert("Belum siap! Cek koneksi / file.");
+        // ASYNC LOGIC V13 (Smart Progress)
+        function start() {
+            if(!URL || !FILE) return alert("Check Connection / File");
             
-            // UI Overlay
-            const ov = document.getElementById('overlay');
-            ov.classList.add('active');
-            document.getElementById('ov-status').innerText = "Uploading Phase...";
-            document.getElementById('ov-detail').innerText = "Sending audio to server. Please do not close.";
-            document.getElementById('ov-prog').style.width = "0%";
+            const ov = document.getElementById('overlay'); ov.classList.add('active');
+            const st = document.getElementById('ov-stat'); const dt = document.getElementById('ov-det');
+            const bar = document.getElementById('ov-bar'); const pc = document.getElementById('ov-pct');
+            
+            bar.style.width="0%"; pc.innerText="0%";
+            st.innerText="Uploading..."; dt.innerText="Sending file...";
 
             const fd = new FormData();
-            fd.append('audio_file', FILE);
-            fd.append('model_name', SEL_MODEL);
-            fd.append('output_format', SEL_FMT);
+            fd.append('audio_file', FILE); fd.append('model_name', MOD); fd.append('output_format', FMT);
 
             const xhr = new XMLHttpRequest();
             xhr.upload.onprogress = (e) => {
                 if(e.lengthComputable){
-                    const p = (e.loaded/e.total)*100;
-                    document.getElementById('ov-prog').style.width = p+"%";
+                    const p = Math.round((e.loaded/e.total)*100);
+                    bar.style.width=p+"%"; pc.innerText=p+"%";
                 }
             };
             xhr.onload = () => {
-                if(xhr.status === 200){
-                    const res = JSON.parse(xhr.responseText);
-                    startPolling(res.task_id); // Start Polling Antrian
-                } else {
-                    alert("Server Error"); ov.classList.remove('active');
-                }
+                if(xhr.status===200){
+                    const r=JSON.parse(xhr.responseText);
+                    startPoll(r.task_id);
+                } else { alert("Upload Failed"); ov.classList.remove('active'); }
             };
-            xhr.onerror = () => {alert("Connection Error (Broken Pipe)"); ov.classList.remove('active');};
+            xhr.onerror=()=>{alert("Network Error"); ov.classList.remove('active');};
             
-            // Timeout sangat panjang agar aman untuk upload
-            xhr.timeout = 0; 
-            xhr.open('POST', `${URL}/upload_job`, true);
-            xhr.send(fd);
+            xhr.timeout=0; xhr.open('POST', `${URL}/upload_job`, true); xhr.send(fd);
         }
 
-        // FASE POLLING
-        async function startPolling(id) {
-            document.getElementById('ov-status').innerText = "Processing AI...";
-            document.getElementById('ov-detail').innerText = "Running on GPU. Safe to wait here (Anti-Timeout).";
-            document.getElementById('ov-prog').parentElement.style.display="none"; // Hide progress bar for indefinite wait
+        async function startPoll(tid) {
+            const st=document.getElementById('ov-stat'); const bar=document.getElementById('ov-bar'); const pc=document.getElementById('ov-pct');
+            st.innerText="Processing..."; 
+            document.getElementById('ov-det').innerText="AI is running (Anti-Timeout)";
             
-            const intv = setInterval(async () => {
-                try {
-                    const r = await fetch(`${URL}/check_job/${id}`);
-                    const d = await r.json();
+            // Smart Animation
+            let sim=10; 
+            const anim=setInterval(()=>{ if(sim<90){ sim+=Math.random(); if(sim>90)sim=90; bar.style.width=sim+"%"; pc.innerText=Math.floor(sim)+"%"; } }, 800);
+
+            const poll = setInterval(async ()=>{
+                try{
+                    const r=await fetch(`${URL}/check_job/${tid}`); const d=await r.json();
                     
-                    if(d.status === 'done') {
-                        clearInterval(intv);
-                        renderResult(d.data);
-                        document.getElementById('overlay').classList.remove('active');
-                    } else if(d.status === 'error') {
-                        clearInterval(intv);
-                        alert("Processing Failed: " + d.error);
+                    // Priority Real Progress from Server V13
+                    if(d.progress && d.progress > sim) {
+                        sim = d.progress; bar.style.width=sim+'%'; pc.innerText=sim+'%';
+                        document.getElementById('ov-det').innerText = d.message || "Working...";
+                    }
+
+                    if(d.status==='done'){
+                        clearInterval(poll); clearInterval(anim);
+                        bar.style.width="100%"; pc.innerText="100%"; st.innerText="Success!";
+                        setTimeout(()=>{
+                            renderRes(d.data);
+                            document.getElementById('overlay').classList.remove('active');
+                        }, 800);
+                    } else if(d.status==='error'){
+                        clearInterval(poll); clearInterval(anim);
+                        alert("Error: "+d.error);
                         document.getElementById('overlay').classList.remove('active');
                     }
-                } catch(e) { console.log("Network glitch.. retrying.."); }
-            }, 3000); // Cek tiap 3 detik
+                }catch(e){}
+            }, 2000);
         }
 
-        function renderResult(data) {
-            const area = document.getElementById('stems-out');
-            area.innerHTML = ""; document.getElementById('results-area').style.display='block';
+        function renderRes(data){
+            const list=document.getElementById('res-list'); list.innerHTML="";
+            document.getElementById('res-area').style.display='block';
             
-            for(const [name, path] of Object.entries(data)) {
-                let color = "#a78bfa";
-                if(name.toLowerCase().includes('vocal')) color = "#f472b6";
-                if(name.toLowerCase().includes('inst')) color = "#34d399";
+            // SORTING LOGIC: VOCAL ALWAYS FIRST
+            // Kita ubah object ke array agar bisa disortir
+            const tracks = Object.entries(data).sort((a, b) => {
+                const nameA = a[0].toLowerCase();
+                const nameB = b[0].toLowerCase();
+                // Jika A vocal, A harus naik (return -1)
+                if(nameA.includes('vocal') && !nameB.includes('vocal')) return -1;
+                // Jika B vocal, A harus turun (return 1)
+                if(!nameA.includes('vocal') && nameB.includes('vocal')) return 1;
+                return 0; // Sama (misal drum vs bass)
+            });
+
+            for(const [name, path] of tracks){
+                let col='#a78bfa'; let ic='fa-music'; let label="Audio";
+                let n_lower = name.toLowerCase();
+
+                if(n_lower.includes('vocal')){ col='#f472b6'; ic='fa-microphone'; label="Vocals"; }
+                else if(n_lower.includes('inst') || n_lower.includes('other') || n_lower.includes('no_vocals')){ 
+                    col='#34d399'; ic='fa-guitar'; label="Instrumental"; 
+                }
+                else if(n_lower.includes('drum')){ col='#fbbf24'; ic='fa-drum'; label="Drums"; }
                 
-                const link = URL + path;
-                area.innerHTML += `
-                <div class="stem-item" style="border-left: 4px solid ${color};">
-                    <div class="stem-icon"><i class="fas fa-music"></i></div>
+                list.innerHTML += `
+                <div class="stem-card" style="border-left: 4px solid ${col}; color:${col};">
+                    <div class="stem-icon" style="color:${col}; background:rgba(255,255,255,0.05);"><i class="fas ${ic}"></i></div>
                     <div style="flex:1;">
-                        <div style="font-weight:700; color:#fff; margin-bottom:5px;">${name}</div>
-                        <audio controls src="${link}" style="width:100%; opacity:0.8; height:35px;"></audio>
+                        <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; opacity:0.8;">${label}</div>
+                        <div style="font-weight:700; color:#fff; margin-bottom:5px; font-size:0.95rem; word-break:break-all;">${name}</div>
+                        <audio controls src="${URL+path}"></audio>
                     </div>
-                    <a href="${link}" download class="dl-btn"><i class="fas fa-download"></i></a>
+                    <a href="${URL+path}" download="${name}" class="dl-btn"><i class="fas fa-download"></i></a>
                 </div>`;
             }
-            document.getElementById('results-area').scrollIntoView({behavior:'smooth'});
+            document.getElementById('res-area').scrollIntoView({behavior:'smooth'});
         }
     </script>
 </body>
