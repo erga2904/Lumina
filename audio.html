@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina | UVR5 AI Interface</title>
+    <title>Lumina | UVR5 AI Separator</title>
     
     <!-- FONTS & ICONS -->
     <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
@@ -72,7 +72,7 @@
         .tab-btn:hover { background: rgba(255,255,255,0.1); }
         .tab-btn.active { background: var(--accent-glow); color: #fff; border-color: var(--accent-glow); font-weight: 700; }
 
-        .model-list-wrapper { max-height: 300px; overflow-y: auto; padding-right: 5px; }
+        .model-list-wrapper { max-height: 300px; overflow-y: auto; padding-right: 5px; margin-bottom: 15px; }
         /* Scrollbar custom */
         .model-list-wrapper::-webkit-scrollbar { width: 6px; }
         .model-list-wrapper::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
@@ -121,120 +121,140 @@
     <!-- LOADER SCREEN -->
     <div class="overlay" id="processing-screen">
         <div class="loader"></div>
-        <h3 style="margin-top:20px; color:white;">Processing AI Model...</h3>
+        <h3 style="margin-top:20px; color:white;">Sedang Memproses AI...</h3>
         <p id="process-model-name" style="color:var(--accent-glow); margin:5px 0; font-weight:700;">Model: Unknown</p>
-        <p id="process-status" style="color:var(--text-muted); font-size:0.9rem; font-family:'Fira Code';">> Downloading Model...</p>
+        <p id="process-status" style="color:var(--text-muted); font-size:0.9rem; font-family:'Fira Code';">> Mengupload ke Colab...</p>
     </div>
 
     <nav>
         <h3>Lumina.UVR</h3>
-        <i class="fas fa-home nav-icon" onclick="window.location.href='index.html'"></i>
+        <div>
+            <i class="fas fa-home nav-icon" onclick="window.location.href='index.html'" style="margin-right: 15px;"></i>
+            <i class="fas fa-adjust nav-icon" onclick="document.documentElement.classList.toggle('light-mode')"></i>
+        </div>
     </nav>
 
     <div class="container">
         
-        <!-- STEP 1: SERVER CONFIG -->
+        <!-- PANEL 1: KONEKSI SERVER -->
         <div class="panel">
             <div class="section-header">
                 <span><i class="fas fa-satellite-dish"></i> Colab Backend</span>
                 <span id="conn-status" style="font-size:0.75rem; color:var(--error); font-weight:800;">OFFLINE</span>
             </div>
+            <p style="font-size:0.85rem; color:var(--text-muted);">Paste URL Public Colab (.trycloudflare.com) di bawah ini:</p>
             <div class="server-box">
-                <input type="text" id="api-url" class="server-input" placeholder="Paste URL Public Colab Disini...">
+                <input type="text" id="api-url" class="server-input" placeholder="https://xxxx-xxxx.trycloudflare.com">
                 <button class="btn btn-connect" onclick="checkServer()">Connect</button>
             </div>
             <a href="https://colab.research.google.com/" target="_blank" style="font-size:0.8rem; margin-top:10px; display:inline-block; color:var(--accent-glow);"><i class="fas fa-external-link-alt"></i> Buka UVR Colab Script</a>
         </div>
 
-        <!-- STEP 2: SOURCE & MODEL -->
+        <!-- PANEL 2: SUMBER AUDIO & PILIH MODEL -->
         <div class="panel">
             <div class="section-header">Audio & AI Model</div>
 
-            <!-- Upload Zone -->
+            <!-- Upload Area -->
             <div class="drop-zone" id="drop-area" onclick="document.getElementById('file-upload').click()">
-                <div id="file-label" style="font-weight:600;"><i class="fas fa-music"></i> Pilih File Audio</div>
-                <div style="font-size:0.8rem; color:var(--text-muted);">Support: MP3, WAV (Max 15MB)</div>
+                <div id="file-label" style="font-weight:600; font-size:1.1rem;"><i class="fas fa-cloud-upload-alt"></i> Klik untuk Pilih Audio</div>
+                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Support: MP3, WAV, FLAC (Max 20MB)</div>
                 <input type="file" id="file-upload" hidden accept="audio/*">
             </div>
 
-            <!-- MODEL CATEGORIES -->
+            <!-- Tab Kategori Model -->
             <div class="tab-container">
-                <button class="tab-btn active" onclick="filterModels('mdx')">MDX-Net (Best)</button>
-                <button class="tab-btn" onclick="filterModels('vr')">VR Arch (Vocal)</button>
-                <button class="tab-btn" onclick="filterModels('demucs')">Demucs v4</button>
-                <button class="tab-btn" onclick="filterModels('all')">All List</button>
+                <button class="tab-btn active" onclick="filterModels('mdx', this)">MDX-Net (Terbaik)</button>
+                <button class="tab-btn" onclick="filterModels('vr', this)">VR Arch</button>
+                <button class="tab-btn" onclick="filterModels('demucs', this)">Demucs v4</button>
             </div>
 
+            <!-- List Model -->
             <div class="model-list-wrapper" id="model-container">
-                <!-- Javascript will inject models here -->
+                <!-- Diisi oleh Javascript -->
             </div>
 
-            <div style="background: rgba(56, 189, 248, 0.1); padding:10px; border-radius:8px; margin: 15px 0; font-size:0.85rem; border-left:3px solid var(--accent-glow);">
-                Selected: <b id="selected-model-name" style="color:#fff;">htdemucs (Default)</b>
+            <!-- Info Pilihan -->
+            <div style="background: rgba(56, 189, 248, 0.1); padding:12px; border-radius:8px; margin: 15px 0; font-size:0.9rem; border-left:4px solid var(--accent-glow);">
+                <span style="color:var(--text-muted);">Terpilih: </span> 
+                <b id="selected-model-name" style="color:#fff;">Kim Vocal 2 (Kim_Vocal_2)</b>
             </div>
 
+            <!-- TOMBOL UTAMA -->
             <button class="btn btn-primary" onclick="startProcess()">
-                <i class="fas fa-wand-magic-sparkles"></i> START PROCESS
+                <i class="fas fa-wand-magic-sparkles"></i> MULAI PROSES PEMISAHAN
             </button>
         </div>
 
-        <!-- RESULTS -->
+        <!-- PANEL 3: HASIL -->
         <div class="panel" id="results-area">
-            <div class="section-header"><i class="fas fa-layer-group"></i> Separated Stems</div>
+            <div class="section-header"><i class="fas fa-layer-group"></i> Hasil Pemisahan</div>
             <div id="stems-list"></div>
         </div>
     </div>
 
+    <!-- LOGIKA JAVASCRIPT LENGKAP -->
     <script>
-        // --- 1. MODEL DATABASE (Disesuaikan dengan Link JSON Github) ---
+        // --- 1. MODEL DATABASE (Daftar Model UVR5 Populer) ---
         const UVR_MODELS = [
-            // MDX-NET (High Quality Vocals/Inst)
-            { id: 'Kim_Vocal_2', name: 'Kim Vocal 2', type: 'mdx', desc: 'MDX-Net | Best Vocal Isolation' },
-            { id: 'UVR-MDX-NET-Inst_HQ_3', name: 'MDX-Net Inst HQ 3', type: 'mdx', desc: 'MDX-Net | Best Instrumentals' },
-            { id: 'UVR-MDX-NET-Voc_FT', name: 'MDX-Net Voc FT', type: 'mdx', desc: 'MDX-Net | Fine Tuned Vocals' },
-            { id: 'UVR-MDX-NET-Karaoke_2', name: 'MDX Karaoke 2', type: 'mdx', desc: 'MDX-Net | Karaoke Removal' },
-            { id: 'Reverb_HQ_By_FoxJoy', name: 'Reverb HQ (FoxJoy)', type: 'mdx', desc: 'De-Reverb Tools' },
-            { id: 'UVR_MDXNET_Main', name: 'UVR MDX Main', type: 'mdx', desc: 'Standard MDX Model' },
-            { id: 'MDX23C-8KFFT-InstVoc_HQ', name: 'MDX23C InstVoc HQ', type: 'mdx', desc: 'Hybrid Inst/Vocal' },
+            // MDX-NET
+            { id: 'Kim_Vocal_2', name: 'Kim Vocal 2', type: 'mdx', desc: 'Isolasi Vokal Paling Bersih' },
+            { id: 'UVR-MDX-NET-Inst_HQ_3', name: 'Inst HQ 3', type: 'mdx', desc: 'Isolasi Instrumental Terbaik' },
+            { id: 'UVR-MDX-NET-Voc_FT', name: 'MDX Voc FT', type: 'mdx', desc: 'Fine Tuned Vocals (Balanced)' },
+            { id: 'UVR_MDXNET_Main', name: 'MDX Main', type: 'mdx', desc: 'Model Standar UVR' },
 
-            // VR ARCH (Vocal focused)
-            { id: '1_HP-Karaoke-UVR', name: 'HP Karaoke UVR', type: 'vr', desc: 'VR Arch | Aggressive Karaoke' },
-            { id: '2_HP-UVR', name: 'HP UVR (Standard)', type: 'vr', desc: 'VR Arch | Standard Balanced' },
-            { id: '4_HP-Vocal-UVR', name: 'HP Vocal UVR', type: 'vr', desc: 'VR Arch | Strong Vocal focus' },
-            { id: '5_HP-Karaoke-UVR', name: 'HP Karaoke 5', type: 'vr', desc: 'VR Arch | Variation 5' },
-            { id: '6_HP-Karaoke-UVR', name: 'HP Karaoke 6', type: 'vr', desc: 'VR Arch | Variation 6' },
-            { id: 'UVR-DeEcho-DeReverb', name: 'DeEcho DeReverb', type: 'vr', desc: 'VR Arch | Remove Echo' },
-            { id: 'UVR-DeNoise', name: 'DeNoise', type: 'vr', desc: 'VR Arch | Remove Noise' },
+            // VR ARCH
+            { id: '1_HP-Karaoke-UVR', name: 'HP Karaoke', type: 'vr', desc: 'Hapus Vokal (Karaoke Mode)' },
+            { id: 'UVR-DeEcho-DeReverb', name: 'DeReverb', type: 'vr', desc: 'Hilangkan Gema/Echo' },
+            { id: 'UVR-DeNoise', name: 'DeNoise', type: 'vr', desc: 'Bersihkan Noise' },
             
-            // DEMUCS / OTHERS
-            { id: 'htdemucs', name: 'HT Demucs v4', type: 'demucs', desc: 'Facebook | Fast & Balanced 4 stems' },
-            { id: 'htdemucs_ft', name: 'HT Demucs FT', type: 'demucs', desc: 'Facebook | Fine Tuned (Better Quality)' },
-            { id: 'hdemucs_mmi', name: 'H-Demucs MMI', type: 'demucs', desc: 'Facebook | High Quality (Slower)' },
-            { id: 'roformer_bs_roformer', name: 'BS Roformer', type: 'demucs', desc: 'SOTA | Band-Split Roformer' }, // Optional, jika lib support
-            { id: 'mel_band_roformer', name: 'Mel-Band Roformer', type: 'demucs', desc: 'SOTA | Mel-Band Roformer' }
+            // DEMUCS
+            { id: 'htdemucs', name: 'HT Demucs v4', type: 'demucs', desc: 'Cepat & Seimbang (4 Stems)' },
+            { id: 'htdemucs_ft', name: 'HT Demucs FT', type: 'demucs', desc: 'Fine-tuned (Kualitas Tinggi)' }
         ];
 
+        // --- VARIABLE SYSTEM ---
         let SERVER_URL = "";
         let selectedFile = null;
-        let selectedModelID = "Kim_Vocal_2"; // Default
+        let selectedModelID = "Kim_Vocal_2"; 
         
-        // --- 2. RENDER MODELS ---
-        function filterModels(category) {
+        // --- SETUP SAAT LOAD ---
+        window.addEventListener('DOMContentLoaded', () => {
+            filterModels('mdx', document.querySelector('.tab-btn')); // Load Default tab
+            
+            // Event Listener File
+            const fInput = document.getElementById('file-upload');
+            if(fInput) {
+                fInput.addEventListener('change', (e) => {
+                    const f = e.target.files[0];
+                    if(f) {
+                        selectedFile = f;
+                        document.getElementById('file-label').innerHTML = `<span style="color:var(--accent-glow); font-weight:700;"><i class="fas fa-check"></i> ${f.name}</span>`;
+                        // Auto-hide result jika ganti file
+                        document.getElementById('results-area').style.display='none';
+                    }
+                });
+            }
+        });
+
+        // --- 2. LOGIKA PILIH MODEL ---
+        function filterModels(category, btnElement) {
             const container = document.getElementById('model-container');
             container.innerHTML = "";
 
-            // Update Tab Style
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            // Visual tombol tab aktif
+            if(btnElement) {
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                btnElement.classList.add('active');
+            }
 
-            const filtered = (category === 'all') 
-                ? UVR_MODELS 
-                : UVR_MODELS.filter(m => m.type === category);
-
+            const filtered = UVR_MODELS.filter(m => m.type === category);
+            
             filtered.forEach(m => {
-                const isSel = (m.id === selectedModelID) ? 'selected' : '';
+                // Tandai jika model ini sedang dipilih
+                const isSelected = (m.id === selectedModelID) ? 'selected' : '';
+                
                 const html = `
-                    <div class="model-item ${isSel}" onclick="selectModel('${m.id}', '${m.name}', this)">
+                    <div class="model-item ${isSelected}" onclick="selectModel('${m.id}', '${m.name}', this)">
                         <div class="model-info">
                             <h4>${m.name}</h4>
                             <p>${m.desc}</p>
@@ -246,124 +266,136 @@
             });
         }
 
-        function selectModel(id, name, el) {
+        function selectModel(id, name, element) {
             selectedModelID = id;
-            document.getElementById('selected-model-name').innerText = name + ` (${id})`;
+            document.getElementById('selected-model-name').innerText = `${name} (${id})`;
             
-            // Update Visual
+            // Update highlight
             document.querySelectorAll('.model-item').forEach(i => i.classList.remove('selected'));
-            el.classList.add('selected');
+            element.classList.add('selected');
         }
 
-        // Init Models on Load
-        window.onload = () => filterModels('mdx');
-
-        // --- 3. CORE LOGIC ---
-        const fileInput = document.getElementById('file-upload');
-        const dropArea = document.getElementById('drop-area');
-
-        dropArea.onclick = () => fileInput.click();
-        fileInput.onchange = (e) => {
-            const f = e.target.files[0];
-            if(f){ 
-                selectedFile = f;
-                document.getElementById('file-label').innerHTML = `<span style="color:var(--accent-glow)">${f.name}</span>`;
-            }
-        };
-
+        // --- 3. LOGIKA SERVER (CONNECT) ---
         async function checkServer() {
-            let url = document.getElementById('api-url').value.trim().replace(/\/$/, "");
-            if(!url) return alert("Isi URL Colab dulu!");
-            
-            try {
-                const btn = document.querySelector('.btn-connect');
-                const lbl = document.getElementById('conn-status');
-                btn.innerText = "...";
-                
-                const res = await fetch(`${url}/ping`, { mode:'cors' });
-                if(res.ok) {
-                    SERVER_URL = url;
-                    lbl.innerText = "ONLINE"; lbl.style.color = "var(--success)";
-                    btn.innerText = "Connected";
-                    alert("Terhubung ke UVR Engine!");
-                }
-            } catch(e) {
-                alert("Gagal koneksi. Cek apakah script Colab berjalan.");
-                document.querySelector('.btn-connect').innerText = "Retry";
-            }
-        }
+            let urlInput = document.getElementById('api-url').value.trim();
+            // Buang slash di akhir
+            let url = urlInput.replace(/\/$/, ""); 
 
-       async function checkServer() {
-            let inputUrl = document.getElementById('api-url').value.trim();
-            // Bersihkan slash di akhir url jika ada
-            let url = inputUrl.replace(/\/$/, ""); 
-            
-            if(!url) return alert("Isi URL Colab dulu!");
+            if(!url) return alert("❌ Masukkan URL Colab dulu!");
             
             const btn = document.querySelector('.btn-connect');
             const lbl = document.getElementById('conn-status');
-            const originalText = btn.innerText;
             btn.innerText = "Checking...";
-
+            
             try {
-                // Testing Ping Endpoint
-                const res = await fetch(`${url}/ping`, { 
-                    method: 'GET',
-                    mode: 'cors', // Penting untuk bypass
-                    headers: { 'Content-Type': 'application/json' }
-                });
+                // GET /ping
+                const res = await fetch(`${url}/ping`, { method: 'GET', mode: 'cors' });
 
                 if(res.ok) {
-                    const data = await res.json(); // Pastikan return JSON valid
+                    const data = await res.json(); // Cek JSON balikan
                     SERVER_URL = url;
-                    lbl.innerText = "ONLINE";
-                    lbl.style.color = "var(--success)";
-                    btn.innerText = "Connected";
+                    lbl.innerText = "ONLINE"; 
+                    lbl.style.color = "#34d399";
+                    btn.innerText = "Terhubung";
                     btn.style.background = "rgba(52, 211, 153, 0.1)";
-                    btn.style.color = "var(--success)";
-                    alert(`Terhubung! Engine: ${data.engine || 'UVR Backend'}`);
+                    btn.style.color = "#34d399";
+                    alert(`✅ Sukses Terhubung ke Engine: ${data.engine || 'UVR System'}`);
                 } else {
-                    throw new Error(`Server Error (${res.status})`);
+                    throw new Error(`Server Response: ${res.status}`);
                 }
             } catch(e) {
                 console.error(e);
-                lbl.innerText = "ERROR";
-                lbl.style.color = "var(--error)";
+                alert("❌ Gagal Terhubung.\n\nTips: Klik link URL Colab itu di tab baru untuk bypass proteksi Cloudflare, lalu coba Connect lagi.");
+                lbl.innerText = "ERROR"; lbl.style.color = "#f87171";
                 btn.innerText = "Retry";
-                
-                // Pesan Error Detail
-                if(e.message.includes('Failed to fetch')) {
-                    alert("Gagal Terhubung: 'Failed to fetch'.\n\nSOLUSI: \n1. Salin link URL Colab itu.\n2. Buka di Tab Baru browser.\n3. Jika ada tombol 'Visit Site' dari Cloudflare, KLIK dulu sampai muncul tulisan kode JSON.\n4. Kembali kesini dan Connect lagi.");
-                } else {
-                    alert("Error Koneksi: " + e.message + "\n\nPastikan URL Colab benar dan tidak ada typo.");
-                }
             }
         }
 
-        function renderStems(data) {
+        // --- 4. START PROCESS (LOGIKA UTAMA YANG SEBELUMNYA MISSING) ---
+        async function startProcess() {
+            // Validasi Input
+            if(!SERVER_URL) return alert("⚠️ Anda belum CONNECT ke server. Cek kotak paling atas.");
+            if(!selectedFile) return alert("⚠️ Anda belum memilih file audio.");
+            
+            // Tampilkan Overlay Loading
+            const overlay = document.getElementById('processing-screen');
+            const txtStatus = document.getElementById('process-status');
+            const txtModel = document.getElementById('process-model-name');
+            
+            overlay.style.display = 'flex';
+            txtModel.innerText = `Running Model: ${selectedModelID}`;
+            txtStatus.innerText = "> Mengupload Audio & Menyiapkan Model (Sabar ya, model sedang didownload)...";
+
+            // Siapkan Data
+            const formData = new FormData();
+            formData.append('audio_file', selectedFile);
+            formData.append('model_name', selectedModelID);
+
+            try {
+                // Fetch Request ke Backend Python (/process)
+                const res = await fetch(`${SERVER_URL}/process`, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'cors'
+                });
+
+                if(!res.ok) throw new Error("Gagal memproses di backend. Server Error.");
+
+                txtStatus.innerText = "> Proses Selesai! Mengunduh Stem...";
+                
+                const resultData = await res.json(); // Backend return { "file.mp3": "base64", ... }
+                renderResults(resultData);
+
+                // Delay dikit biar smooth
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    const resArea = document.getElementById('results-area');
+                    resArea.style.display = 'block';
+                    resArea.scrollIntoView({behavior: 'smooth'});
+                }, 1000);
+
+            } catch(error) {
+                overlay.style.display = 'none';
+                console.error(error);
+                alert("❌ ERROR: " + error.message + "\nCek Tab Console (F12) untuk detail.");
+            }
+        }
+
+        // --- 5. RENDER HASIL (STEMS) ---
+        function renderResults(dataStems) {
             const list = document.getElementById('stems-list');
             list.innerHTML = "";
-            
-            const mapIcon = (name) => {
-                if(name.toLowerCase().includes('vocal')) return {i:'fas fa-microphone', c:'#f472b6'};
-                if(name.toLowerCase().includes('inst')) return {i:'fas fa-music', c:'#34d399'};
-                if(name.toLowerCase().includes('drum')) return {i:'fas fa-drum', c:'#fbbf24'};
-                return {i:'fas fa-wave-square', c:'#818cf8'};
+
+            if(Object.keys(dataStems).length === 0) {
+                list.innerHTML = "<p style='color:orange'>Server tidak mengembalikan file apa-apa.</p>";
+                return;
             }
 
-            // Backend return dict { "Vocals.mp3": "b64", "Inst.mp3": "b64" }
-            for (const [filename, b64] of Object.entries(data)) {
-                const conf = mapIcon(filename);
-                const src = `data:audio/mp3;base64,${b64}`;
-                list.innerHTML += `
-                <div class="stem-row" style="border-left-color:${conf.c}">
-                    <div style="font-size:1.2rem; width:30px; text-align:center; color:${conf.c}"><i class="${conf.i}"></i></div>
+            // Helper warna icon
+            const getConf = (name) => {
+                name = name.toLowerCase();
+                if(name.includes('vocal')) return {i:'fas fa-microphone', c:'#f472b6'}; // Pink
+                if(name.includes('inst')) return {i:'fas fa-music', c:'#34d399'};      // Green
+                if(name.includes('drum')) return {i:'fas fa-drum', c:'#fbbf24'};       // Yellow
+                return {i:'fas fa-wave-square', c:'#818cf8'};                         // Blue
+            };
+
+            for(const [fileName, b64Data] of Object.entries(dataStems)) {
+                const conf = getConf(fileName);
+                const src = `data:audio/mp3;base64,${b64Data}`;
+                
+                const itemHTML = `
+                <div class="stem-row" style="border-left: 4px solid ${conf.c};">
+                    <div style="font-size:1.4rem; color:${conf.c}"><i class="${conf.i}"></i></div>
                     <div style="flex:1;">
-                        <div style="font-weight:700; color:var(--text-main); font-size:0.9rem;">${filename}</div>
+                        <div style="font-weight:700; color:var(--text-main); font-size:0.95rem;">${fileName}</div>
                         <audio controls class="stem-audio" src="${src}"></audio>
                     </div>
-                    <a href="${src}" download="${filename}" class="dl-btn"><i class="fas fa-download"></i></a>
+                    <a href="${src}" download="${fileName}" class="dl-btn" title="Download">
+                        <i class="fas fa-download"></i>
+                    </a>
                 </div>`;
+                list.innerHTML += itemHTML;
             }
         }
     </script>
