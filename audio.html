@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina | UVR5 AI Interface</title>
+    
+    <!-- FONTS & ICONS -->
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* --- STYLE SYSTEM LUMINA --- */
+        :root {
+            --accent-glow: #38bdf8; 
+            --accent-secondary: #a78bfa;
+            --bg-color: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-surface: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(0, 0, 0, 0.3);
+            --success: #34d399;
+            --error: #f87171;
+            --warning: #fbbf24;
+        }
+
+        :root.light-mode {
+            --bg-color: #f1f5f9; 
+            --text-main: #1e293b; 
+            --text-muted: #64748b;
+            --glass-surface: rgba(255, 255, 255, 0.6); 
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --input-bg: rgba(255, 255, 255, 0.8);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Figtree', sans-serif; outline: none; }
+        body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; transition: 0.3s; padding-bottom: 50px; overflow-x: hidden; }
+        
+        .ambient-light { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.3; }
+        .orb-1 { width: 50vw; height: 50vw; top: -10%; left: -10%; background: var(--accent-glow); animation: float 15s infinite; }
+        .orb-2 { width: 40vw; height: 40vw; bottom: 0; right: 0; background: var(--accent-secondary); animation: float 12s infinite reverse; }
+        @keyframes float { 50% { transform: translate(30px, 40px); } }
+
+        /* NAVBAR */
+        nav { 
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 600px;
+            padding: 12px 30px; z-index: 50; display: flex; justify-content: space-between; align-items: center; 
+            border-radius: 50px; background: rgba(255,255,255,0.01); backdrop-filter: blur(20px); 
+            border: 1px solid var(--glass-border); 
+        }
+        nav h3 { font-family: 'Fira Code'; font-weight: 800; letter-spacing: -1px; margin: 0; }
+        nav .nav-icon { cursor: pointer; color: var(--text-muted); transition: 0.2s; font-size: 1.1rem; }
+        
+        .container { max-width: 800px; margin: 100px auto 0; padding: 0 20px; }
+        .panel { 
+            background: var(--glass-surface); border: 1px solid var(--glass-border); 
+            padding: 25px; border-radius: 20px; margin-bottom: 25px; backdrop-filter: blur(10px);
+            position: relative; overflow: hidden;
+        }
+
+        .section-header { border-bottom: 1px solid var(--glass-border); padding-bottom: 15px; margin-bottom: 20px; font-weight: 700; font-size: 1.2rem; display: flex; justify-content: space-between; align-items: center; }
+
+        /* TAB SYSTEM FOR MODELS */
+        .tab-container { display: flex; gap: 10px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
+        .tab-btn {
+            background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 20px;
+            border: 1px solid var(--glass-border); color: var(--text-muted); cursor: pointer;
+            white-space: nowrap; font-size: 0.85rem; transition: 0.2s;
+        }
+        .tab-btn:hover { background: rgba(255,255,255,0.1); }
+        .tab-btn.active { background: var(--accent-glow); color: #fff; border-color: var(--accent-glow); font-weight: 700; }
+
+        .model-list-wrapper { max-height: 300px; overflow-y: auto; padding-right: 5px; }
+        /* Scrollbar custom */
+        .model-list-wrapper::-webkit-scrollbar { width: 6px; }
+        .model-list-wrapper::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+
+        .model-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0,0,0,0.2); padding: 12px 15px; border-radius: 10px;
+            margin-bottom: 8px; cursor: pointer; border: 1px solid transparent; transition: 0.2s;
+        }
+        .model-item:hover { background: rgba(255,255,255,0.05); }
+        .model-item.selected { border-color: var(--accent-glow); background: rgba(56, 189, 248, 0.1); }
+        
+        .model-info h4 { font-size: 0.9rem; color: var(--text-main); font-weight: 600; margin-bottom: 3px; }
+        .model-info p { font-size: 0.75rem; color: var(--text-muted); }
+        .check-icon { color: var(--accent-glow); display: none; }
+        .model-item.selected .check-icon { display: block; }
+
+        /* UPLOAD & SERVER UI */
+        .server-box { display: flex; gap: 10px; margin-top: 10px; }
+        .server-input { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border); background: var(--input-bg); color: var(--text-main); font-family: 'Fira Code'; font-size: 0.85rem;}
+        
+        .drop-zone { border: 2px dashed var(--glass-border); border-radius: 15px; padding: 30px; text-align: center; cursor: pointer; transition: 0.3s; margin-bottom: 20px;}
+        .drop-zone:hover { border-color: var(--accent-glow); background: rgba(56, 189, 248, 0.05); }
+        
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 1rem; color:white; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-glow), #2563eb); box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3); }
+        .btn-connect { background: var(--glass-surface); border: 1px solid var(--glass-border); width: auto; padding: 0 20px; color: var(--text-main); }
+
+        /* RESULT STEMS */
+        #results-area { display: none; margin-top: 30px;}
+        .stem-row { display: flex; align-items: center; gap: 15px; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 10px; margin-bottom: 10px; border-left: 3px solid #ccc; }
+        .stem-audio { width: 100%; height: 30px; margin-top: 5px; opacity: 0.8; }
+        .dl-btn { color: var(--text-muted); cursor: pointer; padding: 8px; font-size: 1.2rem; }
+        .dl-btn:hover { color: var(--success); }
+
+        /* OVERLAY */
+        .overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.95); z-index: 100; display: none; justify-content: center; align-items: center; flex-direction: column; }
+        .loader { width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--accent-glow); border-radius: 50%; animation: spin 1s infinite linear; }
+        @keyframes spin { 100%{transform:rotate(360deg)}}
+    </style>
+</head>
+<body>
+
+    <div class="ambient-light"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+    
+    <!-- LOADER SCREEN -->
+    <div class="overlay" id="processing-screen">
+        <div class="loader"></div>
+        <h3 style="margin-top:20px; color:white;">Processing AI Model...</h3>
+        <p id="process-model-name" style="color:var(--accent-glow); margin:5px 0; font-weight:700;">Model: Unknown</p>
+        <p id="process-status" style="color:var(--text-muted); font-size:0.9rem; font-family:'Fira Code';">> Downloading Model...</p>
+    </div>
+
+    <nav>
+        <h3>Lumina.UVR</h3>
+        <i class="fas fa-home nav-icon" onclick="window.location.href='index.html'"></i>
+    </nav>
+
+    <div class="container">
+        
+        <!-- STEP 1: SERVER CONFIG -->
+        <div class="panel">
+            <div class="section-header">
+                <span><i class="fas fa-satellite-dish"></i> Colab Backend</span>
+                <span id="conn-status" style="font-size:0.75rem; color:var(--error); font-weight:800;">OFFLINE</span>
+            </div>
+            <div class="server-box">
+                <input type="text" id="api-url" class="server-input" placeholder="Paste URL Public Colab Disini...">
+                <button class="btn btn-connect" onclick="checkServer()">Connect</button>
+            </div>
+            <a href="https://colab.research.google.com/" target="_blank" style="font-size:0.8rem; margin-top:10px; display:inline-block; color:var(--accent-glow);"><i class="fas fa-external-link-alt"></i> Buka UVR Colab Script</a>
+        </div>
+
+        <!-- STEP 2: SOURCE & MODEL -->
+        <div class="panel">
+            <div class="section-header">Audio & AI Model</div>
+
+            <!-- Upload Zone -->
+            <div class="drop-zone" id="drop-area" onclick="document.getElementById('file-upload').click()">
+                <div id="file-label" style="font-weight:600;"><i class="fas fa-music"></i> Pilih File Audio</div>
+                <div style="font-size:0.8rem; color:var(--text-muted);">Support: MP3, WAV (Max 15MB)</div>
+                <input type="file" id="file-upload" hidden accept="audio/*">
+            </div>
+
+            <!-- MODEL CATEGORIES -->
+            <div class="tab-container">
+                <button class="tab-btn active" onclick="filterModels('mdx')">MDX-Net (Best)</button>
+                <button class="tab-btn" onclick="filterModels('vr')">VR Arch (Vocal)</button>
+                <button class="tab-btn" onclick="filterModels('demucs')">Demucs v4</button>
+                <button class="tab-btn" onclick="filterModels('all')">All List</button>
+            </div>
+
+            <div class="model-list-wrapper" id="model-container">
+                <!-- Javascript will inject models here -->
+            </div>
+
+            <div style="background: rgba(56, 189, 248, 0.1); padding:10px; border-radius:8px; margin: 15px 0; font-size:0.85rem; border-left:3px solid var(--accent-glow);">
+                Selected: <b id="selected-model-name" style="color:#fff;">htdemucs (Default)</b>
+            </div>
+
+            <button class="btn btn-primary" onclick="startProcess()">
+                <i class="fas fa-wand-magic-sparkles"></i> START PROCESS
+            </button>
+        </div>
+
+        <!-- RESULTS -->
+        <div class="panel" id="results-area">
+            <div class="section-header"><i class="fas fa-layer-group"></i> Separated Stems</div>
+            <div id="stems-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. MODEL DATABASE (Disesuaikan dengan Link JSON Github) ---
+        const UVR_MODELS = [
+            // MDX-NET (High Quality Vocals/Inst)
+            { id: 'Kim_Vocal_2', name: 'Kim Vocal 2', type: 'mdx', desc: 'MDX-Net | Best Vocal Isolation' },
+            { id: 'UVR-MDX-NET-Inst_HQ_3', name: 'MDX-Net Inst HQ 3', type: 'mdx', desc: 'MDX-Net | Best Instrumentals' },
+            { id: 'UVR-MDX-NET-Voc_FT', name: 'MDX-Net Voc FT', type: 'mdx', desc: 'MDX-Net | Fine Tuned Vocals' },
+            { id: 'UVR-MDX-NET-Karaoke_2', name: 'MDX Karaoke 2', type: 'mdx', desc: 'MDX-Net | Karaoke Removal' },
+            { id: 'Reverb_HQ_By_FoxJoy', name: 'Reverb HQ (FoxJoy)', type: 'mdx', desc: 'De-Reverb Tools' },
+            { id: 'UVR_MDXNET_Main', name: 'UVR MDX Main', type: 'mdx', desc: 'Standard MDX Model' },
+            { id: 'MDX23C-8KFFT-InstVoc_HQ', name: 'MDX23C InstVoc HQ', type: 'mdx', desc: 'Hybrid Inst/Vocal' },
+
+            // VR ARCH (Vocal focused)
+            { id: '1_HP-Karaoke-UVR', name: 'HP Karaoke UVR', type: 'vr', desc: 'VR Arch | Aggressive Karaoke' },
+            { id: '2_HP-UVR', name: 'HP UVR (Standard)', type: 'vr', desc: 'VR Arch | Standard Balanced' },
+            { id: '4_HP-Vocal-UVR', name: 'HP Vocal UVR', type: 'vr', desc: 'VR Arch | Strong Vocal focus' },
+            { id: '5_HP-Karaoke-UVR', name: 'HP Karaoke 5', type: 'vr', desc: 'VR Arch | Variation 5' },
+            { id: '6_HP-Karaoke-UVR', name: 'HP Karaoke 6', type: 'vr', desc: 'VR Arch | Variation 6' },
+            { id: 'UVR-DeEcho-DeReverb', name: 'DeEcho DeReverb', type: 'vr', desc: 'VR Arch | Remove Echo' },
+            { id: 'UVR-DeNoise', name: 'DeNoise', type: 'vr', desc: 'VR Arch | Remove Noise' },
+            
+            // DEMUCS / OTHERS
+            { id: 'htdemucs', name: 'HT Demucs v4', type: 'demucs', desc: 'Facebook | Fast & Balanced 4 stems' },
+            { id: 'htdemucs_ft', name: 'HT Demucs FT', type: 'demucs', desc: 'Facebook | Fine Tuned (Better Quality)' },
+            { id: 'hdemucs_mmi', name: 'H-Demucs MMI', type: 'demucs', desc: 'Facebook | High Quality (Slower)' },
+            { id: 'roformer_bs_roformer', name: 'BS Roformer', type: 'demucs', desc: 'SOTA | Band-Split Roformer' }, // Optional, jika lib support
+            { id: 'mel_band_roformer', name: 'Mel-Band Roformer', type: 'demucs', desc: 'SOTA | Mel-Band Roformer' }
+        ];
+
+        let SERVER_URL = "";
+        let selectedFile = null;
+        let selectedModelID = "Kim_Vocal_2"; // Default
+        
+        // --- 2. RENDER MODELS ---
+        function filterModels(category) {
+            const container = document.getElementById('model-container');
+            container.innerHTML = "";
+
+            // Update Tab Style
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const filtered = (category === 'all') 
+                ? UVR_MODELS 
+                : UVR_MODELS.filter(m => m.type === category);
+
+            filtered.forEach(m => {
+                const isSel = (m.id === selectedModelID) ? 'selected' : '';
+                const html = `
+                    <div class="model-item ${isSel}" onclick="selectModel('${m.id}', '${m.name}', this)">
+                        <div class="model-info">
+                            <h4>${m.name}</h4>
+                            <p>${m.desc}</p>
+                        </div>
+                        <i class="fas fa-check-circle check-icon"></i>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        function selectModel(id, name, el) {
+            selectedModelID = id;
+            document.getElementById('selected-model-name').innerText = name + ` (${id})`;
+            
+            // Update Visual
+            document.querySelectorAll('.model-item').forEach(i => i.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        // Init Models on Load
+        window.onload = () => filterModels('mdx');
+
+        // --- 3. CORE LOGIC ---
+        const fileInput = document.getElementById('file-upload');
+        const dropArea = document.getElementById('drop-area');
+
+        dropArea.onclick = () => fileInput.click();
+        fileInput.onchange = (e) => {
+            const f = e.target.files[0];
+            if(f){ 
+                selectedFile = f;
+                document.getElementById('file-label').innerHTML = `<span style="color:var(--accent-glow)">${f.name}</span>`;
+            }
+        };
+
+        async function checkServer() {
+            let url = document.getElementById('api-url').value.trim().replace(/\/$/, "");
+            if(!url) return alert("Isi URL Colab dulu!");
+            
+            try {
+                const btn = document.querySelector('.btn-connect');
+                const lbl = document.getElementById('conn-status');
+                btn.innerText = "...";
+                
+                const res = await fetch(`${url}/ping`, { mode:'cors' });
+                if(res.ok) {
+                    SERVER_URL = url;
+                    lbl.innerText = "ONLINE"; lbl.style.color = "var(--success)";
+                    btn.innerText = "Connected";
+                    alert("Terhubung ke UVR Engine!");
+                }
+            } catch(e) {
+                alert("Gagal koneksi. Cek apakah script Colab berjalan.");
+                document.querySelector('.btn-connect').innerText = "Retry";
+            }
+        }
+
+       async function checkServer() {
+            let inputUrl = document.getElementById('api-url').value.trim();
+            // Bersihkan slash di akhir url jika ada
+            let url = inputUrl.replace(/\/$/, ""); 
+            
+            if(!url) return alert("Isi URL Colab dulu!");
+            
+            const btn = document.querySelector('.btn-connect');
+            const lbl = document.getElementById('conn-status');
+            const originalText = btn.innerText;
+            btn.innerText = "Checking...";
+
+            try {
+                // Testing Ping Endpoint
+                const res = await fetch(`${url}/ping`, { 
+                    method: 'GET',
+                    mode: 'cors', // Penting untuk bypass
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if(res.ok) {
+                    const data = await res.json(); // Pastikan return JSON valid
+                    SERVER_URL = url;
+                    lbl.innerText = "ONLINE";
+                    lbl.style.color = "var(--success)";
+                    btn.innerText = "Connected";
+                    btn.style.background = "rgba(52, 211, 153, 0.1)";
+                    btn.style.color = "var(--success)";
+                    alert(`Terhubung! Engine: ${data.engine || 'UVR Backend'}`);
+                } else {
+                    throw new Error(`Server Error (${res.status})`);
+                }
+            } catch(e) {
+                console.error(e);
+                lbl.innerText = "ERROR";
+                lbl.style.color = "var(--error)";
+                btn.innerText = "Retry";
+                
+                // Pesan Error Detail
+                if(e.message.includes('Failed to fetch')) {
+                    alert("Gagal Terhubung: 'Failed to fetch'.\n\nSOLUSI: \n1. Salin link URL Colab itu.\n2. Buka di Tab Baru browser.\n3. Jika ada tombol 'Visit Site' dari Cloudflare, KLIK dulu sampai muncul tulisan kode JSON.\n4. Kembali kesini dan Connect lagi.");
+                } else {
+                    alert("Error Koneksi: " + e.message + "\n\nPastikan URL Colab benar dan tidak ada typo.");
+                }
+            }
+        }
+
+        function renderStems(data) {
+            const list = document.getElementById('stems-list');
+            list.innerHTML = "";
+            
+            const mapIcon = (name) => {
+                if(name.toLowerCase().includes('vocal')) return {i:'fas fa-microphone', c:'#f472b6'};
+                if(name.toLowerCase().includes('inst')) return {i:'fas fa-music', c:'#34d399'};
+                if(name.toLowerCase().includes('drum')) return {i:'fas fa-drum', c:'#fbbf24'};
+                return {i:'fas fa-wave-square', c:'#818cf8'};
+            }
+
+            // Backend return dict { "Vocals.mp3": "b64", "Inst.mp3": "b64" }
+            for (const [filename, b64] of Object.entries(data)) {
+                const conf = mapIcon(filename);
+                const src = `data:audio/mp3;base64,${b64}`;
+                list.innerHTML += `
+                <div class="stem-row" style="border-left-color:${conf.c}">
+                    <div style="font-size:1.2rem; width:30px; text-align:center; color:${conf.c}"><i class="${conf.i}"></i></div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700; color:var(--text-main); font-size:0.9rem;">${filename}</div>
+                        <audio controls class="stem-audio" src="${src}"></audio>
+                    </div>
+                    <a href="${src}" download="${filename}" class="dl-btn"><i class="fas fa-download"></i></a>
+                </div>`;
+            }
+        }
+    </script>
+</body>
+</html>
