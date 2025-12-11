@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lumina | AI Studio</title>
+    <title>Lumina | Studio AI</title>
     
-    <!-- FONTS -->
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700;800&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* --- CORE DESIGN SYSTEM --- */
+        /* CORE DESIGN */
         :root {
             --accent-glow: #38bdf8; 
             --bg-color: #0f172a; 
@@ -24,250 +23,254 @@
             --warning: #fbbf24; 
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Figtree', sans-serif; outline: none; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Figtree', sans-serif; outline: none; }
         
         body { 
             background-color: var(--bg-color); color: var(--text-main); 
             min-height: 100vh; overflow-x: hidden; padding-bottom: 80px;
-            background-image: radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.1) 0px, transparent 50%), 
-                              radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.1) 0px, transparent 50%);
+            background-image: radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%), 
+                              radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.15) 0px, transparent 50%);
         }
 
-        /* --- BACKGROUND ORBS (SMOOTH) --- */
-        .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.4; z-index: -1; animation: float 10s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95); }
-        .orb-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: var(--accent-glow); }
-        .orb-2 { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: #818cf8; animation-delay: -5s; }
-        @keyframes float { from { transform: translate(0,0); } to { transform: translate(30px, 50px); } }
-
-        /* --- NAVBAR --- */
         nav { 
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%); 
-            width: 90%; max-width: 750px; height: 60px; padding: 0 25px; 
+            position: fixed; top: 25px; left: 50%; transform: translateX(-50%); 
+            width: 90%; max-width: 750px; height: 65px; padding: 0 35px; 
             z-index: 50; display: flex; justify-content: space-between; align-items: center; 
             border-radius: 100px; background: rgba(15, 23, 42, 0.7); 
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border); 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3); transition: 0.3s;
+            backdrop-filter: blur(25px); border: 1px solid var(--glass-border); 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
-        nav .logo { font-family: 'Fira Code', monospace; font-weight: 800; font-size: 1.1rem; color: #fff; letter-spacing: -0.5px; }
-        nav .menu a { color: var(--text-muted); text-decoration: none; font-weight: 600; margin-left: 20px; transition:0.3s; font-size:0.9rem;}
-        nav .menu a:hover, nav .menu a.active { color: var(--accent-glow); }
+        nav .logo { font-family: 'Fira Code', monospace; font-weight: 800; font-size: 1.2rem; color: #fff; }
+        nav .menu a { color: var(--text-muted); text-decoration: none; font-weight: 600; margin-left: 20px; font-size:0.9rem;}
 
-        /* --- LAYOUT & CARDS --- */
-        .container { max-width: 950px; margin: 110px auto 0; padding: 0 20px; text-align: center; }
+        .container { max-width: 950px; margin: 130px auto 0; padding: 0 20px; text-align: center; }
         
         .main-card { 
-            background: var(--glass-surface); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border: 1px solid var(--glass-border); border-radius: 28px; padding: 40px;
+            background: var(--glass-surface); backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border); border-radius: 28px; padding: 45px;
             box-shadow: 0 25px 60px rgba(0,0,0,0.3); position: relative; overflow: hidden;
             text-align: left; margin-bottom: 30px;
         }
-        /* Top Gradient Accent */
         .main-card::before {
-            content: ''; position: absolute; top:0; left:0; width:100%; height:3px;
+            content: ''; position: absolute; top:0; left:0; width:100%; height:2px;
             background: linear-gradient(90deg, var(--accent-glow), #818cf8);
         }
 
-        .section-label { 
-            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; 
-            color: var(--accent-glow); margin-bottom: 12px; font-weight: 800; display: block; opacity: 0.9;
-        }
+        .section-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-glow); margin-bottom: 15px; font-weight: 800; display: block; opacity: 0.8;}
         
-        /* --- CONNECTION BOX --- */
+        /* CONNECTION */
         .conn-container {
-            display: flex; gap: 10px; margin-bottom: 25px; background: rgba(0,0,0,0.25);
-            padding: 8px; border-radius: 16px; border: 1px solid var(--glass-border); flex-wrap: wrap;
+            display: flex; gap: 12px; margin-bottom: 15px; background: rgba(0,0,0,0.3);
+            padding: 10px; border-radius: 18px; border: 1px solid var(--glass-border);
         }
         .conn-container input {
-            flex: 1; background: transparent; border: none; padding: 12px; min-width: 150px;
-            color: #fff; font-family: 'Fira Code'; font-size: 0.9rem; outline:none;
+            flex: 1; background: transparent; border: none; padding: 12px 15px; 
+            color: #fff; font-family: 'Fira Code'; font-size: 0.95rem;
         }
         .conn-container button {
             background: rgba(255,255,255,0.08); color: #fff; border: 1px solid var(--glass-border);
-            padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: 700; transition:0.2s; white-space: nowrap;
+            padding: 0 25px; border-radius: 14px; cursor: pointer; font-weight: 700; transition:0.3s;
         }
-        .conn-container button:active { transform: scale(0.96); }
-        .conn-status { margin-top: -15px; margin-bottom: 20px; display:flex; justify-content:space-between; align-items: center; font-size:0.8rem;}
-        
-        /* --- UPLOAD ZONE --- */
+        .conn-container button:hover { background: var(--accent-glow); color:#000; box-shadow: 0 0 15px var(--accent-glow); border-color:transparent;}
+
+        .colab-link a {
+            font-size: 0.85rem; color: var(--text-muted); text-decoration: none; 
+            border-bottom: 1px dashed var(--glass-border); padding-bottom: 2px;
+        }
+
+        /* ALERTS */
+        .cpu-alert {
+            display: none; background: rgba(251, 191, 36, 0.1); 
+            border: 1px solid rgba(251, 191, 36, 0.3); border-left: 4px solid var(--warning);
+            padding: 15px; border-radius: 12px; margin-bottom: 30px; animation: fadeIn 0.5s ease;
+        }
+        .cpu-text strong { display: block; color: var(--warning); font-size: 0.9rem; margin-bottom: 2px; }
+        .cpu-text span { font-size: 0.85rem; color: #ddd; }
+        @keyframes fadeIn { from{opacity:0; transform:translateY(-10px)} to{opacity:1; transform:translateY(0)} }
+
+        /* UPLOAD */
         .drop-zone {
-            border: 2px dashed rgba(255,255,255,0.15); border-radius: 20px; padding: 40px 20px;
+            border: 2px dashed rgba(255,255,255,0.1); border-radius: 24px; padding: 50px;
             text-align: center; cursor: pointer; transition: 0.3s; position: relative;
             background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
         }
-        .drop-zone:active { transform: scale(0.99); background: rgba(255,255,255,0.05); }
-        .dz-text { font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; color: var(--text-main); margin-top: 15px;}
-        .dz-sub { color: var(--text-muted); font-size: 0.85rem; }
+        .drop-zone:hover { border-color: var(--accent-glow); background: rgba(56, 189, 248, 0.05); }
+        .dz-text { font-size: 1.3rem; font-weight: 700; margin-bottom: 5px; color: var(--text-main); margin-top: 15px;}
+        .dz-sub { color: var(--text-muted); font-size: 0.9rem; }
 
-        /* --- MODEL CARDS (GRID) --- */
-        .grid-options { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-            gap: 12px; margin-top: 10px; margin-bottom: 30px;
-        }
+        .grid-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-top: 10px; }
+        
         .option-card {
             background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
-            padding: 18px; border-radius: 16px; cursor: pointer; transition: 0.2s; position: relative;
+            padding: 20px; border-radius: 16px; cursor: pointer; transition: 0.3s; position: relative;
         }
         .option-card.active { background: rgba(56, 189, 248, 0.15); border-color: var(--accent-glow); }
-        /* Centang */
-        .option-card.active::after { content: '✔'; position: absolute; top: 12px; right: 12px; color: var(--accent-glow); font-weight: 900;}
-        .opt-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; color: var(--text-main); }
-        .opt-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; }
+        .option-card.active::after { content: '✔'; position: absolute; top: 15px; right: 15px; color: var(--accent-glow); font-weight: 900;}
+        .opt-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 5px; color: var(--text-main); }
+        .opt-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
 
-        /* --- FORMAT SCROLL --- */
-        .format-pills { 
-            display: flex; gap: 10px; margin-top: 10px; overflow-x: auto; 
-            padding-bottom: 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none;
-        }
-        .format-pills::-webkit-scrollbar { display: none; }
-        
+        .format-pills { display: flex; gap: 12px; margin-top: 10px; overflow-x: auto; padding-bottom: 5px;}
         .fmt-pill {
-            padding: 10px 24px; border-radius: 12px; border: 1px solid var(--glass-border);
+            padding: 12px 25px; border-radius: 12px; border: 1px solid var(--glass-border);
             background: rgba(255,255,255,0.03); color: var(--text-muted); cursor: pointer;
-            font-size: 0.85rem; font-weight: 700; transition: 0.2s; white-space: nowrap; flex-shrink: 0;
+            font-size: 0.9rem; font-weight: 700; transition: 0.3s;
         }
-        .fmt-pill.active { background: #fff; color: #000; border-color: #fff; transform: scale(1.02); }
+        .fmt-pill.active { background: #fff; color: #000; border-color: #fff; transform: scale(1.05); }
 
-        /* --- MAIN BUTTON --- */
         .btn-launch { 
-            width: 100%; margin-top: 40px; padding: 18px; 
+            width: 100%; margin-top: 45px; padding: 20px; 
             background: linear-gradient(135deg, var(--accent-glow), #4f46e5); 
-            border: none; border-radius: 16px; color: white; font-weight: 800; font-size: 1rem; letter-spacing: 1px;
-            cursor: pointer; transition: 0.3s; box-shadow: 0 10px 30px rgba(56, 189, 248, 0.25);
-            display: flex; align-items: center; justify-content: center; gap: 10px; text-transform: uppercase;
+            border: none; border-radius: 18px; color: white; font-weight: 800; font-size: 1.1rem; letter-spacing: 1px;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 10px 40px rgba(56, 189, 248, 0.3);
+            display: flex; align-items: center; justify-content: center; gap: 12px; text-transform: uppercase;
         }
-        .btn-launch:active { transform: scale(0.97); }
+        .btn-launch:hover { transform: translateY(-4px) scale(1.01); filter: brightness(1.1); }
 
-        /* --- OVERLAY LOADER --- */
+        /* --- UPDATED LOADING OVERLAY --- */
         #overlay {
-            position: fixed; inset: 0; background: var(--glass-strong); z-index: 200;
+            position: fixed; inset: 0; background: var(--glass-strong); z-index: 1000;
             display: none; flex-direction: column; justify-content: center; align-items: center;
-            backdrop-filter: blur(20px); opacity: 0; transition: opacity 0.4s;
+            backdrop-filter: blur(20px); opacity: 0; transition: opacity 0.5s;
         }
         #overlay.active { opacity: 1; display: flex; }
         
-        .pulse-loader {
-            width: 70px; height: 70px; border-radius: 50%; background: var(--accent-glow);
-            box-shadow: 0 0 0 rgba(56, 189, 248, 0.4); animation: pulse 1.5s infinite;
-            margin-bottom: 25px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #000;
+        /* Ikon Statis (untuk upload phase) */
+        .static-icon {
+            width: 80px; height: 80px; border-radius: 50%; background: var(--accent-glow);
+            box-shadow: 0 0 0 rgba(56, 189, 248, 0.4); 
+            margin-bottom: 30px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #000;
         }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.7); } 70% { box-shadow: 0 0 0 25px rgba(56, 189, 248, 0); } 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); } }
 
-        .progress-cont { width: 85%; max-width: 350px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden;}
-        .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-glow), #a78bfa); transition: width 0.3s ease; }
+        /* Ikon Loading Putar (untuk process phase) */
+        .loader-ring {
+            width: 90px; height: 90px; border: 5px solid rgba(255,255,255,0.1);
+            border-top: 5px solid var(--accent-glow); border-radius: 50%;
+            animation: spin 1s infinite linear; margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- RESULTS AREA (Mobile Optimized) --- */
-        #results-area { display: none; margin-top: 20px; animation: slideUp 0.6s ease-out; }
-        @keyframes slideUp { from{opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
+        .progress-cont { width: 350px; height: 8px; background: rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; position: relative;}
+        .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-glow), #a78bfa); transition: width 0.3s ease; border-radius: 20px;}
+        
+        /* --- RESULTS AREA --- */
+        #results-area { display: none; margin-top: 20px; animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+        @keyframes fadeInUp { from{opacity:0; transform:translateY(40px);} to{opacity:1; transform:translateY(0);} }
         
         .stem-item {
-            background: rgba(30, 41, 59, 0.7); padding: 18px; border-radius: 18px; margin-bottom: 15px;
-            display: flex; align-items: center; gap: 15px; border: 1px solid var(--glass-border);
-            flex-wrap: wrap; /* Agar responsif di layar sempit */
+            background: rgba(30, 41, 59, 0.6); padding: 25px; border-radius: 20px; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 25px; border: 1px solid var(--glass-border);
+            transition: 0.3s;
         }
-        
         .stem-icon { 
-            width: 45px; height: 45px; border-radius: 12px; background: rgba(56, 189, 248, 0.15); 
-            display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--accent-glow); flex-shrink: 0;
+            width: 55px; height: 55px; border-radius: 16px; background: rgba(56, 189, 248, 0.1); 
+            display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: var(--accent-glow); flex-shrink: 0;
         }
-        
-        .stem-info { flex: 1; min-width: 150px; }
-        .stem-title { font-weight: 700; color: #fff; margin-bottom: 6px; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
-        
         .dl-btn { 
-            width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--glass-border); 
+            width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--glass-border); 
             color: var(--text-muted); display: flex; align-items: center; justify-content: center; text-decoration: none;
-            font-size: 1.1rem; background: rgba(0,0,0,0.3); transition:0.2s;
+            transition: 0.2s; font-size: 1.2rem; background: rgba(0,0,0,0.3);
         }
-        .dl-btn:active { transform: scale(0.9); background: #fff; color: #000; }
-
-        /* RESPONSIVE TWEAKS */
-        @media (max-width: 600px) {
-            nav { width: 92%; padding: 0 20px; }
-            .container { margin-top: 100px; padding: 0 15px; }
-            .main-card { padding: 25px 20px; border-radius: 20px; }
-            .grid-options { grid-template-columns: 1fr 1fr; /* 2 Kolom di mobile */ }
-            .conn-container { flex-direction: column; /* Stack input dan button */ }
-            .conn-container button { width: 100%; padding: 14px; }
-            
-            /* Audio Player Full Width di Mobile */
-            .stem-item { gap: 10px; }
-            audio { width: 100%; margin-top: 5px; height: 32px; }
-            .dl-btn { width: 38px; height: 38px; font-size: 1rem; }
-        }
+        .dl-btn:hover { background: #fff; color: #000; border-color: #fff; transform: rotate(-15deg); }
+        audio { height: 40px; width: 100%; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); opacity: 0.9; }
         
-        audio { height: 35px; width: 100%; opacity: 0.9; }
+        .hw-badge {
+            font-size: 0.75rem; font-family:'Fira Code'; font-weight:700;
+            padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.1);
+            color: #94a3b8; letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">Lumina</div>
+        <div class="logo">Lumina.AI</div>
         <div class="menu">
             <a href="index.html">Home</a>
-            <a href="#" class="active" style="color:#fff;">Studio</a>
+            <a href="#" style="color:#fff;">Studio</a>
         </div>
     </nav>
 
-    <!-- LOADER -->
+    <!-- IMPROVED LOADING OVERLAY -->
     <div id="overlay">
-        <div class="pulse-loader"><i class="fas fa-satellite-dish"></i></div>
-        <h3 id="ov-status" style="font-weight: 800; color: #fff; margin-bottom: 5px;">Connecting...</h3>
-        <p id="ov-detail" style="color: var(--text-muted); margin-bottom: 25px; font-size:0.9rem;">Menghubungkan ke Cloud</p>
-        <div class="progress-cont"><div class="progress-bar" id="ov-prog"></div></div>
-        <div id="ov-percent" style="margin-top: 10px; font-family: 'Fira Code'; color: var(--accent-glow); font-size:0.9rem;">0%</div>
+        <!-- ICON UNTUK UPLOAD -->
+        <div id="icon-upload" class="static-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        
+        <!-- ICON UNTUK PROCESSING (CIRCLE LOADING) -->
+        <div id="icon-process" class="loader-ring" style="display: none;"></div>
+
+        <h2 id="ov-status" style="font-weight: 800; color: #fff; margin-bottom: 5px;">Ready...</h2>
+        <p id="ov-detail" style="color: var(--text-muted); margin-bottom: 25px;">Initializing System</p>
+        
+        <!-- BAR UNTUK UPLOAD -->
+        <div class="progress-cont" id="bar-wrapper">
+            <div class="progress-bar" id="ov-prog"></div>
+        </div>
+        <div id="ov-percent" style="margin-top: 10px; font-family: 'Fira Code'; color: var(--accent-glow);">0%</div>
     </div>
 
     <div class="container">
         
         <div class="main-card">
-            <!-- STEP 1 -->
-            <span class="section-label">01. Konfigurasi Server</span>
-            <div class="conn-container">
-                <input type="text" id="api-url" placeholder="Paste URL Cloudflare disini..." autocomplete="off">
-                <button onclick="connect()" id="btn-conn">Connect</button>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <span class="section-label" style="margin:0;">01. Connection</span>
+                <span id="hw-status" class="hw-badge">DISCONNECTED</span>
             </div>
             
-            <div class="conn-status">
-                <span id="conn-badge" style="color:#666; font-size:0.75rem; font-family:'Fira Code';">● DISCONNECTED</span>
-                <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=NQkNo_7Jcz1K" target="_blank" style="color:#38bdf8; text-decoration:none; font-size:0.8rem; border-bottom:1px dashed rgba(56, 189, 248, 0.4);">
-                    <i class="fas fa-code"></i> Script Colab
+            <div class="conn-container">
+                <input type="text" id="api-url" placeholder="Paste URL Cloudflare (.trycloudflare.com)...">
+                <button onclick="connect()" id="btn-conn">Connect</button>
+            </div>
+
+            <!-- LINK COLAB -->
+            <div style="text-align: right; margin-bottom: 20px;">
+                <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=NQkNo_7Jcz1K" target="_blank" class="colab-link" style="color:var(--accent-glow); text-decoration:none; font-size:0.85rem; border-bottom:1px dashed var(--glass-border);">
+                    <i class="fas fa-external-link-alt"></i> Buka Script Google Colab
                 </a>
             </div>
 
-            <!-- STEP 2 -->
-            <span class="section-label" style="margin-top: 25px;">02. Sumber Audio</span>
+            <div class="cpu-alert" id="cpu-alert">
+                <div class="cpu-alert-content" style="display:flex; gap:15px; align-items:center;">
+                    <i class="fas fa-exclamation-triangle" style="font-size:1.5rem; color:var(--warning)"></i>
+                    <div class="cpu-text">
+                        <strong style="color:var(--warning); display:block; font-size:0.9rem;">PERINGATAN: CPU MODE</strong>
+                        <span style="font-size:0.85rem; color:#ddd;">Google Colab sedang sibuk/tanpa GPU. Proses akan sangat lambat (3-5 menit/lagu).</span>
+                    </div>
+                </div>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 35px 0;">
+
+            <span class="section-label">02. Upload Source</span>
+            
             <div class="drop-zone" onclick="document.getElementById('f-in').click()">
                 <div id="file-info">
-                    <i class="fas fa-music" style="font-size: 2.5rem; color: var(--text-muted); margin-bottom: 15px;"></i>
-                    <div class="dz-text">Pilih File Lagu</div>
-                    <div class="dz-sub">Support MP3, WAV, FLAC &bull; Max 500MB</div>
+                    <i class="fas fa-music" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 20px;"></i>
+                    <div class="dz-text">Tap to Select Audio File</div>
+                    <div class="dz-sub">High Quality MP3, WAV, FLAC</div>
                 </div>
                 <input type="file" id="f-in" hidden accept="audio/*">
             </div>
 
-            <!-- STEP 3 -->
-            <span class="section-label" style="margin-top: 35px;">03. Pilih Model</span>
+            <span class="section-label" style="margin-top: 40px;">03. Select Model Architecture</span>
             <div class="grid-options" id="model-grid"></div>
 
-            <!-- STEP 4 -->
-            <span class="section-label" style="margin-top: 35px;">04. Format Audio</span>
+            <span class="section-label" style="margin-top: 40px;">04. Output Format</span>
             <div class="format-pills">
-                <div class="fmt-pill active" onclick="setFmt('mp3', this)">MP3</div>
+                <div class="fmt-pill active" onclick="setFmt('mp3', this)">MP3 (Default)</div>
                 <div class="fmt-pill" onclick="setFmt('wav', this)">WAV (Lossless)</div>
                 <div class="fmt-pill" onclick="setFmt('flac', this)">FLAC</div>
                 <div class="fmt-pill" onclick="setFmt('m4a', this)">M4A</div>
             </div>
 
             <button class="btn-launch" onclick="startSmartAsync()">
-                Proses Sekarang <i class="fas fa-bolt"></i>
+                Start Separation <i class="fas fa-arrow-right"></i>
             </button>
         </div>
 
-        <!-- HASIL -->
         <div id="results-area">
-            <div style="text-align: left; margin-bottom: 15px; font-size: 1.1rem; color: #fff; font-weight:700;">
-                <i class="fas fa-layer-group" style="margin-right: 8px; color: var(--accent-glow);"></i> Hasil Pemisahan
+            <div class="section-label" style="text-align: left; margin-bottom: 20px; font-size: 1rem; color: #fff;">
+                <i class="fas fa-layer-group" style="margin-right: 10px; color: var(--accent-glow);"></i> Processing Results
             </div>
             <div id="stems-out"></div>
         </div>
@@ -276,22 +279,23 @@
 
     <script>
         const MODELS = [
-            { id: 'BS-Roformer-Resurrection-Inst.ckpt', name: 'Roformer Inst', desc: 'Instrumental Terbaik (SOTA)' },
-            { id: 'BS-Roformer-Resurrection-v.1.ckpt', name: 'Roformer Vocal', desc: 'Vokal Terbaik (SOTA)' },
-            { id: 'Kim_Vocal_2', name: 'Kim Vocal 2', desc: 'Vokal Sangat Bersih (MDX)' },
-            { id: 'UVR-MDX-NET-Inst_HQ_3', name: 'Inst HQ 3', desc: 'Instrumental Standar (MDX)' },
-            { id: '1_HP-Karaoke-UVR', name: 'HP Karaoke', desc: 'Mode Karaoke (VR)' },
-            { id: 'htdemucs', name: 'Demucs V4', desc: 'Proses Cepat (4 Tracks)' }
+            { id: 'BS-Roformer-Resurrection-Inst.ckpt', name: 'Roformer Inst (SOTA)', desc: 'Best for Instrumental.' },
+            { id: 'BS-Roformer-Resurrection-v.1.ckpt', name: 'Roformer Vocal (SOTA)', desc: 'Best for Vocal.' },
+            { id: 'Kim_Vocal_2', name: 'Kim Vocal 2', desc: 'Very Clean MDX Vocals.' },
+            { id: 'UVR-MDX-NET-Inst_HQ_3', name: 'Inst HQ 3', desc: 'Standard HQ MDX.' },
+            { id: '1_HP-Karaoke-UVR', name: 'HP Karaoke', desc: 'Vocal Remover VR.' },
+            { id: 'htdemucs', name: 'Demucs V4', desc: 'Fast Separation.' }
         ];
 
         let URL = localStorage.getItem('L_V12_URL') || "";
         let FILE = null;
         let SEL_MOD = MODELS[0].id;
         let SEL_FMT = 'mp3';
+        // Variabel untuk menyimpan jenis Device (CPU/GPU)
+        let DEVICE_TYPE = localStorage.getItem('L_DEVICE') || 'CPU';
 
-        // INIT
         window.onload = () => {
-            if(URL) { document.getElementById('api-url').value = URL; }
+            if(URL) document.getElementById('api-url').value = URL;
             renderModels();
             
             document.getElementById('f-in').onchange = (e) => {
@@ -300,12 +304,12 @@
                     FILE = f;
                     const mb = (f.size/1024/1024).toFixed(1);
                     document.getElementById('file-info').innerHTML = `
-                        <i class="fas fa-check-circle" style="font-size:3rem; color:var(--success); margin-bottom:10px;"></i>
-                        <div class="dz-text" style="margin-top:5px;">${f.name}</div>
-                        <div class="dz-sub" style="color:var(--success); font-weight:700;">${mb} MB Ready</div>
+                        <i class="fas fa-check-circle" style="font-size:3.5rem; color:var(--success); margin-bottom:15px; animation:none;"></i>
+                        <div class="dz-text" style="color:#fff;">${f.name}</div>
+                        <div class="dz-sub" style="color:var(--success); font-weight:700;">Size: ${mb} MB &bull; Ready</div>
                     `;
                     document.querySelector('.drop-zone').style.borderColor = "var(--success)";
-                    document.querySelector('.drop-zone').style.background = "rgba(52, 211, 153, 0.08)";
+                    document.querySelector('.drop-zone').style.background = "rgba(52, 211, 153, 0.05)";
                 }
             }
         };
@@ -319,37 +323,64 @@
             `).join('');
         }
         function setModel(id) { SEL_MOD = id; renderModels(); }
-        function setFmt(f, el) { SEL_FMT=f; document.querySelectorAll('.fmt-pill').forEach(x=>x.classList.remove('active')); el.classList.add('active'); }
+        function setFmt(f, el) { 
+            SEL_FMT=f; document.querySelectorAll('.fmt-pill').forEach(x=>x.classList.remove('active')); el.classList.add('active'); 
+        }
 
         async function connect(){
-            let u=document.getElementById('api-url').value.trim().replace(/\/$/,""); if(!u)return alert("Isi URL Colab dulu!");
+            let u=document.getElementById('api-url').value.trim().replace(/\/$/,""); if(!u)return alert("Empty URL");
             try{
                 document.getElementById('btn-conn').innerText="...";
                 const r=await fetch(`${u}/ping`, {headers:{'ngrok-skip-browser-warning':'1'}});
                 if(r.ok){
-                    const d=await r.json(); URL=u; localStorage.setItem('L_V12_URL', u);
-                    document.getElementById('btn-conn').innerText="OK";
+                    const d=await r.json(); URL=u; 
+                    localStorage.setItem('L_V12_URL', u);
+                    localStorage.setItem('L_DEVICE', d.device || 'CPU'); // SIMPAN DEVICE TYPE
+                    DEVICE_TYPE = d.device || 'CPU';
+
+                    document.getElementById('btn-conn').innerText="Connected";
                     document.getElementById('btn-conn').style.color="var(--success)";
-                    document.getElementById('conn-badge').innerText=`● ONLINE (${d.engine})`;
-                    document.getElementById('conn-badge').style.color="var(--success)";
-                    alert(`Tersambung ke ${d.engine}`);
+                    
+                    const badge = document.getElementById('hw-status');
+                    const alertBox = document.getElementById('cpu-alert');
+
+                    // TAMPILKAN STATUS SESUAI DEVICE
+                    if(DEVICE_TYPE === 'CPU') {
+                        badge.innerText = "⚠ ONLINE (CPU MODE)";
+                        badge.style.color = "var(--warning)";
+                        badge.style.background = "rgba(251, 191, 36, 0.1)";
+                        alertBox.style.display = "block";
+                    } else {
+                        badge.innerText = "⚡ ONLINE (GPU MODE)";
+                        badge.style.color = "var(--success)";
+                        badge.style.background = "rgba(52, 211, 153, 0.1)";
+                        alertBox.style.display = "none";
+                    }
+                    alert(`Connected! Device: ${DEVICE_TYPE}`);
                 }
             } catch(e) { 
-                alert("Gagal Koneksi. Pastikan Colab V13 sudah running."); 
+                alert("Connection Failed."); 
                 document.getElementById('btn-conn').innerText="Retry"; 
             }
         }
 
-        // --- ASYNC PROCESS LOGIC ---
+        // --- ASYNC PROCESS WITH SMART UI SWAPPING ---
         function startSmartAsync() {
-            if(!URL || !FILE) return alert("Cek Koneksi atau Pilih File Audio.");
+            if(!URL || !FILE) return alert("Cek Koneksi / File.");
             
             const ov = document.getElementById('overlay'); ov.classList.add('active');
+            
+            // FASE 1: UPLOAD (Show Upload Icon + Bar)
+            document.getElementById('icon-upload').style.display = 'flex';
+            document.getElementById('icon-process').style.display = 'none';
+            document.getElementById('bar-wrapper').style.display = 'block';
+            document.getElementById('ov-percent').style.display = 'block';
+
             const st = document.getElementById('ov-status'); const dt = document.getElementById('ov-detail');
             const bar = document.getElementById('ov-prog'); const pc = document.getElementById('ov-percent');
             
             bar.style.width="0%"; pc.innerText="0%";
-            st.innerText="Mengupload..."; dt.innerText="Mengirim file audio ke server...";
+            st.innerText="Uploading Phase..."; dt.innerText="Sending file to Cloud...";
 
             const fd = new FormData();
             fd.append('audio_file', FILE); fd.append('model_name', SEL_MOD); fd.append('output_format', SEL_FMT);
@@ -365,60 +396,50 @@
                 if(xhr.status === 200){
                     const res = JSON.parse(xhr.responseText);
                     startPolling(res.task_id); // Start Queue Poll
-                } else {
-                    alert("Gagal Upload. Coba file lebih kecil."); ov.classList.remove('active');
-                }
+                } else { alert("Upload Failed"); ov.classList.remove('active'); }
             };
-            xhr.onerror = () => {alert("Jaringan Error (Broken Pipe)"); ov.classList.remove('active');};
-            
-            xhr.timeout = 0; // Anti Timeout Frontend
-            xhr.open('POST', `${URL}/upload_job`, true);
-            xhr.send(fd);
+            xhr.onerror = () => {alert("Network Error"); ov.classList.remove('active');};
+            xhr.timeout = 0; xhr.open('POST', `${URL}/upload_job`, true); xhr.send(fd);
         }
 
         async function startPolling(tid){
-            const st=document.getElementById('ov-status'); const dt=document.getElementById('ov-detail');
-            const bar=document.getElementById('ov-prog'); const pc=document.getElementById('ov-percent');
+            // FASE 2: PROCESSING (Show Circle Loading Only)
+            document.getElementById('icon-upload').style.display = 'none';
+            document.getElementById('icon-process').style.display = 'block'; // Show Spinner
+            document.getElementById('bar-wrapper').style.display = 'none'; // Hide Bar
+            document.getElementById('ov-percent').style.display = 'none'; // Hide Percent text
+
+            const st = document.getElementById('ov-status'); 
+            const dt = document.getElementById('ov-detail');
             
-            st.innerText="Sedang Memproses AI..."; dt.innerText="GPU sedang bekerja (Aman untuk ditunggu).";
-            
-            let sim=10; // Progress simulasi minimal
-            
-            // Animasi dummy biar user tidak bosan (Slowly increase to 90%)
-            const simAnim = setInterval(() => { if(sim < 90) { sim += 0.5; bar.style.width=sim+"%"; pc.innerText=Math.floor(sim)+"%"; } }, 800);
+            st.innerText="AI Processing..."; 
+            // Gunakan Device Type yang tersimpan
+            dt.innerText=`${DEVICE_TYPE} is processing (Anti-Timeout Mode)...`;
 
             const poll = setInterval(async ()=>{
                 try{
                     const r = await fetch(`${URL}/check_job/${tid}`);
                     const d = await r.json();
                     
-                    // Kalau Backend kirim Real Progress, timpa simulasi
-                    if(d.progress && d.progress > sim) {
-                        sim = d.progress; bar.style.width=sim+'%'; pc.innerText=sim+'%';
-                        dt.innerText = d.message || "Working...";
-                    }
+                    if(d.message) dt.innerText = d.message;
 
                     if(d.status === 'done'){
-                        clearInterval(poll); clearInterval(simAnim);
-                        bar.style.width = "100%"; pc.innerText = "100%";
+                        clearInterval(poll);
                         st.innerText = "Selesai!";
-                        setTimeout(() => {
-                            renderResult(d.data);
-                            ov.classList.remove('active');
-                        }, 500);
+                        dt.innerText = "Finalizing...";
+                        setTimeout(() => { renderResult(d.data); document.getElementById('overlay').classList.remove('active'); }, 500);
                     } else if(d.status === 'error'){
-                        clearInterval(poll); clearInterval(simAnim);
-                        alert("Error Server: "+d.error); ov.classList.remove('active');
+                        clearInterval(poll);
+                        alert("Processing Error: "+d.error); document.getElementById('overlay').classList.remove('active');
                     }
                 } catch(e) {}
-            }, 2000); // Cek tiap 2 detik
+            }, 2500);
         }
 
         function renderResult(data){
             const area = document.getElementById('stems-out');
             area.innerHTML = ""; document.getElementById('results-area').style.display='block';
             
-            // URUTKAN (Vokal di atas, Instrumen di bawah)
             const tracks = Object.entries(data).sort((a, b) => {
                 const A = a[0].toLowerCase(), B = b[0].toLowerCase();
                 if(A.includes('vocal') && !B.includes('vocal')) return -1;
@@ -427,10 +448,9 @@
             });
 
             for(const [name, path] of tracks){
-                let c = '#a78bfa'; let ic='fa-music'; let sub='Audio Track';
-                const n_low = name.toLowerCase();
-                if(n_low.includes('vocal')) { c='#f472b6'; ic='fa-microphone'; sub='Vocals'; }
-                if(n_low.includes('inst') || n_low.includes('other')) { c='#34d399'; ic='fa-guitar'; sub='Instrumental'; }
+                let c = '#a78bfa'; let ic='fa-music';
+                if(name.toLowerCase().includes('vocal')) { c='#f472b6'; ic='fa-microphone'; }
+                if(name.toLowerCase().includes('inst')) { c='#34d399'; ic='fa-guitar'; }
                 
                 const link = URL + path;
                 area.innerHTML += `
@@ -438,9 +458,8 @@
                     <div class="stem-icon" style="color:${c}; background:${c}20; border:1px solid ${c}40;">
                         <i class="fas ${ic}"></i>
                     </div>
-                    <div class="stem-info">
-                        <div style="font-size:0.7rem; color:${c}; text-transform:uppercase; letter-spacing:1px; margin-bottom:2px;">${sub}</div>
-                        <div class="stem-title">${name}</div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700; color:#fff; margin-bottom:5px;">${name}</div>
                         <audio controls src="${link}"></audio>
                     </div>
                     <a href="${link}" download class="dl-btn"><i class="fas fa-download"></i></a>
