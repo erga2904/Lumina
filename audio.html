@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lumina | Studio AI</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700;800&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
@@ -21,6 +22,7 @@
             --input-bg: rgba(0, 0, 0, 0.3); 
             --success: #34d399; 
             --warning: #fbbf24; 
+            --error: #ef4444;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Figtree', sans-serif; outline: none; }
@@ -41,10 +43,12 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
         nav .logo { font-family: 'Fira Code', monospace; font-weight: 800; font-size: 1.2rem; color: #fff; }
-        nav .menu a { color: var(--text-muted); text-decoration: none; font-weight: 600; margin-left: 20px; font-size:0.9rem;}
+        nav .menu a { color: var(--text-muted); text-decoration: none; font-weight: 600; margin-left: 20px; transition:0.3s; font-size:0.9rem;}
+        nav .menu a:hover { color: var(--accent-glow); }
 
         .container { max-width: 950px; margin: 130px auto 0; padding: 0 20px; text-align: center; }
         
+        /* CARD */
         .main-card { 
             background: var(--glass-surface); backdrop-filter: blur(30px);
             border: 1px solid var(--glass-border); border-radius: 28px; padding: 45px;
@@ -58,7 +62,6 @@
 
         .section-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-glow); margin-bottom: 15px; font-weight: 800; display: block; opacity: 0.8;}
         
-        /* CONNECTION */
         .conn-container {
             display: flex; gap: 12px; margin-bottom: 15px; background: rgba(0,0,0,0.3);
             padding: 10px; border-radius: 18px; border: 1px solid var(--glass-border);
@@ -78,17 +81,18 @@
             border-bottom: 1px dashed var(--glass-border); padding-bottom: 2px;
         }
 
-        /* ALERTS */
-        .cpu-alert {
-            display: none; background: rgba(251, 191, 36, 0.1); 
-            border: 1px solid rgba(251, 191, 36, 0.3); border-left: 4px solid var(--warning);
-            padding: 15px; border-radius: 12px; margin-bottom: 30px; animation: fadeIn 0.5s ease;
-        }
-        .cpu-text strong { display: block; color: var(--warning); font-size: 0.9rem; margin-bottom: 2px; }
-        .cpu-text span { font-size: 0.85rem; color: #ddd; }
+        /* ALERT WARNINGS */
+        #alerts-wrapper { display: none; }
+        .alert-box { padding: 15px; border-radius: 12px; margin-bottom: 20px; animation: fadeIn 0.5s ease; border: 1px solid transparent; display:none;}
+        .cpu-alert { background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.3); border-left: 4px solid var(--warning); }
+        .heavy-alert { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); border-left: 4px solid var(--error); }
+        .alert-content { display:flex; align-items:center; gap:15px; }
+        .alert-content i { font-size:1.6rem; }
+        .alert-text strong { display:block; margin-bottom:2px; font-size:0.95rem; }
+        .alert-text span { font-size: 0.85rem; color: #ccc; }
         @keyframes fadeIn { from{opacity:0; transform:translateY(-10px)} to{opacity:1; transform:translateY(0)} }
 
-        /* UPLOAD */
+        /* UPLOAD & GRIDS */
         .drop-zone {
             border: 2px dashed rgba(255,255,255,0.1); border-radius: 24px; padding: 50px;
             text-align: center; cursor: pointer; transition: 0.3s; position: relative;
@@ -99,10 +103,9 @@
         .dz-sub { color: var(--text-muted); font-size: 0.9rem; }
 
         .grid-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-top: 10px; }
-        
         .option-card {
             background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
-            padding: 20px; border-radius: 16px; cursor: pointer; transition: 0.3s; position: relative;
+            padding: 20px; border-radius: 16px; cursor: pointer; transition: 0.2s; position: relative;
         }
         .option-card.active { background: rgba(56, 189, 248, 0.15); border-color: var(--accent-glow); }
         .option-card.active::after { content: '✔'; position: absolute; top: 15px; right: 15px; color: var(--accent-glow); font-weight: 900;}
@@ -126,34 +129,48 @@
         }
         .btn-launch:hover { transform: translateY(-4px) scale(1.01); filter: brightness(1.1); }
 
-        /* --- UPDATED LOADING OVERLAY --- */
+        /* --- OVERLAY LOADER FIX --- */
         #overlay {
             position: fixed; inset: 0; background: var(--glass-strong); z-index: 1000;
             display: none; flex-direction: column; justify-content: center; align-items: center;
-            backdrop-filter: blur(20px); opacity: 0; transition: opacity 0.5s;
+            backdrop-filter: blur(25px); opacity: 0; transition: opacity 0.5s;
         }
         #overlay.active { opacity: 1; display: flex; }
         
-        /* Ikon Statis (untuk upload phase) */
-        .static-icon {
-            width: 80px; height: 80px; border-radius: 50%; background: var(--accent-glow);
-            box-shadow: 0 0 0 rgba(56, 189, 248, 0.4); 
-            margin-bottom: 30px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #000;
-        }
-
-        /* Ikon Loading Putar (untuk process phase) */
-        .loader-ring {
-            width: 90px; height: 90px; border: 5px solid rgba(255,255,255,0.1);
-            border-top: 5px solid var(--accent-glow); border-radius: 50%;
-            animation: spin 1s infinite linear; margin-bottom: 30px;
-            box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        .progress-cont { width: 350px; height: 8px; background: rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; position: relative;}
+        #phase-upload { width: 90%; max-width: 400px; text-align: center; display: none; }
+        .progress-cont { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; position: relative; margin-top: 25px;}
         .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-glow), #a78bfa); transition: width 0.3s ease; border-radius: 20px;}
+
+        /* PHASE PROCESS: SPINNING CIRCLE (TANPA ANGKA) */
+        #phase-process { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; text-align: center; }
         
-        /* --- RESULTS AREA --- */
+        /* Cincin Luar Berputar */
+        .ring-container {
+            width: 120px; height: 120px; margin-bottom: 30px; position: relative;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .spin-ring {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border: 6px solid transparent; border-top: 6px solid var(--accent-glow); border-right: 6px solid #818cf8;
+            border-radius: 50%; animation: infiniteSpin 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+        .static-ring {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border: 6px solid rgba(255,255,255,0.05); border-radius: 50%;
+        }
+        .chip-icon {
+            font-size: 2.5rem; color: #fff; opacity: 0.8; 
+            animation: pulseChip 2s infinite ease-in-out;
+        }
+
+        @keyframes infiniteSpin { 100% { transform: rotate(360deg); } }
+        @keyframes pulseChip { 0%,100%{ opacity: 0.6; transform: scale(0.9); } 50%{ opacity: 1; transform: scale(1.1); } }
+
+        .status-h2 { font-size: 1.5rem; color: #fff; margin: 0; font-weight: 800; letter-spacing: -0.5px;}
+        .status-p { color: var(--text-muted); font-size: 0.95rem; margin-top: 8px; max-width: 300px; line-height: 1.5; }
+
+        /* RESULTS AREA */
         #results-area { display: none; margin-top: 20px; animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
         @keyframes fadeInUp { from{opacity:0; transform:translateY(40px);} to{opacity:1; transform:translateY(0);} }
         
@@ -174,11 +191,8 @@
         .dl-btn:hover { background: #fff; color: #000; border-color: #fff; transform: rotate(-15deg); }
         audio { height: 40px; width: 100%; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); opacity: 0.9; }
         
-        .hw-badge {
-            font-size: 0.75rem; font-family:'Fira Code'; font-weight:700;
-            padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.1);
-            color: #94a3b8; letter-spacing: 0.5px;
-        }
+        .hw-badge { font-size: 0.75rem; font-family:'Fira Code'; font-weight:700; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.05); color: #94a3b8; letter-spacing: 0.5px; }
+        
     </style>
 </head>
 <body>
@@ -191,22 +205,29 @@
         </div>
     </nav>
 
-    <!-- IMPROVED LOADING OVERLAY -->
+    <!-- UI OVERLAY -->
     <div id="overlay">
-        <!-- ICON UNTUK UPLOAD -->
-        <div id="icon-upload" class="static-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-        
-        <!-- ICON UNTUK PROCESSING (CIRCLE LOADING) -->
-        <div id="icon-process" class="loader-ring" style="display: none;"></div>
-
-        <h2 id="ov-status" style="font-weight: 800; color: #fff; margin-bottom: 5px;">Ready...</h2>
-        <p id="ov-detail" style="color: var(--text-muted); margin-bottom: 25px;">Initializing System</p>
-        
-        <!-- BAR UNTUK UPLOAD -->
-        <div class="progress-cont" id="bar-wrapper">
-            <div class="progress-bar" id="ov-prog"></div>
+        <!-- 1. PHASE UPLOAD -->
+        <div id="phase-upload">
+            <div style="font-size:3.5rem; color:#475569; margin-bottom:20px;">
+                <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+            <h2 id="ov-status" style="font-weight: 800; color: #fff; margin-bottom: 5px;">Uploading...</h2>
+            <p id="ov-detail" style="color: var(--text-muted);">Sending data securely</p>
+            <div class="progress-cont"><div class="progress-bar" id="ov-bar"></div></div>
+            <div id="ov-percent" style="margin-top: 10px; font-family: 'Fira Code'; color: var(--accent-glow);">0%</div>
         </div>
-        <div id="ov-percent" style="margin-top: 10px; font-family: 'Fira Code'; color: var(--accent-glow);">0%</div>
+
+        <!-- 2. PHASE PROCESS (ANIMATED RING) -->
+        <div id="phase-process">
+            <div class="ring-container">
+                <div class="static-ring"></div>
+                <div class="spin-ring"></div>
+                <div class="chip-icon"><i class="fas fa-microchip"></i></div>
+            </div>
+            <div class="status-h2">Processing Audio</div>
+            <p id="proc-detail" class="status-p">Models are running on Cloud Server. Please do not close this tab.</p>
+        </div>
     </div>
 
     <div class="container">
@@ -222,27 +243,37 @@
                 <button onclick="connect()" id="btn-conn">Connect</button>
             </div>
 
-            <!-- LINK COLAB -->
-            <div style="text-align: right; margin-bottom: 20px;">
-                <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=NQkNo_7Jcz1K" target="_blank" class="colab-link" style="color:var(--accent-glow); text-decoration:none; font-size:0.85rem; border-bottom:1px dashed var(--glass-border);">
-                    <i class="fas fa-external-link-alt"></i> Buka Script Google Colab
-                </a>
-            </div>
-
-            <div class="cpu-alert" id="cpu-alert">
-                <div class="cpu-alert-content" style="display:flex; gap:15px; align-items:center;">
-                    <i class="fas fa-exclamation-triangle" style="font-size:1.5rem; color:var(--warning)"></i>
-                    <div class="cpu-text">
-                        <strong style="color:var(--warning); display:block; font-size:0.9rem;">PERINGATAN: CPU MODE</strong>
-                        <span style="font-size:0.85rem; color:#ddd;">Google Colab sedang sibuk/tanpa GPU. Proses akan sangat lambat (3-5 menit/lagu).</span>
+            <!-- ALERT SECTION -->
+            <div id="alerts-wrapper">
+                <div class="alert-box cpu-alert" id="cpu-alert">
+                    <div class="alert-content">
+                        <i class="fas fa-exclamation-triangle" style="color:var(--warning)"></i>
+                        <div class="alert-text">
+                            <strong style="color:var(--warning)">PERINGATAN: CPU MODE</strong>
+                            <span>Server tanpa GPU. Proses akan memakan waktu 3-5 menit/lagu.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert-box heavy-alert" id="heavy-alert">
+                    <div class="alert-content">
+                        <i class="fas fa-radiation" style="color:var(--error)"></i>
+                        <div class="alert-text">
+                            <strong style="color:var(--error)">MODEL TERLALU BERAT!</strong>
+                            <span>Gunakan <b>Demucs</b> di mode CPU agar lebih cepat.</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 35px 0;">
+            <div class="colab-link">
+                <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=NQkNo_7Jcz1K" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Buka Script Google Colab
+                </a>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 30px 0;">
 
             <span class="section-label">02. Upload Source</span>
-            
             <div class="drop-zone" onclick="document.getElementById('f-in').click()">
                 <div id="file-info">
                     <i class="fas fa-music" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 20px;"></i>
@@ -279,20 +310,20 @@
 
     <script>
         const MODELS = [
-            { id: 'BS-Roformer-Resurrection-Inst.ckpt', name: 'Roformer Inst (SOTA)', desc: 'Best for Instrumental.' },
-            { id: 'BS-Roformer-Resurrection-v.1.ckpt', name: 'Roformer Vocal (SOTA)', desc: 'Best for Vocal.' },
-            { id: 'Kim_Vocal_2', name: 'Kim Vocal 2', desc: 'Very Clean MDX Vocals.' },
-            { id: 'UVR-MDX-NET-Inst_HQ_3', name: 'Inst HQ 3', desc: 'Standard HQ MDX.' },
-            { id: '1_HP-Karaoke-UVR', name: 'HP Karaoke', desc: 'Vocal Remover VR.' },
-            { id: 'htdemucs', name: 'Demucs V4', desc: 'Fast Separation.' }
+            { id: 'BS-Roformer-Resurrection-Inst.ckpt', name: 'Roformer Inst (SOTA)', desc: 'Best Inst. (GPU Only)', heavy: true },
+            { id: 'BS-Roformer-Resurrection-v.1.ckpt', name: 'Roformer Vocal (SOTA)', desc: 'Best Vocal (GPU Only)', heavy: true },
+            { id: 'Kim_Vocal_2', name: 'Kim Vocal 2', desc: 'Cleanest MDX Vocals', heavy: true },
+            { id: 'UVR-MDX-NET-Inst_HQ_3', name: 'Inst HQ 3', desc: 'Standard HQ MDX', heavy: true },
+            { id: '1_HP-Karaoke-UVR', name: 'HP Karaoke', desc: 'Vocal Remover VR', heavy: false },
+            { id: 'htdemucs', name: 'Demucs V4', desc: 'Fast Separation (CPU OK)', heavy: false }
         ];
 
         let URL = localStorage.getItem('L_V12_URL') || "";
         let FILE = null;
         let SEL_MOD = MODELS[0].id;
         let SEL_FMT = 'mp3';
-        // Variabel untuk menyimpan jenis Device (CPU/GPU)
-        let DEVICE_TYPE = localStorage.getItem('L_DEVICE') || 'CPU';
+        let DEVICE_TYPE = 'CPU'; 
+        let IS_CONNECTED = false;
 
         window.onload = () => {
             if(URL) document.getElementById('api-url').value = URL;
@@ -304,7 +335,7 @@
                     FILE = f;
                     const mb = (f.size/1024/1024).toFixed(1);
                     document.getElementById('file-info').innerHTML = `
-                        <i class="fas fa-check-circle" style="font-size:3.5rem; color:var(--success); margin-bottom:15px; animation:none;"></i>
+                        <i class="fas fa-check-circle" style="font-size:3.5rem; color:var(--success); margin-bottom:15px;"></i>
                         <div class="dz-text" style="color:#fff;">${f.name}</div>
                         <div class="dz-sub" style="color:var(--success); font-weight:700;">Size: ${mb} MB &bull; Ready</div>
                     `;
@@ -322,65 +353,73 @@
                 </div>
             `).join('');
         }
-        function setModel(id) { SEL_MOD = id; renderModels(); }
+
+        function setModel(id) { 
+            SEL_MOD = id; renderModels(); updateUIState();
+        }
         function setFmt(f, el) { 
             SEL_FMT=f; document.querySelectorAll('.fmt-pill').forEach(x=>x.classList.remove('active')); el.classList.add('active'); 
+        }
+
+        function updateUIState() {
+            const badge = document.getElementById('hw-status');
+            const alertWrap = document.getElementById('alerts-wrapper');
+            const boxCpu = document.getElementById('cpu-alert');
+            const boxHeavy = document.getElementById('heavy-alert');
+            
+            if(!IS_CONNECTED) {
+                badge.innerText = "DISCONNECTED"; badge.style.color="#94a3b8"; 
+                alertWrap.style.display = 'none'; return;
+            }
+
+            alertWrap.style.display = 'block'; 
+            
+            if(DEVICE_TYPE === 'GPU') {
+                badge.innerText = "⚡ ONLINE (GPU MODE)";
+                badge.style.color = "var(--success)";
+                boxCpu.style.display = 'none';
+                boxHeavy.style.display = 'none';
+            } else {
+                badge.innerText = "⚠ ONLINE (CPU MODE)";
+                badge.style.color = "var(--warning)";
+                boxCpu.style.display = 'block';
+                const curr = MODELS.find(m => m.id === SEL_MOD);
+                boxHeavy.style.display = (curr && curr.heavy) ? 'block' : 'none';
+            }
         }
 
         async function connect(){
             let u=document.getElementById('api-url').value.trim().replace(/\/$/,""); if(!u)return alert("Empty URL");
             try{
-                document.getElementById('btn-conn').innerText="...";
+                document.getElementById('btn-conn').innerText="Checking...";
                 const r=await fetch(`${u}/ping`, {headers:{'ngrok-skip-browser-warning':'1'}});
                 if(r.ok){
-                    const d=await r.json(); URL=u; 
-                    localStorage.setItem('L_V12_URL', u);
-                    localStorage.setItem('L_DEVICE', d.device || 'CPU'); // SIMPAN DEVICE TYPE
+                    const d=await r.json(); 
+                    URL=u; localStorage.setItem('L_V12_URL', u);
                     DEVICE_TYPE = d.device || 'CPU';
-
-                    document.getElementById('btn-conn').innerText="Connected";
+                    IS_CONNECTED = true;
+                    document.getElementById('btn-conn').innerText="OK";
                     document.getElementById('btn-conn').style.color="var(--success)";
-                    
-                    const badge = document.getElementById('hw-status');
-                    const alertBox = document.getElementById('cpu-alert');
-
-                    // TAMPILKAN STATUS SESUAI DEVICE
-                    if(DEVICE_TYPE === 'CPU') {
-                        badge.innerText = "⚠ ONLINE (CPU MODE)";
-                        badge.style.color = "var(--warning)";
-                        badge.style.background = "rgba(251, 191, 36, 0.1)";
-                        alertBox.style.display = "block";
-                    } else {
-                        badge.innerText = "⚡ ONLINE (GPU MODE)";
-                        badge.style.color = "var(--success)";
-                        badge.style.background = "rgba(52, 211, 153, 0.1)";
-                        alertBox.style.display = "none";
-                    }
+                    updateUIState();
                     alert(`Connected! Device: ${DEVICE_TYPE}`);
                 }
             } catch(e) { 
-                alert("Connection Failed."); 
+                alert("Failed to connect. Check Colab link."); 
                 document.getElementById('btn-conn').innerText="Retry"; 
             }
         }
 
-        // --- ASYNC PROCESS WITH SMART UI SWAPPING ---
         function startSmartAsync() {
-            if(!URL || !FILE) return alert("Cek Koneksi / File.");
+            if(!URL || !FILE || !IS_CONNECTED) return alert("Please Connect & Select File.");
             
             const ov = document.getElementById('overlay'); ov.classList.add('active');
             
-            // FASE 1: UPLOAD (Show Upload Icon + Bar)
-            document.getElementById('icon-upload').style.display = 'flex';
-            document.getElementById('icon-process').style.display = 'none';
-            document.getElementById('bar-wrapper').style.display = 'block';
-            document.getElementById('ov-percent').style.display = 'block';
-
-            const st = document.getElementById('ov-status'); const dt = document.getElementById('ov-detail');
-            const bar = document.getElementById('ov-prog'); const pc = document.getElementById('ov-percent');
+            // FASE 1: UPLOAD (BAR LINEAR)
+            document.getElementById('phase-upload').style.display='block';
+            document.getElementById('phase-process').style.display='none';
             
+            const bar=document.getElementById('ov-bar'); const pc=document.getElementById('ov-percent');
             bar.style.width="0%"; pc.innerText="0%";
-            st.innerText="Uploading Phase..."; dt.innerText="Sending file to Cloud...";
 
             const fd = new FormData();
             fd.append('audio_file', FILE); fd.append('model_name', SEL_MOD); fd.append('output_format', SEL_FMT);
@@ -395,7 +434,7 @@
             xhr.onload = () => {
                 if(xhr.status === 200){
                     const res = JSON.parse(xhr.responseText);
-                    startPolling(res.task_id); // Start Queue Poll
+                    startPolling(res.task_id); // Ganti tampilan
                 } else { alert("Upload Failed"); ov.classList.remove('active'); }
             };
             xhr.onerror = () => {alert("Network Error"); ov.classList.remove('active');};
@@ -403,34 +442,29 @@
         }
 
         async function startPolling(tid){
-            // FASE 2: PROCESSING (Show Circle Loading Only)
-            document.getElementById('icon-upload').style.display = 'none';
-            document.getElementById('icon-process').style.display = 'block'; // Show Spinner
-            document.getElementById('bar-wrapper').style.display = 'none'; // Hide Bar
-            document.getElementById('ov-percent').style.display = 'none'; // Hide Percent text
-
-            const st = document.getElementById('ov-status'); 
-            const dt = document.getElementById('ov-detail');
+            // FASE 2: CIRCLE SPINNER (TANPA PERSEN SPESIFIK)
+            document.getElementById('phase-upload').style.display='none';
+            document.getElementById('phase-process').style.display='flex';
             
-            st.innerText="AI Processing..."; 
-            // Gunakan Device Type yang tersimpan
-            dt.innerText=`${DEVICE_TYPE} is processing (Anti-Timeout Mode)...`;
-
+            const desc = document.getElementById('proc-detail');
+            
             const poll = setInterval(async ()=>{
                 try{
                     const r = await fetch(`${URL}/check_job/${tid}`);
                     const d = await r.json();
                     
-                    if(d.message) dt.innerText = d.message;
+                    if(d.message) desc.innerText = d.message;
 
                     if(d.status === 'done'){
                         clearInterval(poll);
-                        st.innerText = "Selesai!";
-                        dt.innerText = "Finalizing...";
-                        setTimeout(() => { renderResult(d.data); document.getElementById('overlay').classList.remove('active'); }, 500);
+                        desc.innerText = "Finalizing output...";
+                        setTimeout(() => { 
+                            renderResult(d.data); 
+                            document.getElementById('overlay').classList.remove('active'); 
+                        }, 500);
                     } else if(d.status === 'error'){
                         clearInterval(poll);
-                        alert("Processing Error: "+d.error); document.getElementById('overlay').classList.remove('active');
+                        alert("Error: "+d.error); document.getElementById('overlay').classList.remove('active'); 
                     }
                 } catch(e) {}
             }, 2500);
@@ -448,9 +482,9 @@
             });
 
             for(const [name, path] of tracks){
-                let c = '#a78bfa'; let ic='fa-music';
-                if(name.toLowerCase().includes('vocal')) { c='#f472b6'; ic='fa-microphone'; }
-                if(name.toLowerCase().includes('inst')) { c='#34d399'; ic='fa-guitar'; }
+                let c = '#a78bfa'; let ic='fa-music'; let lbl='Track';
+                if(name.toLowerCase().includes('vocal')) { c='#f472b6'; ic='fa-microphone'; lbl='Vocals'; }
+                if(name.toLowerCase().includes('inst')) { c='#34d399'; ic='fa-guitar'; lbl='Instrumental'; }
                 
                 const link = URL + path;
                 area.innerHTML += `
@@ -459,7 +493,8 @@
                         <i class="fas ${ic}"></i>
                     </div>
                     <div style="flex:1;">
-                        <div style="font-weight:700; color:#fff; margin-bottom:5px;">${name}</div>
+                        <div style="font-size:0.7rem; color:${c}; text-transform:uppercase; font-weight:800; margin-bottom:4px;">${lbl}</div>
+                        <div style="font-weight:700; color:#fff; margin-bottom:5px; word-break:break-all; font-size:0.95rem;">${name}</div>
                         <audio controls src="${link}"></audio>
                     </div>
                     <a href="${link}" download class="dl-btn"><i class="fas fa-download"></i></a>
