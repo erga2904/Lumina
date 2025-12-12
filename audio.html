@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lumina | AI Studio</title>
+    <title>Lumina | Studio AI</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700;800&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* TEMA PORTFOLIO */
+        /* CORE DESIGN */
         :root {
             --accent-glow: #38bdf8; 
             --bg-color: #0f172a; 
@@ -24,15 +24,16 @@
             --error: #ef4444;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Figtree', sans-serif; outline: none; -webkit-tap-highlight-color: transparent;}
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Figtree', sans-serif; outline: none; }
         
         body { 
             background-color: var(--bg-color); color: var(--text-main); 
             min-height: 100vh; overflow-x: hidden; padding-bottom: 80px;
-            background-image: radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%), 
-                              radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.15) 0px, transparent 50%);
+            background-image: radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.1) 0px, transparent 50%), 
+                              radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.1) 0px, transparent 50%);
         }
 
+        /* NAV */
         nav { 
             position: fixed; top: 25px; left: 50%; transform: translateX(-50%); 
             width: 90%; max-width: 750px; height: 65px; padding: 0 35px; 
@@ -64,7 +65,8 @@
             padding: 10px; border-radius: 18px; border: 1px solid var(--glass-border);
         }
         .conn-container input {
-            flex: 1; background: transparent; border: none; padding: 12px 15px; color: #fff; font-family: 'Fira Code'; font-size: 0.95rem;
+            flex: 1; background: transparent; border: none; padding: 12px 15px; 
+            color: #fff; font-family: 'Fira Code'; font-size: 0.95rem;
         }
         .conn-container button {
             background: rgba(255,255,255,0.08); color: #fff; border: 1px solid var(--glass-border);
@@ -72,10 +74,7 @@
         }
         .conn-container button:hover { background: var(--accent-glow); color:#000; box-shadow: 0 0 15px var(--accent-glow); border-color:transparent;}
 
-        .colab-link { display:flex; justify-content:flex-end; margin-bottom:25px;}
-        .colab-link a {
-            font-size: 0.85rem; color: var(--text-muted); text-decoration: none; border-bottom: 1px dashed var(--glass-border); padding-bottom: 2px;
-        }
+        .colab-link a { font-size: 0.85rem; color: var(--text-muted); text-decoration: none; border-bottom: 1px dashed var(--glass-border); padding-bottom: 2px; }
 
         /* ALERT */
         #alerts-wrapper { display: none; }
@@ -83,7 +82,9 @@
         .cpu-alert { background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.3); border-left: 4px solid var(--warning); }
         .heavy-alert { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); border-left: 4px solid var(--error); }
         .alert-content { display:flex; align-items:center; gap:15px; }
+        .alert-content i { font-size:1.6rem; }
         .alert-text strong { display:block; margin-bottom:2px; font-size:0.95rem; }
+        .alert-text span { font-size: 0.85rem; color: #ccc; }
         @keyframes fadeIn { from{opacity:0; transform:translateY(-10px)} to{opacity:1; transform:translateY(0)} }
 
         /* UPLOAD */
@@ -96,23 +97,24 @@
         .dz-text { font-size: 1.3rem; font-weight: 700; margin-bottom: 5px; color: var(--text-main); margin-top: 15px;}
         .dz-sub { color: var(--text-muted); font-size: 0.9rem; }
 
-        /* MODELS */
+        /* GRID OPTIONS */
         .grid-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-top: 10px; }
+        
         .option-card {
             background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
             padding: 20px; border-radius: 16px; cursor: pointer; transition: 0.2s; position: relative;
         }
-        .option-card:hover { background: rgba(255,255,255,0.06); transform:translateY(-3px); }
+        .option-card:hover { background: rgba(255,255,255,0.06); transform:translateY(-2px); }
         .option-card.active { background: rgba(56, 189, 248, 0.15); border-color: var(--accent-glow); }
         .option-card.active::after { content: '✔'; position: absolute; top: 15px; right: 15px; color: var(--accent-glow); font-weight: 900;}
         .opt-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 5px; color: var(--text-main); }
         .opt-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
 
-        .format-pills { display: flex; gap: 12px; margin-top: 10px; overflow-x: auto; padding-bottom: 5px;}
+        .format-pills { display: flex; gap: 12px; margin-top: 10px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none;}
         .fmt-pill {
             padding: 12px 25px; border-radius: 12px; border: 1px solid var(--glass-border);
             background: rgba(255,255,255,0.03); color: var(--text-muted); cursor: pointer;
-            font-size: 0.9rem; font-weight: 700; transition: 0.3s;
+            font-size: 0.9rem; font-weight: 700; transition: 0.3s; white-space:nowrap;
         }
         .fmt-pill.active { background: #fff; color: #000; border-color: #fff; transform: scale(1.05); }
 
@@ -128,7 +130,7 @@
         #overlay {
             position: fixed; inset: 0; background: var(--glass-strong); z-index: 1000;
             display: none; flex-direction: column; justify-content: center; align-items: center;
-            backdrop-filter: blur(25px); opacity: 0; transition: opacity 0.5s;
+            backdrop-filter: blur(20px); opacity: 0; transition: opacity 0.5s;
         }
         #overlay.active { opacity: 1; display: flex; }
         
@@ -136,23 +138,25 @@
         .progress-cont { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; position: relative; margin-top: 25px;}
         .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-glow), #a78bfa); transition: width 0.3s ease; border-radius: 20px;}
 
-        /* CIRCLE */
         #phase-process { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; text-align: center; }
         .circle-wrapper { position: relative; width: 180px; height: 180px; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; }
         .circle-svg { position: absolute; top:0; left:0; width: 100%; height: 100%; transform: rotate(-90deg); }
         .circle-bg { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 8; }
         .circle-prog { fill: none; stroke: var(--accent-glow); stroke-width: 8; stroke-dasharray: 440; stroke-dashoffset: 440; transition: stroke-dashoffset 0.8s ease; stroke-linecap: round; filter: drop-shadow(0 0 10px var(--accent-glow)); }
         .inner-content { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        #proc-percent { font-family: 'Fira Code', monospace; font-size: 2.2rem; font-weight: 800; color: #fff; margin-bottom: 5px; }
-        
+        .chip-icon { font-size: 2.5rem; color: #fff; animation: breathe 2s infinite; }
+        @keyframes breathe { 50% { opacity:0.7; transform: scale(1.1); } }
+
+        .status-h2 { font-size: 1.5rem; color: #fff; margin: 0; font-weight: 800; letter-spacing: -0.5px;}
+        .status-p { color: var(--text-muted); font-size: 0.95rem; margin-top: 8px; }
+
         /* RESULTS */
         #results-area { display: none; margin-top: 20px; animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
         @keyframes fadeInUp { from{opacity:0; transform:translateY(40px);} to{opacity:1; transform:translateY(0);} }
         
         .stem-item {
             background: rgba(30, 41, 59, 0.6); padding: 25px; border-radius: 20px; margin-bottom: 20px;
-            display: flex; align-items: center; gap: 25px; border: 1px solid var(--glass-border);
-            transition: 0.3s;
+            display: flex; align-items: center; gap: 25px; border: 1px solid var(--glass-border); transition: 0.3s;
         }
         .stem-icon { 
             width: 55px; height: 55px; border-radius: 16px; background: rgba(56, 189, 248, 0.1); 
@@ -168,6 +172,21 @@
         
         .hw-badge { font-size: 0.75rem; font-family:'Fira Code'; font-weight:700; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.05); color: #94a3b8; letter-spacing: 0.5px; }
         
+        /* MOBILE OPTIMIZATION */
+        @media (max-width: 600px) {
+            .container { padding: 0 10px; margin-top: 100px;}
+            .main-card { padding: 25px 15px; border-radius: 20px; }
+            .conn-container { flex-direction: column; gap: 8px; }
+            .conn-container button { width: 100%; }
+            .grid-options { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .opt-title { font-size: 0.85rem; }
+            .opt-desc { font-size: 0.7rem; }
+            .stem-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .stem-icon { width: 40px; height: 40px; font-size: 1.2rem; }
+            .stem-info { width: 100%; }
+            .stem-item audio { width: 100%; margin-top: 5px; }
+            .dl-btn { width: 100%; border-radius: 12px; margin-top: 5px; background: rgba(255,255,255,0.05); }
+        }
     </style>
 </head>
 <body>
@@ -182,30 +201,26 @@
 
     <!-- LOADING OVERLAY -->
     <div id="overlay">
-        <!-- 1. UPLOAD -->
+        <!-- PHASE 1: UPLOAD (Linear Bar) -->
         <div id="phase-upload">
             <i class="fas fa-cloud-upload-alt" style="font-size:3.5rem; color:#64748b; margin-bottom:20px;"></i>
-            <h2 style="font-weight: 800; color: #fff; margin-bottom: 5px;">Uploading...</h2>
-            <p style="color: var(--text-muted);">Secure transfer to cloud</p>
+            <h2 id="ov-status" style="font-weight: 800; color: #fff; margin-bottom: 5px;">Uploading...</h2>
+            <p id="ov-detail" style="color: var(--text-muted);">Secure transfer to cloud</p>
             <div class="progress-cont"><div class="progress-bar" id="ov-bar"></div></div>
             <div id="ov-percent" style="margin-top: 10px; font-family: 'Fira Code'; color: var(--accent-glow);">0%</div>
         </div>
 
-        <!-- 2. PROCESSING -->
+        <!-- PHASE 2: PROCESSING (Circle Animation) -->
         <div id="phase-process">
             <div class="circle-wrapper">
                 <svg class="circle-svg" viewBox="0 0 160 160">
                     <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
-                    <circle class="circle-prog" id="circle-stroke" cx="80" cy="80" r="70" 
-                            stroke-dasharray="440" stroke-dashoffset="440"></circle>
+                    <circle class="circle-prog" id="circle-stroke" cx="80" cy="80" r="70"></circle>
                 </svg>
-                <div class="inner-content">
-                    <div id="proc-percent">0%</div>
-                    <div class="hw-badge" style="margin-top:5px; font-size:0.65rem;">WORKING</div>
-                </div>
+                <div class="inner-content"><i class="fas fa-microchip chip-icon"></i></div>
             </div>
-            <h2 class="status-h2" style="font-size:1.5rem; font-weight:800; color:#fff;">AI Processing</h2>
-            <p id="proc-detail" style="color:var(--text-muted); font-size:0.95rem; margin-top:8px;">Running Models...</p>
+            <h2 class="status-h2">Processing AI</h2>
+            <p id="proc-detail" class="status-p">Models are running on Cloud...</p>
         </div>
     </div>
 
@@ -218,23 +233,24 @@
             </div>
             
             <div class="conn-container">
-                <input type="text" id="api-url" placeholder="Paste URL Cloudflare (.trycloudflare.com)...">
+                <input type="text" id="api-url" placeholder="Paste URL Cloudflare..." autocomplete="off">
                 <button onclick="connect()" id="btn-conn">Connect</button>
             </div>
 
-            <div class="colab-link">
+            <div class="colab-link" style="text-align: right;">
                 <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=NQkNo_7Jcz1K" target="_blank">
                     <i class="fas fa-external-link-alt"></i> Buka Script Google Colab
                 </a>
             </div>
 
+            <!-- WARNINGS -->
             <div id="alerts-wrapper">
                 <div class="alert-box cpu-alert" id="cpu-alert">
                     <div class="alert-content">
                         <i class="fas fa-exclamation-triangle" style="font-size:1.5rem; color:var(--warning)"></i>
                         <div class="alert-text">
                             <strong style="color:var(--warning)">CPU MODE</strong>
-                            <span>Tanpa GPU. Proses sangat lambat (3-5 min).</span>
+                            <span>Tanpa GPU. Proses akan lambat.</span>
                         </div>
                     </div>
                 </div>
@@ -243,7 +259,7 @@
                         <i class="fas fa-radiation" style="font-size:1.5rem; color:var(--error)"></i>
                         <div class="alert-text">
                             <strong style="color:var(--error)">MODEL BERAT</strong>
-                            <span>Gunakan <b>Demucs</b> di mode CPU agar tidak crash/timeout.</span>
+                            <span>Jangan gunakan Roformer/MDX/SCNet di CPU. Pilih Demucs.</span>
                         </div>
                     </div>
                 </div>
@@ -251,11 +267,11 @@
 
             <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 30px 0;">
 
-            <span class="section-label">02. Upload</span>
+            <span class="section-label">02. Source</span>
             <div class="drop-zone" onclick="document.getElementById('f-in').click()">
                 <div id="file-info">
                     <i class="fas fa-music" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 20px;"></i>
-                    <div class="dz-text">Tap to Select Audio File</div>
+                    <div class="dz-text">Tap to Select Audio</div>
                     <div class="dz-sub">High Quality MP3, WAV, FLAC</div>
                 </div>
                 <input type="file" id="f-in" hidden accept="audio/*">
@@ -272,7 +288,7 @@
                 <div class="fmt-pill" onclick="setFmt('m4a', this)">M4A</div>
             </div>
 
-            <button class="btn-launch" onclick="startSmartAsync()">Start Processing <i class="fas fa-arrow-right"></i></button>
+            <button class="btn-launch" onclick="startSmartAsync()">Start Process <i class="fas fa-arrow-right"></i></button>
         </div>
 
         <div id="results-area">
@@ -285,25 +301,20 @@
     </div>
 
     <script>
-        // CONFIG MODELS UPDATE (TAMBAHAN REVIVE)
         const MODELS = [
-            // REVIVE FAMILY (CUSTOM)
-            { id: 'bs_roformer_revive.ckpt', name: 'Roformer Revive 1', desc: 'Custom Tuned SOTA', heavy: true },
-            { id: 'bs_roformer_revive2.ckpt', name: 'Roformer Revive 2', desc: 'Revive 2.0 (New)', heavy: true },
-            { id: 'bs_roformer_revive3e.ckpt', name: 'Roformer Revive 3e', desc: 'Experimental 3e (Latest)', heavy: true },
-            
-            // OLD FAVORITES
-            { id: 'BS-Roformer-Resurrection-Inst.ckpt', name: 'Roformer Resurrection Inst', desc: 'Instrumental SOTA', heavy: true },
-            { id: 'Kim_Vocal_2', name: 'Kim Vocal 2', desc: 'Clean MDX Vocals', heavy: true },
-            { id: 'htdemucs', name: 'Demucs V4', desc: 'Fast Mode (CPU Safe)', heavy: false }
+            { id: 'model_scnet_masked_ep_111_sdr_9.8286.ckpt', name: 'SCNet XL (Masked)', desc: 'Top Quality (Slowest)', heavy: true },
+            { id: 'BS-Roformer-Resurrection-Inst.ckpt', name: 'Roformer Inst', desc: 'SOTA Instrumental', heavy: true },
+            { id: 'BS-Roformer-Resurrection-v.1.ckpt', name: 'Roformer Vocal', desc: 'SOTA Vocal', heavy: true },
+            { id: 'Kim_Vocal_2', name: 'Kim Vocal 2', desc: 'Clean MDX', heavy: true },
+            { id: 'UVR-MDX-NET-Inst_HQ_3', name: 'Inst HQ 3', desc: 'Standard Inst', heavy: true },
+            { id: 'htdemucs', name: 'Demucs V4', desc: 'Fast CPU', heavy: false }
         ];
 
         let URL = localStorage.getItem('L_V12_URL') || "";
         let FILE = null;
-        let SEL_MOD = MODELS[0].id; // Default Revive
+        let SEL_MOD = MODELS[0].id;
         let SEL_FMT = 'mp3';
-        let IS_CONN = false; 
-        let DEV_TYPE = 'CPU';
+        let DEV = 'CPU'; let CONN = false;
 
         window.onload = () => {
             if(URL) document.getElementById('api-url').value = URL;
@@ -316,7 +327,7 @@
                     FILE = f;
                     const mb = (f.size/1024/1024).toFixed(1);
                     document.getElementById('file-info').innerHTML = `
-                        <i class="fas fa-check-circle" style="font-size:3.5rem; color:var(--success); margin-bottom:15px;"></i>
+                        <i class="fas fa-check-circle" style="font-size:3.5rem; color:var(--success); margin-bottom:10px;"></i>
                         <div class="dz-text" style="color:#fff;">${f.name}</div>
                         <div class="dz-sub" style="color:var(--success); font-weight:700;">Size: ${mb} MB &bull; Ready</div>
                     `;
@@ -339,53 +350,45 @@
         function setFmt(f, el) { SEL_FMT=f; document.querySelectorAll('.fmt-pill').forEach(x=>x.classList.remove('active')); el.classList.add('active'); }
 
         function updateUIState() {
-            const badge = document.getElementById('hw-status');
-            const wrap = document.getElementById('alerts-wrapper');
-            const boxCpu = document.getElementById('cpu-alert');
-            const boxHeavy = document.getElementById('heavy-alert');
+            const badge=document.getElementById('hw-status'); const wrap=document.getElementById('alerts-wrapper');
+            const boxC=document.getElementById('cpu-alert'); const boxH=document.getElementById('heavy-alert');
             
-            if(!IS_CONN) { wrap.style.display='none'; badge.innerText="DISCONNECTED"; badge.style.color="#94a3b8"; return; }
-            
+            if(!CONN) { wrap.style.display='none'; badge.innerText="DISCONNECTED"; badge.style.color="#94a3b8"; return; }
             wrap.style.display='block';
-            if(DEV_TYPE === 'GPU') {
+            
+            if(DEV === 'GPU') {
                 badge.innerText="ONLINE (GPU)"; badge.style.color="var(--success)";
-                boxCpu.style.display='none'; boxHeavy.style.display='none';
+                boxC.style.display='none'; boxH.style.display='none';
             } else {
                 badge.innerText="ONLINE (CPU)"; badge.style.color="var(--warning)";
-                boxCpu.style.display='block';
+                boxC.style.display='flex';
                 const curr = MODELS.find(m => m.id === SEL_MOD);
-                boxHeavy.style.display = (curr && curr.heavy) ? 'block' : 'none';
+                boxH.style.display = (curr && curr.heavy) ? 'flex' : 'none';
             }
         }
 
         async function connect(){
             let u=document.getElementById('api-url').value.trim().replace(/\/$/,""); if(!u)return alert("Empty URL");
             try{
-                document.getElementById('btn-conn').innerText="...";
+                document.getElementById('btn-conn').innerText="Checking...";
                 const r=await fetch(`${u}/ping`, {headers:{'ngrok-skip-browser-warning':'1'}});
                 if(r.ok){
-                    const d=await r.json(); 
-                    URL=u; localStorage.setItem('L_V12_URL', u);
-                    DEV_TYPE = "GPU"; // Assume GPU for now or parse from backend if sent
-                    IS_CONN = true;
-                    document.getElementById('btn-conn').innerText="OK";
-                    document.getElementById('btn-conn').style.color="var(--success)";
-                    updateUIState();
-                    alert(`Connected! Engine: ${d.engine}`);
+                    const d=await r.json(); URL=u; localStorage.setItem('L_V12_URL', u);
+                    DEV = d.device || 'CPU'; CONN = true;
+                    document.getElementById('btn-conn').innerText="Connected"; document.getElementById('btn-conn').style.color="var(--success)";
+                    updateUIState(); alert(`Connected! Mode: ${DEV}`);
                 }
-            } catch(e) { alert("Failed."); document.getElementById('btn-conn').innerText="Retry"; }
+            } catch(e) { alert("Connect Failed. Check Link."); document.getElementById('btn-conn').innerText="Retry"; }
         }
 
         function startSmartAsync() {
-            if(!URL || !FILE || !IS_CONN) return alert("Cek Koneksi / File.");
+            if(!URL || !FILE || !CONN) return alert("Belum Siap (Cek Koneksi / File).");
             
             const ov = document.getElementById('overlay'); ov.classList.add('active');
-            
             document.getElementById('phase-upload').style.display='block';
             document.getElementById('phase-process').style.display='none';
             
-            const bar=document.getElementById('ov-bar'); 
-            const pc=document.getElementById('ov-percent');
+            const bar=document.getElementById('ov-bar'); const pc=document.getElementById('ov-percent');
             bar.style.width="0%"; pc.innerText="0%";
 
             const fd = new FormData();
@@ -404,62 +407,47 @@
                     startPolling(res.task_id);
                 } else { alert("Upload Failed"); ov.classList.remove('active'); }
             };
-            xhr.onerror = () => {alert("Net Error"); ov.classList.remove('active');};
+            xhr.onerror = () => {alert("Network Error"); ov.classList.remove('active');};
             xhr.timeout=0; xhr.open('POST', `${URL}/upload_job`, true); xhr.send(fd);
         }
 
         async function startPolling(tid){
             document.getElementById('phase-upload').style.display='none';
             document.getElementById('phase-process').style.display='flex';
-            
             const desc = document.getElementById('proc-detail');
-            const pct = document.getElementById('proc-percent');
             const stroke = document.getElementById('circle-stroke');
-            const C = 440; 
-            stroke.style.strokeDasharray = C; stroke.style.strokeDashoffset = C;
+            
+            // Set circumference ~ 440px
+            stroke.style.strokeDasharray = 440;
+            stroke.style.strokeDashoffset = 440; 
 
-            let cur=5; 
+            let fakeP = 0; // Animasi simulasi saja karena pakai Circle Only
+            const fakeAnim = setInterval(()=>{ if(fakeP<90){ fakeP++; stroke.style.strokeDashoffset=440-(fakeP/100*440); } }, 500);
+
             const poll = setInterval(async ()=>{
                 try{
-                    const r = await fetch(`${URL}/check_job/${tid}`);
-                    const d = await r.json();
-                    
-                    if(d.progress && d.progress > cur) {
-                        cur = d.progress;
-                        stroke.style.strokeDashoffset = C - (cur/100)*C;
-                        pct.innerText = cur+"%";
-                    }
+                    const r = await fetch(`${URL}/check_job/${tid}`); const d = await r.json();
                     if(d.message) desc.innerText = d.message;
 
                     if(d.status === 'done'){
-                        clearInterval(poll);
-                        stroke.style.strokeDashoffset = 0; pct.innerText="100%";
-                        setTimeout(() => { 
-                            renderResult(d.data); 
-                            document.getElementById('overlay').classList.remove('active'); 
-                        }, 500);
+                        clearInterval(poll); clearInterval(fakeAnim);
+                        stroke.style.strokeDashoffset = 0; // 100%
+                        setTimeout(() => { renderResult(d.data); document.getElementById('overlay').classList.remove('active'); }, 500);
                     } else if(d.status === 'error'){
-                        clearInterval(poll); alert("Error: "+d.error); 
-                        document.getElementById('overlay').classList.remove('active'); 
+                        clearInterval(poll); alert("Err: "+d.error); document.getElementById('overlay').classList.remove('active');
                     }
                 } catch(e) {}
-            }, 2000);
+            }, 2500);
         }
 
         function renderResult(data){
-            const area = document.getElementById('stems-out');
-            area.innerHTML = ""; document.getElementById('results-area').style.display='block';
-            
-            const tracks = Object.entries(data).sort((a, b) => {
-                const A = a[0].toLowerCase(), B = b[0].toLowerCase();
-                if(A.includes('vocal') && !B.includes('vocal')) return -1;
-                return 0;
-            });
+            const area = document.getElementById('stems-out'); area.innerHTML = ""; document.getElementById('results-area').style.display='block';
+            const tracks = Object.entries(data).sort((a,b)=>(a[0].toLowerCase().includes('vocal')?-1:1));
 
             for(const [name, path] of tracks){
                 let c = '#a78bfa'; let ic='fa-music'; let lbl='Track';
-                if(name.toLowerCase().includes('vocal')) { c='#f472b6'; ic='fa-microphone'; lbl='Vocals'; }
-                if(name.toLowerCase().includes('inst')) { c='#34d399'; ic='fa-guitar'; lbl='Instrumental'; }
+                if(name.toLowerCase().includes('vocal')) { c='#f472b6'; ic='fa-microphone'; lbl='VOCAL'; }
+                if(name.toLowerCase().includes('inst')) { c='#34d399'; ic='fa-guitar'; lbl='INSTRUMENT'; }
                 
                 const link = URL + path;
                 area.innerHTML += `
@@ -467,16 +455,16 @@
                     <div class="stem-icon" style="color:${c}; background:${c}20; border:1px solid ${c}40;">
                         <i class="fas ${ic}"></i>
                     </div>
-                    <div style="flex:1;">
+                    <div style="flex:1; min-width:0;">
                         <div style="font-size:0.7rem; color:${c}; text-transform:uppercase; font-weight:800; margin-bottom:4px;">${lbl}</div>
-                        <div style="font-weight:700; color:#fff; margin-bottom:5px;">${name}</div>
+                        <div style="font-weight:700; color:#fff; margin-bottom:5px; font-size:0.95rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${name}</div>
                         <audio controls src="${link}"></audio>
                     </div>
-                    <a href="${link}" download class="dl-btn"><i class="fas fa-download"></i></a>
+                    <a href="${link}" download class="dl-btn"><i class="fas fa-download"></i> <span style="font-size:0.8rem; margin-left:5px; display:none;">Download</span></a>
                 </div>`;
             }
             document.getElementById('results-area').scrollIntoView({behavior:'smooth'});
         }
     </script>
 </body>
-</html>
+    </html>
