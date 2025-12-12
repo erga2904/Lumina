@@ -5,229 +5,207 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lumina | AI Studio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
         /* TEMA PORTFOLIO */
         :root {
-            --accent: #38bdf8;
-            --bg-deep: #0f172a;
-            --text-main: #f8fafc;
+            --accent-glow: #38bdf8; 
+            --bg-color: #0f172a; 
+            --text-main: #f8fafc; 
             --text-muted: #94a3b8;
-            --glass-bg: rgba(30, 41, 59, 0.4);
+            --glass-surface: rgba(30, 41, 59, 0.4); 
             --glass-strong: rgba(15, 23, 42, 0.95);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --input-bg: rgba(0, 0, 0, 0.3);
-            --success: #34d399;
-            --warning: #fbbf24;
+            --glass-border: rgba(255, 255, 255, 0.08); 
+            --input-bg: rgba(0, 0, 0, 0.3); 
+            --success: #34d399; 
+            --warning: #fbbf24; 
             --error: #ef4444;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Figtree', sans-serif; outline: none; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Figtree', sans-serif; outline: none; -webkit-tap-highlight-color: transparent;}
         
         body { 
-            background-color: var(--bg-deep); color: var(--text-main); 
+            background-color: var(--bg-color); color: var(--text-main); 
             min-height: 100vh; overflow-x: hidden; padding-bottom: 80px;
             background-image: radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%), 
                               radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.15) 0px, transparent 50%);
         }
 
-        /* --- ORBS BACKGROUND --- */
-        .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.3; z-index: -1; animation: float 10s infinite alternate; }
-        .orb-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: var(--accent); }
-        .orb-2 { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: #818cf8; animation-delay: -5s; }
-        @keyframes float { from { transform: translate(0,0); } to { transform: translate(20px, 40px); } }
-
-        /* --- NAVBAR --- */
         nav { 
-            position: fixed; top: 15px; left: 50%; transform: translateX(-50%); 
-            width: 92%; max-width: 700px; height: 55px; padding: 0 25px; 
+            position: fixed; top: 25px; left: 50%; transform: translateX(-50%); 
+            width: 90%; max-width: 750px; height: 65px; padding: 0 35px; 
             z-index: 50; display: flex; justify-content: space-between; align-items: center; 
-            border-radius: 50px; background: rgba(15, 23, 42, 0.7); 
+            border-radius: 100px; background: rgba(15, 23, 42, 0.7); 
             backdrop-filter: blur(25px); border: 1px solid var(--glass-border); 
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
-        nav .logo { font-family: 'Fira Code', monospace; font-weight: 800; font-size: 1.1rem; color: #fff; }
-        nav .menu a { color: var(--text-muted); text-decoration: none; font-weight: 600; margin-left: 20px; font-size:0.9rem;}
+        nav .logo { font-family: 'Fira Code', monospace; font-weight: 800; font-size: 1.2rem; color: #fff; }
+        nav .menu a { color: var(--text-muted); text-decoration: none; font-weight: 600; margin-left: 20px; transition:0.3s; font-size:0.9rem;}
+        nav .menu a:hover { color: var(--accent-glow); }
 
-        .container { max-width: 850px; margin: 100px auto 0; padding: 0 15px; text-align: center; }
+        .container { max-width: 950px; margin: 130px auto 0; padding: 0 20px; text-align: center; }
         
-        /* --- CARDS --- */
+        /* CARD */
         .main-card { 
-            background: var(--glass-bg); backdrop-filter: blur(30px);
-            border: 1px solid var(--glass-border); border-radius: 24px; padding: 30px 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative; overflow: hidden;
-            text-align: left; margin-bottom: 25px;
+            background: var(--glass-surface); backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border); border-radius: 28px; padding: 45px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3); position: relative; overflow: hidden;
+            text-align: left; margin-bottom: 30px;
         }
-        .main-card::before { content: ''; position: absolute; top:0; left:0; width:100%; height:3px; background: linear-gradient(90deg, var(--accent), #818cf8); }
+        .main-card::before { content: ''; position: absolute; top:0; left:0; width:100%; height:2px; background: linear-gradient(90deg, var(--accent-glow), #818cf8); }
 
-        .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); margin-bottom: 12px; font-weight: 800; display: block; opacity: 0.9;}
+        .section-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-glow); margin-bottom: 15px; font-weight: 800; display: block; opacity: 0.8;}
         
-        /* --- INPUT & BUTTON (MOBILE OPTIMIZED) --- */
+        /* CONN */
         .conn-container {
-            display: flex; gap: 10px; margin-bottom: 15px; background: rgba(0,0,0,0.3);
-            padding: 8px; border-radius: 16px; border: 1px solid var(--glass-border);
-            flex-direction: row; /* Default Desktop */
+            display: flex; gap: 12px; margin-bottom: 15px; background: rgba(0,0,0,0.3);
+            padding: 10px; border-radius: 18px; border: 1px solid var(--glass-border);
         }
         .conn-container input {
-            flex: 1; background: transparent; border: none; padding: 12px; 
-            color: #fff; font-family: 'Fira Code'; font-size: 0.85rem; width: 100%;
+            flex: 1; background: transparent; border: none; padding: 12px 15px; color: #fff; font-family: 'Fira Code'; font-size: 0.95rem;
         }
         .conn-container button {
             background: rgba(255,255,255,0.08); color: #fff; border: 1px solid var(--glass-border);
-            padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 700; transition:0.2s; white-space:nowrap;
+            padding: 0 25px; border-radius: 14px; cursor: pointer; font-weight: 700; transition:0.3s; white-space:nowrap;
         }
-        
-        .colab-link { display:flex; justify-content:flex-end; margin-bottom:20px; }
-        .colab-link a { font-size: 0.8rem; color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--glass-border); }
+        .conn-container button:hover { background: var(--accent-glow); color:#000; box-shadow: 0 0 15px var(--accent-glow); border-color:transparent;}
 
-        /* ALERTS */
+        .colab-link { display:flex; justify-content:flex-end; margin-bottom:25px;}
+        .colab-link a {
+            font-size: 0.85rem; color: var(--text-muted); text-decoration: none; border-bottom: 1px dashed var(--glass-border); padding-bottom: 2px;
+        }
+
+        /* ALERT */
         #alerts-wrapper { display: none; }
-        .alert-box { padding: 12px 15px; border-radius: 12px; margin-bottom: 20px; animation: fadeIn 0.5s ease; border: 1px solid transparent; display: flex; align-items: center; gap: 12px;}
-        .cpu-alert { background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.2); border-left: 3px solid var(--warning); }
-        .heavy-alert { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); border-left: 3px solid var(--error); }
-        .alert-text strong { display:block; margin-bottom:2px; font-size:0.85rem; font-weight:800; color: #fff;}
-        .alert-text span { font-size: 0.8rem; color: #ccc; line-height: 1.3; }
-        @keyframes fadeIn { from{opacity:0; transform:translateY(-5px)} to{opacity:1; transform:translateY(0)} }
+        .alert-box { padding: 15px; border-radius: 12px; margin-bottom: 20px; animation: fadeIn 0.5s ease; border: 1px solid transparent; display:none;}
+        .cpu-alert { background: rgba(251, 191, 36, 0.1); border-color: rgba(251, 191, 36, 0.3); border-left: 4px solid var(--warning); }
+        .heavy-alert { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); border-left: 4px solid var(--error); }
+        .alert-content { display:flex; align-items:center; gap:15px; }
+        .alert-text strong { display:block; margin-bottom:2px; font-size:0.95rem; }
+        @keyframes fadeIn { from{opacity:0; transform:translateY(-10px)} to{opacity:1; transform:translateY(0)} }
 
         /* UPLOAD */
         .drop-zone {
-            border: 2px dashed rgba(255,255,255,0.1); border-radius: 20px; padding: 40px 20px;
-            text-align: center; cursor: pointer; transition: 0.2s; position: relative;
-            background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+            border: 2px dashed rgba(255,255,255,0.1); border-radius: 24px; padding: 50px;
+            text-align: center; cursor: pointer; transition: 0.3s; position: relative;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
         }
-        .drop-zone:active { transform: scale(0.98); background: rgba(255,255,255,0.05); }
-        .dz-text { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: var(--text-main); margin-top: 15px;}
-        .dz-sub { color: var(--text-muted); font-size: 0.85rem; }
+        .drop-zone:hover { border-color: var(--accent-glow); background: rgba(56, 189, 248, 0.05); }
+        .dz-text { font-size: 1.3rem; font-weight: 700; margin-bottom: 5px; color: var(--text-main); margin-top: 15px;}
+        .dz-sub { color: var(--text-muted); font-size: 0.9rem; }
 
-        /* GRIDS & CARDS */
-        .grid-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 10px; }
+        /* MODELS */
+        .grid-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-top: 10px; }
         .option-card {
             background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
-            padding: 15px; border-radius: 14px; cursor: pointer; transition: 0.2s;
+            padding: 20px; border-radius: 16px; cursor: pointer; transition: 0.2s; position: relative;
         }
-        .option-card.active { background: rgba(56, 189, 248, 0.15); border-color: var(--accent); }
-        .opt-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 3px; color: var(--text-main); }
-        .opt-desc { font-size: 0.75rem; color: var(--text-muted); }
+        .option-card:hover { background: rgba(255,255,255,0.06); transform:translateY(-3px); }
+        .option-card.active { background: rgba(56, 189, 248, 0.15); border-color: var(--accent-glow); }
+        .option-card.active::after { content: '✔'; position: absolute; top: 15px; right: 15px; color: var(--accent-glow); font-weight: 900;}
+        .opt-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 5px; color: var(--text-main); }
+        .opt-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
 
-        .format-pills { display: flex; gap: 10px; margin-top: 10px; overflow-x: auto; padding-bottom: 5px; -webkit-overflow-scrolling: touch;}
+        .format-pills { display: flex; gap: 12px; margin-top: 10px; overflow-x: auto; padding-bottom: 5px;}
         .fmt-pill {
-            padding: 10px 20px; border-radius: 12px; border: 1px solid var(--glass-border);
+            padding: 12px 25px; border-radius: 12px; border: 1px solid var(--glass-border);
             background: rgba(255,255,255,0.03); color: var(--text-muted); cursor: pointer;
-            font-size: 0.85rem; font-weight: 700; white-space:nowrap; transition:0.2s;
+            font-size: 0.9rem; font-weight: 700; transition: 0.3s;
         }
-        .fmt-pill.active { background: #fff; color: #000; transform: scale(1.05); }
+        .fmt-pill.active { background: #fff; color: #000; border-color: #fff; transform: scale(1.05); }
 
-        /* MAIN BUTTON */
         .btn-launch { 
-            width: 100%; margin-top: 40px; padding: 18px; 
-            background: linear-gradient(135deg, var(--accent), #4f46e5); 
-            border: none; border-radius: 16px; color: white; font-weight: 800; font-size: 1rem; letter-spacing: 1px;
-            cursor: pointer; transition: 0.2s; box-shadow: 0 10px 30px rgba(56, 189, 248, 0.3);
-            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; margin-top: 45px; padding: 20px; background: linear-gradient(135deg, var(--accent-glow), #4f46e5); 
+            border: none; border-radius: 18px; color: white; font-weight: 800; font-size: 1.1rem; letter-spacing: 1px;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 10px 40px rgba(56, 189, 248, 0.3);
+            display: flex; align-items: center; justify-content: center; gap: 12px; text-transform: uppercase;
         }
-        .btn-launch:active { transform: scale(0.96); opacity: 0.9; }
+        .btn-launch:hover { transform: translateY(-4px) scale(1.01); filter: brightness(1.1); }
 
         /* LOADING */
         #overlay {
             position: fixed; inset: 0; background: var(--glass-strong); z-index: 1000;
             display: none; flex-direction: column; justify-content: center; align-items: center;
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px); opacity: 0; transition: opacity 0.5s;
         }
-        #overlay.active { display: flex; }
+        #overlay.active { opacity: 1; display: flex; }
         
-        #phase-upload { width: 90%; max-width: 350px; text-align: center; display: none; }
-        .progress-cont { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 20px;}
-        .progress-bar { height: 100%; width: 0%; background: var(--accent); transition: width 0.2s ease; border-radius: 10px;}
+        #phase-upload { width: 90%; max-width: 400px; text-align: center; display: none; }
+        .progress-cont { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; position: relative; margin-top: 25px;}
+        .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-glow), #a78bfa); transition: width 0.3s ease; border-radius: 20px;}
 
-        #phase-process { display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .circle-wrapper { position: relative; width: 140px; height: 140px; margin-bottom: 25px; }
-        .circle-svg { position: absolute; top:0; left:0; width:100%; height:100%; transform: rotate(-90deg); }
-        .circle-bg { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 6; }
-        .circle-prog { fill: none; stroke: var(--accent); stroke-width: 6; stroke-dasharray: 440; stroke-dashoffset: 440; transition: stroke-dashoffset 0.8s ease; stroke-linecap: round; }
-        .inner-content { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; }
+        /* CIRCLE */
+        #phase-process { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; text-align: center; }
+        .circle-wrapper { position: relative; width: 180px; height: 180px; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; }
+        .circle-svg { position: absolute; top:0; left:0; width: 100%; height: 100%; transform: rotate(-90deg); }
+        .circle-bg { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 8; }
+        .circle-prog { fill: none; stroke: var(--accent-glow); stroke-width: 8; stroke-dasharray: 440; stroke-dashoffset: 440; transition: stroke-dashoffset 0.8s ease; stroke-linecap: round; filter: drop-shadow(0 0 10px var(--accent-glow)); }
+        .inner-content { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #proc-percent { font-family: 'Fira Code', monospace; font-size: 2.2rem; font-weight: 800; color: #fff; margin-bottom: 5px; }
         
         /* RESULTS */
-        #results-area { display: none; margin-top: 20px; animation: slideUp 0.6s ease; }
-        @keyframes slideUp { from{opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
+        #results-area { display: none; margin-top: 20px; animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+        @keyframes fadeInUp { from{opacity:0; transform:translateY(40px);} to{opacity:1; transform:translateY(0);} }
         
         .stem-item {
-            background: rgba(30, 41, 59, 0.7); padding: 15px; border-radius: 16px; margin-bottom: 15px;
-            display: flex; align-items: center; gap: 15px; border: 1px solid var(--glass-border);
-            flex-wrap: wrap; /* MOBILE FIX: Biar tidak gepeng */
+            background: rgba(30, 41, 59, 0.6); padding: 25px; border-radius: 20px; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 25px; border: 1px solid var(--glass-border);
+            transition: 0.3s;
         }
         .stem-icon { 
-            width: 45px; height: 45px; border-radius: 12px; background: rgba(56, 189, 248, 0.1); 
-            display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--accent); flex-shrink: 0;
+            width: 55px; height: 55px; border-radius: 16px; background: rgba(56, 189, 248, 0.1); 
+            display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: var(--accent-glow); flex-shrink: 0;
         }
-        .stem-info { flex: 1; min-width: 150px; }
         .dl-btn { 
-            width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--glass-border); 
-            color: var(--text-muted); display: flex; align-items: center; justify-content: center;
-            font-size: 1rem; background: rgba(0,0,0,0.3); margin-left: auto;
+            width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--glass-border); 
+            color: var(--text-muted); display: flex; align-items: center; justify-content: center; text-decoration: none;
+            transition: 0.2s; font-size: 1.2rem; background: rgba(0,0,0,0.3);
         }
-        audio { height: 35px; width: 100%; margin-top: 8px; filter: invert(1) contrast(0.8); }
-        .hw-badge { font-size: 0.7rem; font-family:'Fira Code'; font-weight:700; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.05); color: #64748b; border: 1px solid var(--glass-border); white-space:nowrap;}
-
-        /* --- MOBILE MEDIA QUERIES --- */
-        @media (max-width: 600px) {
-            .container { padding: 0 12px; margin-top: 90px; }
-            .main-card { padding: 25px 15px; border-radius: 20px; }
-            
-            /* Stack Connection Box di HP */
-            .conn-container { flex-direction: column; gap: 8px; padding: 10px; }
-            .conn-container input { width: 100%; }
-            .conn-container button { width: 100%; padding: 12px; }
-            
-            .section-label { font-size: 0.7rem; letter-spacing: 1px; }
-            .drop-zone { padding: 30px 15px; }
-            
-            /* Stack Models jadi 2 kolom di HP */
-            .grid-options { grid-template-columns: 1fr 1fr; }
-            
-            /* Stem item lebih compact */
-            .stem-item { padding: 12px; gap: 10px; }
-            .stem-title { font-size: 0.85rem; }
-            .dl-btn { width: 35px; height: 35px; }
-        }
+        .dl-btn:hover { background: #fff; color: #000; border-color: #fff; transform: rotate(-15deg); }
+        audio { height: 40px; width: 100%; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); opacity: 0.9; }
+        
+        .hw-badge { font-size: 0.75rem; font-family:'Fira Code'; font-weight:700; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.05); color: #94a3b8; letter-spacing: 0.5px; }
+        
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">Lumina</div>
+        <div class="logo">Lumina.AI</div>
         <div class="menu">
             <a href="index.html">Home</a>
             <a href="#" style="color:#fff;">Studio</a>
         </div>
     </nav>
 
-    <!-- UI OVERLAY -->
+    <!-- LOADING OVERLAY -->
     <div id="overlay">
-        <!-- 1. PHASE UPLOAD -->
+        <!-- 1. UPLOAD -->
         <div id="phase-upload">
-            <i class="fas fa-cloud-upload-alt" style="font-size:3rem; color:#64748b; margin-bottom:15px;"></i>
-            <h2 id="ov-status" style="font-weight: 800; color: #fff; margin-bottom: 5px; font-size:1.3rem;">Uploading...</h2>
-            <p id="ov-detail" style="color: var(--text-muted); font-size:0.9rem;">Connecting to server...</p>
+            <i class="fas fa-cloud-upload-alt" style="font-size:3.5rem; color:#64748b; margin-bottom:20px;"></i>
+            <h2 style="font-weight: 800; color: #fff; margin-bottom: 5px;">Uploading...</h2>
+            <p style="color: var(--text-muted);">Secure transfer to cloud</p>
             <div class="progress-cont"><div class="progress-bar" id="ov-bar"></div></div>
-            <div id="ov-percent" style="margin-top: 10px; font-family: 'Fira Code'; color: var(--accent);">0%</div>
+            <div id="ov-percent" style="margin-top: 10px; font-family: 'Fira Code'; color: var(--accent-glow);">0%</div>
         </div>
 
-        <!-- 2. PHASE PROCESS -->
+        <!-- 2. PROCESSING -->
         <div id="phase-process">
             <div class="circle-wrapper">
                 <svg class="circle-svg" viewBox="0 0 160 160">
                     <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
-                    <circle class="circle-prog" id="circle-stroke" cx="80" cy="80" r="70"></circle>
+                    <circle class="circle-prog" id="circle-stroke" cx="80" cy="80" r="70" 
+                            stroke-dasharray="440" stroke-dashoffset="440"></circle>
                 </svg>
                 <div class="inner-content">
-                    <div id="proc-percent" style="font-family:'Fira Code'; font-size:1.8rem; font-weight:700; color:#fff;">0%</div>
+                    <div id="proc-percent">0%</div>
                     <div class="hw-badge" style="margin-top:5px; font-size:0.65rem;">WORKING</div>
                 </div>
             </div>
-            <h2 class="status-h2" style="font-size:1.3rem;">AI Processing</h2>
-            <p id="proc-detail" class="status-p" style="font-size:0.85rem;">Do not close window...</p>
+            <h2 class="status-h2" style="font-size:1.5rem; font-weight:800; color:#fff;">AI Processing</h2>
+            <p id="proc-detail" style="color:var(--text-muted); font-size:0.95rem; margin-top:8px;">Running Models...</p>
         </div>
     </div>
 
@@ -236,73 +214,70 @@
         <div class="main-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                 <span class="section-label" style="margin:0;">01. Connection</span>
-                <span id="hw-status" class="hw-badge">OFFLINE</span>
+                <span id="hw-status" class="hw-badge">DISCONNECTED</span>
             </div>
             
             <div class="conn-container">
-                <input type="text" id="api-url" placeholder="Paste URL Cloudflare (.trycloudflare.com)" autocomplete="off">
+                <input type="text" id="api-url" placeholder="Paste URL Cloudflare (.trycloudflare.com)...">
                 <button onclick="connect()" id="btn-conn">Connect</button>
             </div>
 
             <div class="colab-link">
                 <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=NQkNo_7Jcz1K" target="_blank">
-                    <i class="fas fa-external-link-alt"></i> Script Colab
+                    <i class="fas fa-external-link-alt"></i> Buka Script Google Colab
                 </a>
             </div>
 
-            <!-- ALERTS -->
             <div id="alerts-wrapper">
                 <div class="alert-box cpu-alert" id="cpu-alert">
                     <div class="alert-content">
-                        <i class="fas fa-microchip" style="font-size:1.2rem; color:var(--warning)"></i>
+                        <i class="fas fa-exclamation-triangle" style="font-size:1.5rem; color:var(--warning)"></i>
                         <div class="alert-text">
-                            <strong style="color:var(--warning)">CPU MODE AKTIF</strong>
-                            <span>Proses lambat (3-5 menit/lagu). Mohon bersabar.</span>
+                            <strong style="color:var(--warning)">CPU MODE</strong>
+                            <span>Tanpa GPU. Proses sangat lambat (3-5 min).</span>
                         </div>
                     </div>
                 </div>
                 <div class="alert-box heavy-alert" id="heavy-alert">
                     <div class="alert-content">
-                        <i class="fas fa-clock" style="font-size:1.2rem; color:var(--error)"></i>
+                        <i class="fas fa-radiation" style="font-size:1.5rem; color:var(--error)"></i>
                         <div class="alert-text">
                             <strong style="color:var(--error)">MODEL BERAT</strong>
-                            <span>Sangat lambat di CPU. Disarankan pakai <b>Demucs</b>.</span>
+                            <span>Gunakan <b>Demucs</b> di mode CPU agar tidak crash/timeout.</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 25px 0;">
+            <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 30px 0;">
 
-            <span class="section-label">02. Upload Source</span>
+            <span class="section-label">02. Upload</span>
             <div class="drop-zone" onclick="document.getElementById('f-in').click()">
                 <div id="file-info">
-                    <i class="fas fa-music" style="font-size: 2.5rem; color: var(--text-muted); margin-bottom: 15px;"></i>
-                    <div class="dz-text">Pilih File Lagu</div>
+                    <i class="fas fa-music" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 20px;"></i>
+                    <div class="dz-text">Tap to Select Audio File</div>
                     <div class="dz-sub">High Quality MP3, WAV, FLAC</div>
                 </div>
                 <input type="file" id="f-in" hidden accept="audio/*">
             </div>
 
-            <span class="section-label" style="margin-top: 30px;">03. AI Model</span>
+            <span class="section-label" style="margin-top: 40px;">03. Model</span>
             <div class="grid-options" id="model-grid"></div>
 
-            <span class="section-label" style="margin-top: 30px;">04. Output Format</span>
+            <span class="section-label" style="margin-top: 40px;">04. Output</span>
             <div class="format-pills">
-                <div class="fmt-pill active" onclick="setFmt('mp3', this)">MP3 (Default)</div>
+                <div class="fmt-pill active" onclick="setFmt('mp3', this)">MP3</div>
                 <div class="fmt-pill" onclick="setFmt('wav', this)">WAV (Lossless)</div>
                 <div class="fmt-pill" onclick="setFmt('flac', this)">FLAC</div>
                 <div class="fmt-pill" onclick="setFmt('m4a', this)">M4A</div>
             </div>
 
-            <button class="btn-launch" onclick="startSmartAsync()">
-                Start Process <i class="fas fa-arrow-right"></i>
-            </button>
+            <button class="btn-launch" onclick="startSmartAsync()">Start Processing <i class="fas fa-arrow-right"></i></button>
         </div>
 
         <div id="results-area">
-            <div class="section-label" style="text-align: left; margin-bottom: 20px;">
-                <i class="fas fa-check-circle" style="margin-right: 8px; color: var(--accent);"></i> Results
+            <div class="section-label" style="text-align: left; margin-bottom: 20px; font-size: 1rem; color: #fff;">
+                <i class="fas fa-layer-group" style="margin-right: 10px; color: var(--accent-glow);"></i> Results
             </div>
             <div id="stems-out"></div>
         </div>
@@ -310,27 +285,30 @@
     </div>
 
     <script>
-        // CONFIG
+        // CONFIG MODELS UPDATE (TAMBAHAN REVIVE)
         const MODELS = [
-            { id: 'BS-Roformer-Resurrection-Inst.ckpt', name: 'Roformer Inst', desc: 'Best Inst (GPU)', heavy: true },
-            { id: 'BS-Roformer-Resurrection-v.1.ckpt', name: 'Roformer Vocal', desc: 'Best Vocal (GPU)', heavy: true },
-            { id: 'Kim_Vocal_2', name: 'Kim Vocal 2', desc: 'Cleanest MDX', heavy: true },
-            { id: 'UVR-MDX-NET-Inst_HQ_3', name: 'Inst HQ 3', desc: 'Standard MDX', heavy: true },
-            { id: '1_HP-Karaoke-UVR', name: 'HP Karaoke', desc: 'Vocal Remover VR', heavy: false },
-            { id: 'htdemucs', name: 'Demucs V4', desc: 'Fast Mode (CPU)', heavy: false }
+            // REVIVE FAMILY (CUSTOM)
+            { id: 'bs_roformer_revive.ckpt', name: 'Roformer Revive 1', desc: 'Custom Tuned SOTA', heavy: true },
+            { id: 'bs_roformer_revive2.ckpt', name: 'Roformer Revive 2', desc: 'Revive 2.0 (New)', heavy: true },
+            { id: 'bs_roformer_revive3e.ckpt', name: 'Roformer Revive 3e', desc: 'Experimental 3e (Latest)', heavy: true },
+            
+            // OLD FAVORITES
+            { id: 'BS-Roformer-Resurrection-Inst.ckpt', name: 'Roformer Resurrection Inst', desc: 'Instrumental SOTA', heavy: true },
+            { id: 'Kim_Vocal_2', name: 'Kim Vocal 2', desc: 'Clean MDX Vocals', heavy: true },
+            { id: 'htdemucs', name: 'Demucs V4', desc: 'Fast Mode (CPU Safe)', heavy: false }
         ];
 
         let URL = localStorage.getItem('L_V12_URL') || "";
         let FILE = null;
-        let SEL_MOD = MODELS[0].id;
+        let SEL_MOD = MODELS[0].id; // Default Revive
         let SEL_FMT = 'mp3';
-        let DEVICE = 'CPU'; 
-        let IS_CONNECTED = false;
+        let IS_CONN = false; 
+        let DEV_TYPE = 'CPU';
 
         window.onload = () => {
             if(URL) document.getElementById('api-url').value = URL;
             renderModels();
-            // Tidak update UI di awal agar status bersih
+            updateUIState();
             
             document.getElementById('f-in').onchange = (e) => {
                 const f = e.target.files[0];
@@ -338,7 +316,7 @@
                     FILE = f;
                     const mb = (f.size/1024/1024).toFixed(1);
                     document.getElementById('file-info').innerHTML = `
-                        <i class="fas fa-check-circle" style="font-size:3rem; color:var(--success); margin-bottom:10px;"></i>
+                        <i class="fas fa-check-circle" style="font-size:3.5rem; color:var(--success); margin-bottom:15px;"></i>
                         <div class="dz-text" style="color:#fff;">${f.name}</div>
                         <div class="dz-sub" style="color:var(--success); font-weight:700;">Size: ${mb} MB &bull; Ready</div>
                     `;
@@ -360,30 +338,21 @@
         function setModel(id) { SEL_MOD = id; renderModels(); updateUIState(); }
         function setFmt(f, el) { SEL_FMT=f; document.querySelectorAll('.fmt-pill').forEach(x=>x.classList.remove('active')); el.classList.add('active'); }
 
-        // --- INTELLIGENT UI CHECKER ---
         function updateUIState() {
             const badge = document.getElementById('hw-status');
-            const alertWrap = document.getElementById('alerts-wrapper');
+            const wrap = document.getElementById('alerts-wrapper');
             const boxCpu = document.getElementById('cpu-alert');
             const boxHeavy = document.getElementById('heavy-alert');
             
-            // JIKA TIDAK KONEK, JANGAN TAMPILKAN APA-APA
-            if(!IS_CONNECTED) {
-                alertWrap.style.display = 'none'; return;
-            }
-
-            // TAMPILKAN STATUS
-            alertWrap.style.display = 'block'; 
+            if(!IS_CONN) { wrap.style.display='none'; badge.innerText="DISCONNECTED"; badge.style.color="#94a3b8"; return; }
             
-            if(DEVICE === 'GPU') {
-                badge.innerText = "ONLINE (GPU)";
-                badge.style.color = "var(--success)"; badge.style.background = "rgba(52,211,153,0.1)";
-                boxCpu.style.display = 'none'; boxHeavy.style.display = 'none';
+            wrap.style.display='block';
+            if(DEV_TYPE === 'GPU') {
+                badge.innerText="ONLINE (GPU)"; badge.style.color="var(--success)";
+                boxCpu.style.display='none'; boxHeavy.style.display='none';
             } else {
-                badge.innerText = "ONLINE (CPU)";
-                badge.style.color = "var(--warning)"; badge.style.background = "rgba(251,191,36,0.1)";
-                boxCpu.style.display = 'block';
-                // CEK HEAVY MODEL
+                badge.innerText="ONLINE (CPU)"; badge.style.color="var(--warning)";
+                boxCpu.style.display='block';
                 const curr = MODELS.find(m => m.id === SEL_MOD);
                 boxHeavy.style.display = (curr && curr.heavy) ? 'block' : 'none';
             }
@@ -393,34 +362,25 @@
             let u=document.getElementById('api-url').value.trim().replace(/\/$/,""); if(!u)return alert("Empty URL");
             try{
                 document.getElementById('btn-conn').innerText="...";
-                // FETCH STANDAR GET
-                const r=await fetch(`${u}/ping`);
+                const r=await fetch(`${u}/ping`, {headers:{'ngrok-skip-browser-warning':'1'}});
                 if(r.ok){
-                    const d=await r.json(); URL=u; 
-                    localStorage.setItem('L_V12_URL', u);
-                    DEVICE = d.device || 'CPU';
-                    IS_CONNECTED = true;
-                    
-                    document.getElementById('btn-conn').innerText="Connected";
+                    const d=await r.json(); 
+                    URL=u; localStorage.setItem('L_V12_URL', u);
+                    DEV_TYPE = "GPU"; // Assume GPU for now or parse from backend if sent
+                    IS_CONN = true;
+                    document.getElementById('btn-conn').innerText="OK";
                     document.getElementById('btn-conn').style.color="var(--success)";
-                    document.getElementById('btn-conn').style.borderColor="var(--success)";
-                    
                     updateUIState();
-                    alert(`Tersambung! Mode: ${DEVICE}`);
+                    alert(`Connected! Engine: ${d.engine}`);
                 }
-            } catch(e) { 
-                alert("Gagal Koneksi. 1. Pastikan URL Cloudflare benar. 2. Jika perlu, Buka URL Cloudflare di tab baru untuk verifikasi (klik 'Visit Site')."); 
-                document.getElementById('btn-conn').innerText="Retry"; 
-            }
+            } catch(e) { alert("Failed."); document.getElementById('btn-conn').innerText="Retry"; }
         }
 
-        // --- LOGIC UPLOAD + PROGRESS ---
         function startSmartAsync() {
-            if(!URL || !FILE || !IS_CONNECTED) return alert("Belum Siap (Cek Koneksi/File).");
+            if(!URL || !FILE || !IS_CONN) return alert("Cek Koneksi / File.");
             
             const ov = document.getElementById('overlay'); ov.classList.add('active');
             
-            // FASE 1
             document.getElementById('phase-upload').style.display='block';
             document.getElementById('phase-process').style.display='none';
             
@@ -441,54 +401,46 @@
             xhr.onload = () => {
                 if(xhr.status === 200){
                     const res = JSON.parse(xhr.responseText);
-                    startPolling(res.task_id); // PINDAH FASE 2
-                } else { alert("Upload Gagal"); ov.classList.remove('active'); }
+                    startPolling(res.task_id);
+                } else { alert("Upload Failed"); ov.classList.remove('active'); }
             };
-            xhr.onerror = () => {alert("Network Error (Coba refresh)"); ov.classList.remove('active');};
-            
-            xhr.timeout = 0; xhr.open('POST', `${URL}/upload_job`, true); xhr.send(fd);
+            xhr.onerror = () => {alert("Net Error"); ov.classList.remove('active');};
+            xhr.timeout=0; xhr.open('POST', `${URL}/upload_job`, true); xhr.send(fd);
         }
 
         async function startPolling(tid){
             document.getElementById('phase-upload').style.display='none';
             document.getElementById('phase-process').style.display='flex';
             
-            const stroke = document.getElementById('circle-stroke');
-            const pctText = document.getElementById('proc-percent');
             const desc = document.getElementById('proc-detail');
-            
+            const pct = document.getElementById('proc-percent');
+            const stroke = document.getElementById('circle-stroke');
             const C = 440; 
-            stroke.style.strokeDasharray = C;
-            stroke.style.strokeDashoffset = C;
+            stroke.style.strokeDasharray = C; stroke.style.strokeDashoffset = C;
 
-            let currentPerc = 10; // Dummy start
-
+            let cur=5; 
             const poll = setInterval(async ()=>{
                 try{
                     const r = await fetch(`${URL}/check_job/${tid}`);
                     const d = await r.json();
                     
-                    if(d.progress) {
-                        const srv = parseInt(d.progress);
-                        if(srv > currentPerc) {
-                            currentPerc = srv;
-                            stroke.style.strokeDashoffset = C - (currentPerc/100)*C;
-                            pctText.innerText = currentPerc+"%";
-                        }
-                        if(d.message) desc.innerText = d.message;
+                    if(d.progress && d.progress > cur) {
+                        cur = d.progress;
+                        stroke.style.strokeDashoffset = C - (cur/100)*C;
+                        pct.innerText = cur+"%";
                     }
+                    if(d.message) desc.innerText = d.message;
 
                     if(d.status === 'done'){
                         clearInterval(poll);
-                        stroke.style.strokeDashoffset = 0; pctText.innerText = "100%";
+                        stroke.style.strokeDashoffset = 0; pct.innerText="100%";
                         setTimeout(() => { 
                             renderResult(d.data); 
                             document.getElementById('overlay').classList.remove('active'); 
                         }, 500);
                     } else if(d.status === 'error'){
-                        clearInterval(poll);
-                        alert("Backend Error: "+d.error); 
-                        document.getElementById('overlay').classList.remove('active');
+                        clearInterval(poll); alert("Error: "+d.error); 
+                        document.getElementById('overlay').classList.remove('active'); 
                     }
                 } catch(e) {}
             }, 2000);
@@ -498,7 +450,6 @@
             const area = document.getElementById('stems-out');
             area.innerHTML = ""; document.getElementById('results-area').style.display='block';
             
-            // SORTING VOKAL -> INST
             const tracks = Object.entries(data).sort((a, b) => {
                 const A = a[0].toLowerCase(), B = b[0].toLowerCase();
                 if(A.includes('vocal') && !B.includes('vocal')) return -1;
@@ -506,9 +457,9 @@
             });
 
             for(const [name, path] of tracks){
-                let c = '#a78bfa'; let ic='fa-music';
-                if(name.toLowerCase().includes('vocal')) { c='#f472b6'; ic='fa-microphone'; }
-                if(name.toLowerCase().includes('inst')) { c='#34d399'; ic='fa-guitar'; }
+                let c = '#a78bfa'; let ic='fa-music'; let lbl='Track';
+                if(name.toLowerCase().includes('vocal')) { c='#f472b6'; ic='fa-microphone'; lbl='Vocals'; }
+                if(name.toLowerCase().includes('inst')) { c='#34d399'; ic='fa-guitar'; lbl='Instrumental'; }
                 
                 const link = URL + path;
                 area.innerHTML += `
@@ -516,9 +467,10 @@
                     <div class="stem-icon" style="color:${c}; background:${c}20; border:1px solid ${c}40;">
                         <i class="fas ${ic}"></i>
                     </div>
-                    <div class="stem-info">
-                        <div style="font-size:0.85rem; font-weight:700; color:#fff; word-break:break-all;">${name}</div>
-                        <audio controls src="${link}" style="margin-top:5px;"></audio>
+                    <div style="flex:1;">
+                        <div style="font-size:0.7rem; color:${c}; text-transform:uppercase; font-weight:800; margin-bottom:4px;">${lbl}</div>
+                        <div style="font-weight:700; color:#fff; margin-bottom:5px;">${name}</div>
+                        <audio controls src="${link}"></audio>
                     </div>
                     <a href="${link}" download class="dl-btn"><i class="fas fa-download"></i></a>
                 </div>`;
