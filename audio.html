@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lumina V33 | Simple UI</title>
+    <title>Lumina V34 | With Colab Link</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -15,10 +15,15 @@
         .main{max-width:800px;margin:80px auto 0;padding:0 15px}
         
         /* BOXES */
-        .box-in{display:flex;background:rgba(0,0,0,0.3);padding:5px;border-radius:12px;border:1px solid var(--bor);margin-bottom:20px}
+        .box-in{display:flex;background:rgba(0,0,0,0.3);padding:5px;border-radius:12px;border:1px solid var(--bor);margin-bottom:10px} /* Reduced margin for link */
         .box-in input{flex:1;background:0 0;border:0;color:#fff;padding:10px;font-family:'JetBrains Mono';font-size:0.85rem}
         .box-in button{background:rgba(255,255,255,0.1);color:#fff;border:0;padding:0 15px;border-radius:8px;font-weight:600;cursor:pointer}
         
+        /* COLAB LINK STYLE */
+        .clb-lnk{text-align:right;margin-bottom:25px}
+        .clb-lnk a{font-family:'JetBrains Mono';font-size:0.75rem;color:var(--pri);text-decoration:none;border-bottom:1px dashed var(--bor);padding-bottom:2px;transition:0.3s}
+        .clb-lnk a:hover{border-color:var(--pri);opacity:0.8}
+
         .up-z{border:2px dashed var(--bor);border-radius:20px;padding:30px;text-align:center;margin-bottom:20px;cursor:pointer;transition:.3s}
         .up-z:active{transform:scale(0.98);background:rgba(255,255,255,0.02)}
 
@@ -39,10 +44,8 @@
         .hd{padding:15px 20px;border-bottom:1px solid var(--bor);display:flex;justify-content:space-between;align-items:center;font-size:0.85rem;font-weight:700;background:rgba(255,255,255,0.02)}
         .cnt{padding:0} 
 
-        /* SIMPLE LOADING AREA (V33 NEW) */
+        /* SIMPLE LOADING AREA */
         #proc-area{padding:40px 20px;text-align:center;display:flex;flex-direction:column;align-items:center}
-        
-        /* Simple Spinner */
         .simple-loader {
             width: 45px; height: 45px;
             border: 4px solid rgba(255,255,255,0.1);
@@ -54,7 +57,6 @@
             margin-bottom: 20px;
         }
         @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
         .proc-txt {font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 5px}
         .proc-sub {font-size: 0.8rem; color: var(--mut); font-family: 'JetBrains Mono'}
 
@@ -82,7 +84,7 @@
 <body>
     <nav>
         <div style="font-family:'JetBrains Mono';font-weight:800;display:flex;align-items:center;gap:10px;font-size:1.1rem">
-            <i class="fas fa-layer-group" style="color:var(--pri)"></i> Lumina.V33
+            <i class="fas fa-layer-group" style="color:var(--pri)"></i> Lumina.V34
         </div>
         <div id="stat" style="font-size:0.7rem;color:var(--mut);background:rgba(255,255,255,0.05);padding:5px 12px;border-radius:20px;font-weight:600">OFFLINE</div>
     </nav>
@@ -92,6 +94,13 @@
         <div class="box-in">
             <input id="url" placeholder="Cloudflare URL...">
             <button onclick="con(this)">Connect</button>
+        </div>
+
+        <!-- NEW: COLAB LINK -->
+        <div class="clb-lnk">
+            <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=jswAJ-NK2Aja" target="_blank">
+                Open Backend Script <i class="fas fa-external-link-alt" style="margin-left:5px"></i>
+            </a>
         </div>
         
         <!-- UPLOAD -->
@@ -230,7 +239,6 @@
                 try{
                     let r=await fetch(URL+'/check_job/'+id); let d=await r.json();
                     
-                    // Simple text update, no bars
                     if(d.message) document.getElementById('p-sub-txt').innerText = d.message; 
                     if(d.progress) document.getElementById('p-sub-txt').innerText = `Running... (${d.progress}%)`;
 
