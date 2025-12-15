@@ -3,21 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lumina V42 | Studio</title>
+    <title>Lumina V43 | Mobile Fix</title>
     
-    <!-- FONT UTAMA: Plus Jakarta Sans (Premium Weights) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         :root {
-            /* COLOR THEME: Pastel Portfolio */
+            /* COLOR THEME */
             --bg-grad: linear-gradient(135deg, #fddbb7 0%, #f7ebd9 50%, #dcfce7 100%);
             --txt-prim: #1f1f1f; --txt-sec: #6b7280;
             --card-bg: #ffffff;
-            --nav-bg: rgba(253, 252, 246, 0.85); --glass: blur(25px);
+            --nav-bg: rgba(253, 252, 246, 0.9); --glass: blur(15px);
             --acc-btn: #f5f5f4; --acc-act: #18181b; 
             --btn-start: #ffe4cc; --btn-text: #9c4221;
         }
@@ -25,7 +22,7 @@
         [data-theme="dark"] {
             --bg-grad: linear-gradient(135deg, #18181b 0%, #27272a 100%);
             --txt-prim: #ffffff; --txt-sec: #a1a1aa;
-            --card-bg: #121212; --nav-bg: rgba(24, 24, 27, 0.85);
+            --card-bg: #121212; --nav-bg: rgba(24, 24, 27, 0.9);
             --acc-btn: #27272a; --acc-act: #38bdf8;
             --btn-start: #3f3f46; --btn-text: #fff;
         }
@@ -34,119 +31,113 @@
 
         * { margin:0; padding:0; box-sizing:border-box; outline:none; -webkit-tap-highlight-color:transparent; }
         
-        /* GLOBAL FONT FIX */
-        body, button, input, select, textarea {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
         body {
             background: var(--bg-grad); background-attachment: fixed; color: var(--txt-prim);
-            min-height: 100vh;
+            font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh;
             display: flex; flex-direction: column; align-items: center; padding-bottom: 120px; transition: 0.5s;
         }
 
-        /* NAVBAR (PILL STYLE) */
+        /* --- NAVBAR RESPONSIVE --- */
         nav {
-            margin-top: 30px; background: var(--nav-bg); backdrop-filter: var(--glass);
-            padding: 8px 15px 8px 25px; border-radius: 50px;
-            display: flex; gap: 30px; align-items: center; justify-content: space-between;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.4);
-            z-index: 100; min-width: 360px; max-width: 90%;
+            margin-top: 20px; 
+            background: var(--nav-bg); 
+            backdrop-filter: var(--glass);
+            padding: 8px 10px 8px 20px; 
+            border-radius: 50px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05); 
+            border: 1px solid rgba(255,255,255,0.4);
+            z-index: 100; 
+            
+            /* Desktop Size */
+            min-width: 400px; 
+            max-width: 90%;
         }
         
-        /* LINK HOME - SESUAI SCREENSHOT */
         .nav-brand { 
-            font-weight: 700; font-size: 1.15rem; cursor: pointer; transition: 0.2s;
-            display: flex; align-items: center; gap: 10px; color: #555; /* Dark Grey match img */
+            font-weight: 700; font-size: 1.1rem; cursor: pointer; white-space: nowrap;
+            display: flex; align-items: center; gap: 8px; color: var(--txt-prim);
         }
-        .nav-brand i { font-size: 0.9em; stroke-width: 2px; }
-        .nav-brand:hover { color: var(--txt-prim); transform: translateX(-3px); }
+        
+        .nav-mid { display:flex; gap:15px; flex:1; justify-content:center; }
+        .nav-link { cursor:pointer; font-weight:600; font-size:0.9rem; color:var(--txt-sec); padding:5px 8px; border-radius:12px; }
+        .nav-link.active { color:var(--txt-prim); background:rgba(0,0,0,0.05); }
 
-        .nav-mid { display:flex; gap:20px; }
-        .nav-link { 
-            cursor:pointer; font-weight:600; font-size:0.9rem; color:var(--txt-sec); transition:0.2s; 
-            padding: 5px 10px; border-radius: 15px;
-        }
-        .nav-link:hover, .nav-link.active { color:var(--txt-prim); background: rgba(0,0,0,0.05); }
-
-        /* USER AREA */
-        .nav-user { display: flex; gap: 10px; align-items: center; }
+        .nav-user { display: flex; gap: 8px; align-items: center; }
         
         .btn-auth {
-            background: #000; color: #fff; padding: 10px 22px; border-radius: 25px;
-            font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; transition: 0.2s;
+            background: #000; color: #fff; padding: 8px 16px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; white-space: nowrap;
         }
-        .btn-auth:hover { transform: translateY(-1px); opacity: 0.8; }
+        
+        .user-pic { width: 34px; height: 34px; border-radius: 50%; background: #ccc; display: none; cursor: pointer; border: 2px solid #fff; }
+        .btn-cog { font-size: 1rem; color: var(--txt-prim); background:none; border:none; padding:5px; cursor:pointer;}
 
-        .user-pic { 
-            width: 36px; height: 36px; border-radius: 50%; background: #ccc; 
-            object-fit: cover; display: none; cursor: pointer; border: 2px solid #fff;
+        /* MEDIA QUERY: HP LAYOUT */
+        @media (max-width: 600px) {
+            nav {
+                width: 92%; 
+                min-width: unset; 
+                margin-top: 15px;
+                padding: 8px 12px;
+                gap: 5px; /* Rapatkan gap */
+            }
+            .nav-brand { font-size: 1rem; }
+            .nav-brand i { font-size: 0.9rem; } /* Kecilkan panah */
+            
+            .nav-mid { gap: 5px; } /* Menu tengah rapat */
+            .nav-link { font-size: 0.8rem; padding: 4px 6px; }
+            
+            .btn-auth { padding: 6px 12px; font-size: 0.7rem; }
+            .btn-cog { display: none; } /* Sembunyikan gear di HP agar lega */
         }
 
-        .btn-cog {
-            width: 36px; height: 36px; border-radius: 50%; border:none; background:transparent;
-            color: var(--txt-prim); cursor: pointer; transition: 0.2s; font-size: 1rem;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .btn-cog:hover { background: rgba(0,0,0,0.05); transform: rotate(90deg); }
-
-        /* HERO CARD */
+        /* --- HERO & COMPONENTS --- */
         .hero-card {
-            margin-top: 35px; background: var(--card-bg); width: 100%; max-width: 520px;
-            border-radius: 35px; padding: 45px 35px; text-align: center; 
+            margin-top: 25px; background: var(--card-bg); width: 92%; max-width: 500px;
+            border-radius: 35px; padding: 35px 25px; text-align: center; 
             box-shadow: 0 20px 60px rgba(0,0,0,0.05);
         }
-        
         .av-wrap {
-            width: 85px; height: 85px; margin: 0 auto 20px; background: var(--btn-start); color: var(--btn-text);
-            border-radius: 50%; font-size: 1.8rem; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.3s; border: 4px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            width: 70px; height: 70px; margin: 0 auto 15px; background: var(--btn-start); color: var(--btn-text);
+            border-radius: 50%; font-size: 1.5rem; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.3s; border: 3px solid transparent;
         }
-        .av-wrap:hover { transform: scale(1.05); }
         .av-wrap.ok { background: #10b981; color:#fff; }
 
-        h1 { font-size: 2rem; font-weight: 800; color: var(--txt-prim); margin-bottom:5px; letter-spacing: -0.5px; }
-        .sub { font-size:0.9rem; color:var(--txt-sec); margin-bottom:30px; font-weight: 500; }
+        .inp-pill { background: var(--acc-btn); border-radius: 12px; padding: 5px; display: flex; margin-bottom: 10px;}
+        .inp-pill input { flex: 1; border: 0; background: transparent; padding: 0 12px; color: var(--txt-prim); font-weight: 600; font-size: 0.85rem;}
+        .inp-pill button { background: var(--card-bg); color: var(--txt-prim); border: 0; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; }
 
-        .inp-pill { background: var(--acc-btn); border-radius: 14px; padding: 6px; display: flex; margin-bottom: 15px;}
-        .inp-pill input { flex: 1; border: 0; background: transparent; padding: 0 15px; color: var(--txt-prim); font-weight: 600; font-size: 0.9rem;}
-        .inp-pill button { background: var(--card-bg); color: var(--txt-prim); border: 0; padding: 12px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        
         .lnk-colab {
-            font-size: 0.75rem; font-weight: 600; color: #a1a1aa; text-decoration: none; border-bottom: 1px dashed #d1d5db; 
-            margin-bottom: 30px; display: inline-block; transition:0.2s;
+            font-size: 0.75rem; font-weight:600; color: #a1a1aa; text-decoration: none; border-bottom: 1px dashed #d1d5db; 
+            margin-bottom: 25px; display: inline-block;
         }
-        .lnk-colab:hover { color: #d97757; border-color: #d97757; }
 
-        /* MODELS */
-        .sec-lbl { text-align: left; font-size: 0.7rem; font-weight: 800; color: #a1a1aa; letter-spacing: 1px; margin-bottom: 10px;}
-        .grid-mdl { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom:25px }
+        /* GRID SELECTIONS */
+        .sec-lbl { text-align: left; font-size: 0.7rem; font-weight: 800; color: #a1a1aa; letter-spacing: 1px; margin-bottom: 8px;}
+        .grid-mdl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom:20px }
         
         .m-card {
-            background: var(--acc-btn); border-radius: 18px; padding: 16px; text-align: left;
-            display: flex; gap: 12px; align-items: center; cursor: pointer; transition: 0.2s; 
+            background: var(--acc-btn); border-radius: 16px; padding: 12px; text-align: left;
+            display: flex; gap: 10px; align-items: center; cursor: pointer; transition: 0.2s; 
             border: 2px solid transparent;
         }
         .m-card.active { background: var(--acc-act); border-color: var(--acc-act); }
         .m-card.active * { color: #fff !important; }
-        .m-card.active .ibox { background: #fff !important; color: #000 !important; } 
-        
+        .m-card.active .ibox { background: #fff !important; color: #000 !important; }
         .ibox {
-            width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
-            font-size: 1.1rem; flex-shrink: 0; background: #fff; color: #333;
+            width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem; flex-shrink: 0; background: #fff; color: #333;
         }
-        
-        .mc-t { font-size: 0.85rem; font-weight: 700; color: var(--txt-prim); }
-        .mc-s { font-size: 0.7rem; color: var(--txt-sec); font-weight: 500;}
+        .mc-t { font-size: 0.75rem; font-weight: 700; color: var(--txt-prim); }
+        .mc-s { font-size: 0.65rem; color: var(--txt-sec); }
 
         .btn-go {
-            width: 100%; background: var(--btn-start); color: var(--btn-text); border: 0; padding: 20px; 
-            border-radius: 24px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.3s;
+            width: 100%; background: var(--btn-start); color: var(--btn-text); border: 0; padding: 16px; 
+            border-radius: 20px; font-size: 0.9rem; font-weight: 800; cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .btn-go:hover { transform: translateY(-2px); filter: brightness(0.95); }
 
         /* POPUP UI */
         .ovl {
@@ -156,42 +147,39 @@
         }
         .pop {
             background: var(--card-bg); width: 90%; max-width: 380px;
-            border-radius: 28px; padding: 25px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            border-radius: 24px; padding: 25px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
             max-height: 80vh; overflow-y: auto; position: relative;
-            animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        @keyframes popUp { from {transform: scale(0.9); opacity:0;} to {transform: scale(1); opacity:1;}}
         .pop-h { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px; }
-        .ph-t { font-weight:800; font-size:1.1rem; }
+        .ph-t { font-weight:800; font-size:1rem; }
         .ph-c { background:none; border:none; font-size:1.5rem; cursor:pointer; color:#aaa; line-height: 1; }
-        
-        #set-d { position: absolute; top: 90px; right: calc(50% - 150px); width: 200px; background: var(--card-bg); padding: 20px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); display:none; z-index:150; }
 
         /* WIDGET */
         #wdg {
             position: fixed; bottom: 25px; width: 90%; max-width: 400px;
             background: #111; color: #fff; padding: 18px; border-radius: 20px;
-            display: none; box-shadow: 0 25px 60px rgba(0,0,0,0.5); z-index: 150; border: 1px solid #333;
+            display: none; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 150; border: 1px solid #333;
         }
-        .w-ld { width: 18px; height: 18px; border: 2px solid #555; border-top-color: #1db954; border-radius: 50%; animation: spin 1s infinite linear; }
-        @keyframes spin {to{transform:rotate(360deg)}}
         .pls { max-height:0; overflow:auto; transition:0.3s; margin-top:0; border-top:1px solid transparent;}
         .pls.show { max-height:220px; margin-top:15px; border-top:1px solid #333; padding-top:10px; }
         .tr { display:flex; justify-content:space-between; font-size:0.85rem; padding:10px 8px; cursor:pointer; color:#bbb; font-weight: 500;}
         .tr:hover { color:#fff; background:rgba(255,255,255,0.1); border-radius:8px }
+        .w-ld { width: 18px; height: 18px; border: 2px solid #555; border-top-color: #1db954; border-radius: 50%; animation: spin 1s infinite linear; }
+        @keyframes spin {to{transform:rotate(360deg)}}
         audio { display:none }
+        #set-d { position: absolute; top: 90px; right: 20px; width: 150px; background: var(--card-bg); padding: 15px; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); display:none; z-index:150; }
     </style>
 </head>
 <body>
 
     <nav>
-        <!-- TOMBOL BACK KE PORTOFOLIO UTAMA (FIXED) -->
+        <!-- BACK BUTTON FIXED -->
         <div class="nav-brand" onclick="window.location.href='https://lumina-omega-five.vercel.app/'">
-            <i class="fas fa-chevron-left"></i> Lumina
+            <i class="fas fa-chevron-left"></i> <span>Lumina</span>
         </div>
 
         <div class="nav-mid">
-            <span class="nav-link active">Studio</span>
+            <span class="nav-link active" onclick="setView('studio',this)">Studio</span>
             <span class="nav-link" onclick="openHist()">History</span>
         </div>
 
@@ -202,43 +190,33 @@
         </div>
     </nav>
 
-    <!-- DROPDOWN SETTINGS -->
     <div id="set-d">
-        <div style="font-size:0.7rem; font-weight:800; margin-bottom:8px; color:var(--txt-sec)">APPEARANCE</div>
-        <button style="width:100%; height:40px; border-radius:10px; border:1px solid #ddd; background:linear-gradient(135deg, #fddbb7, #dcfce7); cursor:pointer" onclick="thm('')"></button>
-        <button style="width:100%; height:40px; border-radius:10px; border:1px solid #333; background:#222; margin-top:8px; cursor:pointer" onclick="thm('dark')"></button>
-        <div style="margin-top:15px; font-size:0.75rem; color:var(--txt-sec); cursor:pointer" onclick="perf(this)">
-            [Toggle Transparency]
-        </div>
+        <button style="width:100%;height:30px;border-radius:5px;border:1px solid #ddd;background:#eee;margin-bottom:5px" onclick="thm('')">Light</button>
+        <button style="width:100%;height:30px;border-radius:5px;border:1px solid #333;background:#222;color:#fff" onclick="thm('dark')">Dark</button>
     </div>
 
-    <!-- HISTORY POPUP -->
     <div id="hist-modal" class="ovl" onclick="closeHist(event)">
         <div class="pop">
-            <div class="pop-h">
-                <span class="ph-t">Separation History</span>
-                <button class="ph-c" onclick="openHist(false)">&times;</button>
-            </div>
-            <div id="h-msg" style="text-align:center; padding:20px; color:#aaa; font-size:0.8rem">Loading history...</div>
+            <div class="pop-h"><span class="ph-t">Separation History</span><button class="ph-c" onclick="openHist(false)">&times;</button></div>
+            <div id="h-msg" style="text-align:center; padding:20px; color:#aaa; font-size:0.8rem">Loading...</div>
             <div id="h-lst"></div>
         </div>
     </div>
 
-    <!-- MAIN UI -->
     <div class="hero-card">
         <div class="av-wrap" onclick="document.getElementById('f').click()">
             <input type="file" id="f" hidden accept="audio/*">
             <i class="fas fa-cloud-upload-alt" id="ico"></i>
         </div>
-        <h1>Studio</h1>
-        <div class="sub" id="st-sub">Tap the icon to upload an audio file</div>
+        <h1 style="margin:5px 0">Studio</h1>
+        <div style="color:var(--txt-sec);margin-bottom:20px;font-size:0.9rem" id="st-sub">Upload audio</div>
 
         <div class="inp-pill">
-            <input id="api" placeholder="Paste Cloudflare URL...">
+            <input id="api" placeholder="Cloudflare Link...">
             <button onclick="cn(this)">Connect</button>
         </div>
 
-        <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=jswAJ-NK2Aja" target="_blank" class="lnk-colab">Script Backend (Colab) &nearr;</a>
+        <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=jswAJ-NK2Aja" target="_blank" class="lnk-colab">Script Colab &nearr;</a>
 
         <div class="sec-lbl">INSTRUMENTAL</div>
         <div class="grid-mdl">
@@ -264,10 +242,10 @@
              </div>
         </div>
 
-        <button class="btn-go" onclick="run()">START PROCESS <i class="fas fa-arrow-right"></i></button>
+        <button class="btn-go" onclick="run()">START PROCESS</button>
     </div>
 
-    <!-- PLAYER WIDGET -->
+    <!-- PLAYER -->
     <div id="wdg">
         <div style="display:flex;align-items:center;gap:15px">
             <div style="width:48px;height:48px;background:#222;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff">
@@ -284,13 +262,13 @@
     
     <audio id="au"></audio>
 
-    <!-- SCRIPT (FIXED VARIABLE NAME) -->
+    <!-- FIREBASE (With Fixed History Logic) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-        // ============== WAJIB GANTI ================= //
+        // ---- TEMPEL CONFIG FIREBASE DISINI (TINDIH API_KEY DUMMY INI) ----
         const firebaseConfig = {
         apiKey: "AIzaSyDkSwr7n2niyN5MFzr6LMOIv-4Vpqa9LlY",
         authDomain: "studio-7547085914-216a7.firebaseapp.com",
@@ -299,7 +277,7 @@
         messagingSenderId: "1014659160462",
         appId: "1:1014659160462:web:d9bb29344e36ab031bacdf"
         };
-        // ============================================ //
+        // ------------------------------------------------------------------
 
         let app, auth, db, curU = null;
 
@@ -314,61 +292,64 @@
                     document.getElementById('btn-login').style.display='none';
                     document.getElementById('u-img').src = user.photoURL; 
                     document.getElementById('u-img').style.display='block';
-                    window.refreshCloud();
                 } else {
                     curU = null;
                     document.getElementById('btn-login').style.display='block';
                     document.getElementById('u-img').style.display='none';
                 }
             });
-        } catch(e) { console.warn("Firebase Setup Required"); }
+        } catch(e) { console.log("Firebase setup pending..."); }
 
         window.authLogin = async () => {
             const p = new GoogleAuthProvider();
-            try { await signInWithPopup(auth, p); } catch(e){ alert("Login Failed: "+e.message); }
+            try { await signInWithPopup(auth, p); } catch(e){ alert(e.message); }
         }
-        window.authLogout = () => { if(confirm("Logout?")) signOut(auth); }
+        window.authLogout = () => signOut(auth);
 
         window.saveHist = async (f, d) => {
             if(curU && db) {
+                // Save Cloud
                 try {
-                    await addDoc(collection(db, "history"), { uid:curU.uid, f:f, d:d, ts: new Date() });
-                    window.refreshCloud(); 
+                    await addDoc(collection(db, "history"), { uid:curU.uid, f:f, d:d, ts: new Date().getTime() });
                 } catch(e) {}
-            } else {
-                let h = JSON.parse(localStorage.getItem('L_HIST')||"[]");
-                h.unshift({f:f, d:d, t:new Date().toLocaleString()});
-                if(h.length>10)h.pop();
-                localStorage.setItem('L_HIST', JSON.stringify(h));
             }
+            // Always save Local Backup
+            let h = JSON.parse(localStorage.getItem('L_HIST')||"[]");
+            h.unshift({f:f, d:d, ts: Date.now() });
+            localStorage.setItem('L_HIST', JSON.stringify(h));
         }
 
         window.refreshCloud = async () => {
-            if(!curU || !db) return;
-            const l = document.getElementById('h-lst');
-            l.innerHTML="Syncing...";
-            const q = query(collection(db, "history"), where("uid", "==", curU.uid), orderBy("ts", "desc"));
-            const s = await getDocs(q);
-            if(s.empty) { l.innerHTML="<div style='text-align:center;padding:10px'>History empty</div>"; return; }
-            l.innerHTML="";
-            s.forEach(doc => { let d=doc.data(); window.renderItem(d.f, d.d, d.ts); });
-        }
+            const elMsg = document.getElementById('h-msg');
+            const elList = document.getElementById('h-lst');
+            
+            // Logic Fix: Load Local First (Immediate), then try Cloud if possible
+            window.showLocal();
 
-        window.showLocal = () => {
-            let h = JSON.parse(localStorage.getItem('L_HIST')||"[]");
-            let el = document.getElementById('h-lst');
-            el.innerHTML="";
-            if(h.length==0) document.getElementById('h-msg').innerText = "Belum ada history lokal.";
-            else {
-                document.getElementById('h-msg').style.display='none';
-                h.forEach(x => window.renderItem(x.f, x.d, x.t));
+            if(curU && db){
+                elMsg.innerText = "Syncing with Cloud...";
+                try {
+                    // Fetch Without Ordering to prevent Index Error first
+                    const q = query(collection(db, "history"), where("uid", "==", curU.uid));
+                    const s = await getDocs(q);
+                    if(s.empty) return; 
+
+                    // Client Side Sorting (Safe way)
+                    let cloudDocs = [];
+                    s.forEach(doc => cloudDocs.push(doc.data()));
+                    cloudDocs.sort((a,b) => b.ts - a.ts); // Sort Descending
+
+                    elList.innerHTML=""; // Clear local, replace with cloud
+                    elMsg.style.display = 'none';
+                    cloudDocs.forEach(d => window.renderItem(d.f, d.d, new Date(d.ts).toLocaleDateString()));
+                } catch(e) {
+                    console.log("Cloud sync issue, showing local");
+                }
             }
         }
-        window.checkSrc = () => { if(curU) window.refreshCloud(); else window.showLocal(); }
     </script>
 
     <script>
-        // VARIABLE "URL" -> "BACKEND" (Supaya tidak konflik)
         let BACKEND = localStorage.getItem('API_URL')||"", M='inst_v1e_plus', F=null;
         
         window.onload=()=>{
@@ -382,57 +363,62 @@
             }
         }
 
+        window.showLocal = () => {
+            let h = JSON.parse(localStorage.getItem('L_HIST')||"[]");
+            let el = document.getElementById('h-lst');
+            let elMsg = document.getElementById('h-msg');
+            el.innerHTML="";
+            if(h.length==0) elMsg.innerText = "No history.";
+            else {
+                elMsg.style.display='none';
+                h.forEach(x => {
+                    let dStr = x.ts ? new Date(x.ts).toLocaleDateString() : "Local";
+                    window.renderItem(x.f, x.d, dStr);
+                });
+            }
+        }
+
         window.renderItem = (f, d, t) => {
             let base = localStorage.getItem('API_URL') || "";
             let lks = "";
             Object.keys(d).forEach(k=>{
                 let l = base+d[k];
-                lks+=`<a href="${l}" target="_blank" style="background:#e6fffa;color:#10b981;padding:4px 8px;border-radius:6px;text-decoration:none;font-size:0.7rem;font-weight:700">${k}</a>`
+                lks+=`<a href="${l}" target="_blank" style="background:#e6fffa;color:#10b981;padding:4px 8px;border-radius:6px;text-decoration:none;font-size:0.6rem;font-weight:700">${k}</a>`
             });
-            let dateStr = (typeof t === 'string') ? t : new Date(t.seconds*1000).toLocaleDateString();
             document.getElementById('h-lst').innerHTML+=`
-            <div style="padding:12px 0; border-bottom:1px solid #f0f0f0">
-                <div style="font-weight:700; font-size:0.9rem">${f}</div>
-                <div style="font-size:0.7rem; color:#aaa; margin-bottom:8px">${dateStr}</div>
-                <div style="display:flex;gap:5px;flex-wrap:wrap">${lks}</div>
+            <div style="padding:10px 0; border-bottom:1px solid #f0f0f0">
+                <div style="display:flex;justify-content:space-between"><span style="font-weight:700;font-size:0.85rem">${f}</span><span style="font-size:0.6rem;color:#ccc">${t}</span></div>
+                <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:5px">${lks}</div>
             </div>`;
         }
 
-        function toggleSet(){ let s=document.getElementById('set-d'); s.style.display=s.style.display=='block'?'none':'block'; }
-        function thm(x){ document.body.setAttribute('data-theme', x); localStorage.setItem('THEME', x); }
-        function perf(){ 
-            let cur = document.body.getAttribute('data-perf');
-            document.body.setAttribute('data-perf', cur=='fast'?'':'fast'); 
+        function setView(v, el) {
+            document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active'));
+            if(el) el.classList.add('active');
         }
-        function openHist(x){ 
-            document.getElementById('hist-modal').style.display=(x===false?'none':'flex');
-            if(x!==false && window.checkSrc) window.checkSrc();
+        function openHist(x) {
+            let m=document.getElementById('hist-modal');
+            m.style.display=(x===false?'none':'flex');
+            if(x!==false && window.refreshCloud) window.refreshCloud();
         }
         function closeHist(e){ if(e.target.id=='hist-modal') openHist(false); }
+        function toggleSet(){ let s=document.getElementById('set-d'); s.style.display=(s.style.display=='block'?'none':'block'); }
+        function thm(x){ document.body.setAttribute('data-theme', x); localStorage.setItem('THEME', x); }
         function sel(m,e){ M=m; document.querySelectorAll('.m-card').forEach(x=>x.classList.remove('active')); e.classList.add('active'); }
         
         async function cn(b){
             let v = document.getElementById('api').value.replace(/\/$/,"");
             b.innerText="..."; 
-            try {
-                let r = await fetch(v+'/ping');
-                if(r.ok){
-                    BACKEND = v; localStorage.setItem('API_URL',v);
-                    b.innerText="Connected";
-                }
-            } catch {
-                if(confirm("Buka link tab baru?")) window.open(v);
-                b.innerText="Link";
-            }
+            try { let r = await fetch(v+'/ping'); if(r.ok){ BACKEND=v; localStorage.setItem('API_URL',v); b.innerText="OK"; } } 
+            catch { if(confirm("Open Tab?")) window.open(v); b.innerText="Link"; }
         }
 
         function run(){
-            if(!BACKEND||!F)return alert("Cek File/Koneksi");
+            if(!BACKEND||!F)return alert("Cek File");
             document.getElementById('wdg').style.display='block';
-            document.getElementById('w-ic').style.display='none';
-            document.getElementById('w-l').style.display='block';
-            document.getElementById('w-t').innerText="Uploading...";
+            document.getElementById('w-l').style.display='block'; document.getElementById('w-ic').style.display='none';
             document.getElementById('pls').classList.remove('show');
+            document.getElementById('w-t').innerText="Uploading...";
             
             let fd=new FormData(); fd.append('audio_file',F); fd.append('model_name',M);
             let x=new XMLHttpRequest();
@@ -442,24 +428,19 @@
         }
 
         async function trc(id){
-            document.getElementById('w-t').innerText="Processing..."; document.getElementById('w-p').innerText="";
+            document.getElementById('w-t').innerText="Separating..."; document.getElementById('w-p').innerText="";
             let iv=setInterval(async()=>{
                 try{
                     let r=await fetch(BACKEND+'/check_job/'+id); let d=await r.json();
                     if(d.message) document.getElementById('w-s').innerText=d.message;
-                    if(d.status=='done'){ 
-                        clearInterval(iv); done(d.data);
-                        if(window.saveHist) window.saveHist(F.name, d.data);
-                    }
+                    if(d.status=='done'){ clearInterval(iv); done(d.data); if(window.saveHist) window.saveHist(F.name, d.data); }
                 }catch{}
             },2500);
         }
 
         function done(dt){
-            document.getElementById('w-l').style.display='none';
-            document.getElementById('w-ic').style.display='block';
-            document.getElementById('w-t').innerText="Success!"; document.getElementById('w-s').innerText="Select track below";
-            
+            document.getElementById('w-l').style.display='none'; document.getElementById('w-ic').style.display='block';
+            document.getElementById('w-t').innerText="Finished"; document.getElementById('w-s').innerText="Download Below";
             let h="", el=document.getElementById('pls');
             Object.keys(dt).forEach(k=>{
                 let u=BACKEND+dt[k];
@@ -469,7 +450,7 @@
         }
 
         function play(u,n){
-            document.getElementById('w-t').innerText=n; document.getElementById('w-s').innerText="Now Playing";
+            document.getElementById('w-t').innerText=n; document.getElementById('w-s').innerText="Playing";
             let a=document.getElementById('au'); a.src=u; a.play();
         }
         
