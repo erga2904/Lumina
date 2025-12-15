@@ -2,8 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lumina V52 | Fixed</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Lumina V53 | Mobile</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,12 +11,11 @@
     
     <style>
         :root {
-            /* THEME VARS */
             --primary: #fb923c; 
             --bg-grad: linear-gradient(135deg, #fddbb7 0%, #f7ebd9 50%, #dcfce7 100%);
             --txt-prim: #1f1f1f; --txt-sec: #6b7280;
             --card-bg: #ffffff;
-            --nav-bg: rgba(253, 252, 246, 0.85); --glass: blur(18px);
+            --nav-bg: rgba(253, 252, 246, 0.85); --glass: blur(20px);
             --acc-btn: #f5f5f4; --acc-act: #18181b; 
             --btn-start: #ffe4cc; --btn-text: #9c4221;
             
@@ -39,173 +38,158 @@
         body {
             background: var(--bg-grad); background-attachment: fixed; color: var(--txt-prim);
             min-height: 100vh; display: flex; flex-direction: column; align-items: center; 
-            padding-bottom: 120px; transition: 0.5s;
+            padding-bottom: 140px; transition: 0.5s; overflow-x: hidden;
         }
 
-        /* --- NAVBAR FIXED (SOLUSI DISINI) --- */
+        /* --- NAVBAR OPTIMIZED --- */
         nav {
-            position: fixed; /* Kunci posisi */
-            top: 25px;       /* Jarak dari atas layar */
-            left: 50%;       
-            transform: translateX(-50%); /* Tengah horizontal */
-            
-            background: var(--nav-bg); 
-            backdrop-filter: var(--glass);
-            -webkit-backdrop-filter: var(--glass);
-            
-            padding: 10px 15px 10px 25px; 
-            border-radius: 50px;
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--nav-bg); backdrop-filter: var(--glass);
+            padding: 8px 12px 8px 20px; border-radius: 50px;
             display: flex; align-items: center; justify-content: space-between;
-            
-            box-shadow: 0 8px 30px rgba(0,0,0,0.05); 
-            border: 1px solid rgba(255,255,255,0.4);
-            z-index: 999; /* Pastikan selalu paling atas */
-            
-            min-width: 400px; max-width: 90%; gap: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,0.4);
+            z-index: 100; width: 90%; max-width: 400px; gap: 8px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
-        .nav-brand { font-weight: 700; font-size: 1.1rem; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 8px; color: var(--txt-prim); }
-        .nav-mid { display:flex; gap:15px; flex:1; justify-content:center; }
-        .nav-link { cursor:pointer; font-weight:600; font-size:0.9rem; color:var(--txt-sec); padding:6px 12px; border-radius:15px; transition:0.2s }
+        .nav-brand { font-weight: 800; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; gap: 8px; color: var(--txt-prim); white-space: nowrap; }
+        .nav-mid { display:flex; gap:10px; flex:1; justify-content:center; }
+        .nav-link { cursor:pointer; font-weight:600; font-size:0.85rem; color:var(--txt-sec); padding:6px 12px; border-radius:15px; transition:0.2s }
         .nav-link.active { color:var(--txt-prim); background:rgba(0,0,0,0.05); }
-        
         .nav-user { display: flex; gap: 8px; align-items: center; }
-        .btn-auth { background: #000; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; white-space: nowrap; }
+        .btn-auth { background: #000; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; cursor: pointer; border: none; white-space: nowrap; }
         .user-pic { width: 34px; height: 34px; border-radius: 50%; background: #ccc; display: none; cursor: pointer; border: 2px solid #fff; object-fit: cover; }
         .btn-cog { 
             width: 34px; height: 34px; border-radius: 50%; border:none; background:transparent;
-            color: var(--txt-prim); cursor: pointer; display: flex !important; align-items: center; justify-content: center;
+            color: var(--txt-prim); cursor: pointer; display: flex !important; align-items: center; justify-content: center; font-size: 1.1rem;
         }
 
-        @media (max-width: 600px) {
-            nav { width: 92%; min-width: unset; top: 15px; padding: 10px; }
-            .nav-brand span { display:none }
-            .nav-link { font-size: 0.8rem; padding: 4px 8px; }
+        /* MOBILE TWEAKS */
+        @media (max-width: 400px) {
+            nav { width: 94%; top: 15px; padding: 8px; gap: 5px; }
+            .nav-brand span { display: none; } /* Hide Text on small screens */
+            .nav-link { padding: 6px 10px; font-size: 0.8rem; }
+            .btn-auth { padding: 8px 12px; }
         }
 
-        /* --- HERO CARD (PUSH DOWN) --- */
+        /* --- HERO CARD (Adaptive) --- */
         .hero-card {
-            margin-top: 110px; /* Spacer agar tidak tertutup Navbar Fixed */
+            margin-top: 100px; 
             background: var(--card-bg); width: 92%; max-width: 500px;
-            border-radius: 40px; padding: 45px 30px; text-align: center; 
+            border-radius: 35px; padding: 40px 25px; text-align: center; 
             box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+        }
+        @media (max-width: 600px) {
+            .hero-card { padding: 30px 20px; border-radius: 30px; margin-top: 90px; }
         }
         
         .av-wrap {
             width: 80px; height: 80px; margin: 0 auto 20px; background: var(--primary); color: #fff;
-            border-radius: 50%; font-size: 2rem; display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; font-size: 1.8rem; display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: 0.3s; border: 4px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
         .av-wrap.ok { background: #10b981; }
 
-        h1 { margin-bottom:5px } .st-sub { color:var(--txt-sec); margin-bottom:30px; font-weight:500; }
-
         .inp-pill { 
-            background: var(--acc-btn); border-radius: 18px; padding: 8px; 
-            display: flex; margin-bottom: 10px;
+            background: var(--acc-btn); border-radius: 18px; padding: 6px; 
+            display: flex; gap:5px; margin-bottom: 10px; align-items: center;
         }
-        .inp-pill input { flex: 1; border: 0; background: transparent; padding: 0 15px; color: var(--txt-prim); font-weight: 600; font-size: 0.95rem;}
-        .inp-pill button { background: var(--card-bg); color: var(--txt-prim); border: 0; padding: 12px 24px; border-radius: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
+        .inp-pill input { flex: 1; border: 0; background: transparent; padding: 0 10px; color: var(--txt-prim); font-weight: 600; font-size: 0.9rem; width: 100%; min-width: 0;}
+        .inp-pill button { background: var(--card-bg); color: var(--txt-prim); border: 0; padding: 12px 20px; border-radius: 14px; font-weight: 700; cursor: pointer; flex-shrink: 0; font-size: 0.85rem;}
 
-        /* STATUS BADGES */
+        /* BADGES */
         #conn-info { margin-bottom: 25px; display:none; flex-direction:column; align-items:center; gap:8px }
         .st-badge { font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
         .st-badge.gpu { background: var(--gpu-bg); color: var(--gpu-txt); }
         .st-badge.cpu { background: var(--warn-bg); color: var(--warn-txt); }
-        .cpu-warn-box { font-size: 0.7rem; background: var(--warn-bg); color: var(--warn-txt); padding: 8px 12px; border-radius: 12px; display: none; line-height: 1.4; }
+        .cpu-warn-box { font-size: 0.7rem; background: var(--warn-bg); color: var(--warn-txt); padding: 8px 12px; border-radius: 12px; display: none; line-height: 1.4; max-width: 100%; box-sizing: border-box; }
 
         .lnk-colab { 
             font-size: 0.8rem; font-weight:600; color: #a1a1aa; text-decoration: none; 
             border-bottom: 1px dashed #d1d5db; margin-bottom: 30px; display: inline-block; 
         }
-        .lnk-colab:hover { color: var(--primary); border-color: var(--primary); }
 
         /* GRID SECTIONS */
-        .sec-lbl { 
-            text-align: left; font-size: 0.7rem; font-weight: 800; color: #a1a1aa; 
-            letter-spacing: 1.5px; margin-bottom: 15px; margin-top: 5px;
+        .sec-lbl { text-align: left; font-size: 0.7rem; font-weight: 800; color: #a1a1aa; letter-spacing: 1.2px; margin-bottom: 12px; margin-top: 5px; }
+        .grid-mdl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom:30px }
+        @media (max-width: 400px) {
+            .grid-mdl { gap: 8px; } /* Gap lebih kecil di HP kecil */
         }
-        .grid-mdl { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom:30px }
         
         .m-card {
-            background: var(--acc-btn); border-radius: 24px; padding: 18px; text-align: left;
-            display: flex; gap: 15px; align-items: center; cursor: pointer; transition: 0.2s; border: 2px solid transparent;
+            background: var(--acc-btn); border-radius: 20px; padding: 15px; text-align: left;
+            display: flex; gap: 10px; align-items: center; cursor: pointer; transition: 0.2s; 
+            border: 2px solid transparent; min-width: 0; /* Prevents overflow */
         }
+        .m-card:hover { transform: translateY(-3px); }
         .m-card.active { background: var(--acc-act); border-color: var(--acc-act); }
         .m-card.active * { color: #fff !important; }
         .m-card.active .ibox { background: #fff !important; color: #000 !important; }
         
-        .ibox { width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; background: #fff; color: #333; }
-        .mc-t { font-size: 0.8rem; font-weight: 700; color: var(--txt-prim); }
-        .mc-s { font-size: 0.65rem; color: var(--txt-sec); }
+        .ibox { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; background: #fff; color: #333; }
+        .mc-t { font-size: 0.75rem; font-weight: 700; color: var(--txt-prim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; width: 100%; }
+        .mc-s { font-size: 0.65rem; color: var(--txt-sec); display: block; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         .btn-go {
-            width: 100%; background: var(--primary); color: #fff; border: 0; padding: 22px; 
+            width: 100%; background: var(--primary); color: #fff; border: 0; padding: 20px; 
             border-radius: 24px; font-size: 1rem; font-weight: 800; cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 10px;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); transition: 0.3s;
+            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.1);
         }
-        .btn-go:hover { transform:scale(1.02); }
 
-        /* --- SETTINGS --- */
-        #set-modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 1001; display: none; align-items: center; justify-content: center; }
-        .set-card { background: #232732; color: #fff; width: 360px; padding: 30px; border-radius: 30px; box-shadow: 0 40px 80px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
+        /* --- OVERLAYS --- */
+        .ovl { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); backdrop-filter:blur(8px); z-index:300; display:none; justify-content:center; align-items:center; padding: 20px; }
         
-        .set-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; }
-        .set-tit { font-size: 1.5rem; font-weight: 800; }
+        .pop {
+            background: var(--card-bg); width: 100%; max-width: 360px;
+            border-radius: 28px; padding: 25px; box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+            max-height: 80vh; overflow-y: auto;
+            animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popUp { from {transform: scale(0.9); opacity:0;} to {transform: scale(1); opacity:1;}}
+
+        .set-card { background: #232732; color: #fff; width: 100%; max-width: 360px; padding: 25px; border-radius: 28px; border: 1px solid rgba(255,255,255,0.1); }
+        .set-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+        .set-tit { font-size: 1.4rem; font-weight: 800; }
         .set-cls { background:transparent; border:none; color:#9ca3af; font-size:1.5rem; cursor:pointer; }
-        .set-lbl { font-size: 0.9rem; color: #9ca3af; margin-bottom: 12px; font-weight: 600;}
-        .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 25px; }
-        .c-btn { width: 100%; aspect-ratio: 1; border-radius: 12px; cursor: pointer; border: 2px solid transparent; transition:transform 0.2s }
-        .c-btn.active { border-color: #fff; transform: scale(1.2); }
         
-        .bg-blue { background: #38bdf8; } .bg-indigo { background: #818cf8; } .bg-purple { background: #c084fc; }
-        .bg-pink { background: #f472b6; } .bg-red { background: #fb7185; } .bg-orange { background: #fb923c; } 
-        .bg-yellow { background: #facc15; } .bg-green { background: #4ade80; } .bg-teal { background: #2dd4bf; } .bg-slate { background: #94a3b8; }
-
-        .lang-row { display:flex; gap:10px; margin-bottom: 25px; }
-        .l-btn { flex:1; padding: 14px; border-radius: 12px; font-weight:800; background: transparent; border: 1px solid #475569; color: #fff; cursor: pointer; }
-        .l-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
-        
-        .perf-box { width: 100%; padding: 16px; border-radius: 14px; background: #2f3542; border: 1px solid #4b5563; color: #fff; font-weight: 700; cursor: pointer; display: flex; justify-content: center; gap: 10px; transition:0.2s}
-        .perf-box.on { border-color: var(--primary); background: #1e293b; color: var(--primary); }
-
-        /* WIDGET & OVERLAYS */
+        /* WIDGET */
         #wdg {
             position: fixed; bottom: 30px; width: 92%; max-width: 400px;
-            background: #111; color: #fff; border-radius: 28px; padding: 25px;
-            display: none; flex-direction: column; box-shadow: 0 30px 80px rgba(0,0,0,0.6); 
-            z-index: 200; border: 1px solid #333;
+            background: #111; color: #fff; padding: 20px; border-radius: 24px;
+            display: none; flex-direction: column; box-shadow: 0 30px 80px rgba(0,0,0,0.5); z-index: 200; border: 1px solid #333;
         }
+        /* Mobile adjust */
+        @media (max-width: 600px) {
+            #wdg { bottom: 20px; width: 94%; padding: 18px; border-radius: 20px; }
+        }
+
         .w-top { display: flex; gap: 15px; margin-bottom: 20px; align-items: center; }
-        .w-art { width: 56px; height: 56px; border-radius: 14px; background: #222; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; position:relative }
-        .w-meta { flex: 1; overflow: hidden; }
-        .w-tit { font-weight: 800; font-size: 1rem; margin-bottom: 3px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis}
-        .w-sub { font-size: 0.75rem; color: #aaa; font-weight:500 }
-        
-        .w-seek { -webkit-appearance: none; width: 100%; height: 5px; border-radius: 5px; background: #333; cursor: pointer; margin-bottom:5px }
-        .w-seek::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #fff; }
-        .w-time-row { display:flex; justify-content:space-between; font-size:0.65rem; color:#777; margin-bottom:15px; font-weight:700 }
-
-        .w-ctrls { display: flex; justify-content: center; gap: 20px; align-items: center; }
-        .wc-btn { background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; opacity: 0.8; }
-        .wc-main { width: 50px; height: 50px; background: #fff; color: #000; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
-
-        .w-queue { border-top: 1px solid #222; margin-top: 20px; padding-top: 15px; max-height: 180px; overflow-y: auto; display: none; }
-        .q-row { padding: 12px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
-        .q-row:hover { background: #222; } .q-row.active { background: #2a2a2a; color: var(--primary); }
-        
-        .ovl { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); backdrop-filter:blur(8px); z-index:300; display:none; justify-content:center; align-items:center}
-        .pop { background:var(--card-bg); width:320px; padding:25px; border-radius:24px; text-align:center }
-        .w-ld { width: 24px; height: 24px; border: 3px solid #444; border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 1s infinite linear; position:absolute }
+        .w-art { width: 52px; height: 52px; border-radius: 12px; background: #222; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+        .w-tit { font-size: 0.95rem; font-weight: 700; white-space:nowrap; overflow: hidden; text-overflow: ellipsis; width: 180px; display:block }
+        .w-ld { width: 22px; height: 22px; border: 3px solid #444; border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 1s infinite linear; }
         @keyframes spin {to{transform:rotate(360deg)}}
+        
+        /* Utils */
+        .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 25px; }
+        .c-btn { width: 100%; aspect-ratio: 1; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+        .c-btn.active { border-color: #fff; transform: scale(1.1); }
+        .bg-blue { background: #38bdf8; } .bg-indigo { background: #818cf8; } .bg-purple { background: #c084fc; }
+        .bg-pink { background: #f472b6; } .bg-orange { background: #fb923c; } 
+        
         audio { display:none }
-        .w-queue::-webkit-scrollbar { width: 4px; } .w-queue::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+        /* Player Parts */
+        .w-seek { -webkit-appearance: none; width: 100%; height: 4px; border-radius: 5px; background: #333; }
+        .w-seek::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+        .w-queue { border-top: 1px solid #333; margin-top: 15px; padding-top: 10px; max-height: 180px; overflow-y: auto; display: none; }
+        .w-queue.open { display: block; }
+        .q-row { padding: 10px; border-radius: 10px; display: flex; align-items: center; gap: 10px; color:#ccc; margin-bottom:5px }
+        .q-row.active { background: rgba(255,255,255,0.1); color: var(--primary); }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR FIXED -->
+    <!-- NAVBAR (RESPONSIVE) -->
     <nav>
         <div class="nav-brand" onclick="window.location.href='https://lumina-omega-five.vercel.app/'">
             <i class="fas fa-chevron-left"></i> <span>Lumina</span>
@@ -222,127 +206,134 @@
     </nav>
 
     <!-- SETTINGS MODAL -->
-    <div id="set-modal" onclick="closeSet(event)">
-        <div class="set-card">
+    <div id="set-modal" class="ovl" onclick="closeSet(event)">
+        <div class="set-card" onclick="event.stopPropagation()">
             <div class="set-head">
                 <span class="set-tit">Settings</span>
                 <button class="set-cls" onclick="toggleSet(false)">&times;</button>
             </div>
             
-            <div class="set-lbl">Accent Color</div>
+            <div class="set-lbl" style="font-size:0.8rem; font-weight:700; color:#888; margin-bottom:10px">ACCENT COLOR</div>
             <div class="color-grid">
+                <div class="c-btn bg-orange active" onclick="setAccent('#fb923c', this)"></div>
                 <div class="c-btn bg-blue" onclick="setAccent('#38bdf8', this)"></div>
                 <div class="c-btn bg-purple" onclick="setAccent('#c084fc', this)"></div>
-                <div class="c-btn bg-orange active" onclick="setAccent('#fb923c', this)"></div>
-                <div class="c-btn bg-green" onclick="setAccent('#4ade80', this)"></div>
-                <div class="c-btn bg-slate" onclick="setAccent('#94a3b8', this)"></div>
+                <div class="c-btn bg-pink" onclick="setAccent('#f472b6', this)"></div>
+                <div class="c-btn bg-indigo" onclick="setAccent('#818cf8', this)"></div>
             </div>
 
-            <div class="set-lbl">Mode</div>
-            <div class="lang-row">
-                <button class="l-btn active" onclick="thm('')">Light</button>
-                <button class="l-btn" onclick="thm('dark')">Dark</button>
-            </div>
+            <div class="set-lbl" style="font-size:0.8rem; font-weight:700; color:#888; margin-bottom:10px">APPEARANCE</div>
+            <button onclick="thm('')" style="width:100%; padding:14px; background:rgba(255,255,255,0.1); border:1px solid #444; color:#fff; border-radius:12px; font-weight:700; cursor:pointer; margin-bottom:10px; display:flex; justify-content:space-between">Light Mode <i class="fas fa-sun"></i></button>
+            <button onclick="thm('dark')" style="width:100%; padding:14px; background:#18181b; border:1px solid #333; color:#fff; border-radius:12px; font-weight:700; cursor:pointer; display:flex; justify-content:space-between">Dark Mode <i class="fas fa-moon"></i></button>
+            
+            <div style="margin-top:20px; font-size:0.75rem; text-align:center; color:#555; cursor:pointer" onclick="tPerf()">Toggle Performance Mode (No Blur)</div>
+        </div>
+    </div>
 
-            <div class="perf-box" id="perf-btn" onclick="tPerf()">
-                <i class="fas fa-gauge-high"></i> Performance Mode
+    <!-- HISTORY MODAL -->
+    <div id="hist-modal" class="ovl" onclick="closeHist(event)">
+        <div class="pop" onclick="event.stopPropagation()">
+            <div class="pop-h" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px">
+                <span class="ph-t" style="font-size:1.2rem; font-weight:800; color:var(--txt-prim)">History</span>
+                <button onclick="openHist(false)" style="background:none;border:none;font-size:1.5rem;color:#999">&times;</button>
             </div>
+            <div id="h-msg" style="text-align:center; padding:20px; color:#aaa; font-size:0.9rem">Loading...</div>
+            <div id="h-lst" style="max-height:300px; overflow-y:auto;"></div>
         </div>
     </div>
 
     <!-- PROFILE MODAL -->
     <div id="user-modal" class="ovl" onclick="this.style.display='none'">
         <div class="pop" onclick="event.stopPropagation()">
-            <img src="" id="p-img" style="width:80px;height:80px;border-radius:50%;margin-bottom:15px;object-fit:cover;border:3px solid var(--primary)">
+            <img src="" id="p-img" style="width:85px;height:85px;border-radius:50%;margin-bottom:15px;object-fit:cover;border:3px solid var(--primary)">
             <h3 id="p-name" style="margin:0;font-size:1.2rem;color:var(--txt-prim)">User</h3>
             <p id="p-email" style="margin:5px 0 25px;font-size:0.8rem;color:var(--txt-sec)">email@ex.com</p>
-            <button onclick="authLogout()" style="width:100%;padding:14px;background:#fee2e2;color:#ef4444;border:none;border-radius:14px;font-weight:700;cursor:pointer">Sign Out</button>
+            <button onclick="authLogout()" style="width:100%;padding:14px;background:#fee2e2;color:#ef4444;border:none;border-radius:14px;font-weight:700">Sign Out</button>
         </div>
     </div>
 
-    <!-- HISTORY MODAL -->
-    <div id="hist-modal" class="ovl" onclick="closeHist(event)">
-        <div class="pop" style="max-width:380px" onclick="event.stopPropagation()">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:1px solid #eee;padding-bottom:10px">
-                <span style="font-size:1.2rem;font-weight:800;color:var(--txt-prim)">History</span>
-                <button onclick="openHist(false)" style="background:none;border:none;font-size:1.5rem;color:#999;cursor:pointer">&times;</button>
-            </div>
-            <div id="h-msg" style="padding:30px;color:var(--txt-sec);font-size:0.9rem">Loading...</div>
-            <div id="h-lst" style="max-height:350px;overflow-y:auto;text-align:left"></div>
-        </div>
-    </div>
-
+    <!-- MAIN CARD -->
     <div class="hero-card">
         <div class="av-wrap" onclick="document.getElementById('f').click()">
             <input type="file" id="f" hidden accept="audio/*">
             <i class="fas fa-cloud-upload-alt" id="ico"></i>
         </div>
-        <h1>Studio</h1>
-        <div class="st-sub" id="st-sub">Tap icon to select file</div>
+        <h1 style="margin:5px 0; font-size:1.8rem; color:var(--txt-prim)">Studio</h1>
+        <div style="color:var(--txt-sec);margin-bottom:25px;font-size:0.95rem; font-weight:500" id="st-sub">Tap icon to select file</div>
 
         <div class="inp-pill">
-            <input id="api" placeholder="Paste Cloudflare URL...">
+            <input id="api" placeholder="Cloudflare Link...">
             <button onclick="cn(this)">Connect</button>
         </div>
 
         <div id="conn-info" style="display:none;flex-direction:column;align-items:center;gap:10px;margin-bottom:30px">
             <div id="st-bdg" class="st-badge"></div>
-            <div id="cpu-alert" style="font-size:0.8rem;background:#fef9c3;color:#854d0e;padding:10px 15px;border-radius:12px">⚠️ CPU Mode (Slow)</div>
+            <div id="cpu-alert" class="cpu-warn-box"><i class="fas fa-triangle-exclamation"></i> <b>CPU Mode</b> (Lambat)</div>
         </div>
 
-        <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=jswAJ-NK2Aja" target="_blank" class="lnk-colab">Open Backend Script &nearr;</a>
+        <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=jswAJ-NK2Aja" target="_blank" class="lnk-colab">Script Backend (Colab) &nearr;</a>
 
-        <div class="sec-lbl">INSTRUMENTAL MODELS</div>
+        <div class="sec-lbl">INSTRUMENTAL</div>
         <div class="grid-mdl">
             <div class="m-card active" onclick="sel('inst_v1e_plus',this)">
                 <div class="ibox"><i class="fas fa-wave-square" style="color:#10b981"></i></div>
-                <div><div class="mc-t">MelBand V1E+</div><div class="mc-s">High Quality</div></div>
+                <div style="flex:1; overflow:hidden">
+                    <div class="mc-t">MelBand V1E+</div>
+                    <div class="mc-s">Best Quality</div>
+                </div>
             </div>
             <div class="m-card" onclick="sel('Resurrection-Inst',this)">
                 <div class="ibox"><i class="fas fa-star" style="color:#6366f1"></i></div>
-                <div><div class="mc-t">Resurrec Inst</div><div class="mc-s">Classic ViperX</div></div>
+                <div style="flex:1; overflow:hidden">
+                    <div class="mc-t">Resurrec Inst</div>
+                    <div class="mc-s">Classic ViperX</div>
+                </div>
             </div>
         </div>
         
-        <div class="sec-lbl">VOCAL MODELS</div>
+        <div class="sec-lbl">VOCALS</div>
         <div class="grid-mdl">
              <div class="m-card" onclick="sel('Resurrection-v',this)">
                  <div class="ibox"><i class="fas fa-microphone" style="color:#ec4899"></i></div>
-                 <div><div class="mc-t">Resurrec Voc</div><div class="mc-s">Detail Voice</div></div>
+                 <div style="flex:1; overflow:hidden">
+                     <div class="mc-t">Resurrec Voc</div>
+                     <div class="mc-s">High Detail</div>
+                 </div>
              </div>
              <div class="m-card" onclick="sel('Kim_Vocal_2',this)">
                  <div class="ibox"><i class="fas fa-bolt" style="color:#f59e0b"></i></div>
-                 <div><div class="mc-t">Kim Vocal 2</div><div class="mc-s">Fast Process</div></div>
+                 <div style="flex:1; overflow:hidden">
+                     <div class="mc-t">Kim Vocal 2</div>
+                     <div class="mc-s">Fast Process</div>
+                 </div>
              </div>
         </div>
 
         <button class="btn-go" onclick="run()">START PROCESS</button>
     </div>
 
-    <!-- PLAYER WIDGET (Pro) -->
+    <!-- PLAYER WIDGET -->
     <div id="wdg">
         <div class="w-top">
-            <div class="w-art">
-                <i class="fas fa-music" id="w-ic"></i>
-                <div class="w-ld" id="w-l" style="display:none"></div>
-            </div>
+            <div class="w-art"><i class="fas fa-music" id="w-ic"></i><div class="w-ld" id="w-l" style="display:none"></div></div>
             <div class="w-meta">
                 <div class="w-tit" id="w-t">Waiting...</div>
                 <div class="w-sub" id="w-s">Upload Audio</div>
             </div>
-            <i class="fas fa-chevron-down" style="cursor:pointer;color:#aaa" onclick="document.getElementById('q-list').classList.toggle('open')"></i>
+            <i class="fas fa-chevron-up" style="cursor:pointer;color:#aaa" onclick="document.getElementById('q-list').classList.toggle('open')"></i>
         </div>
         
         <div id="w-ctr-area" style="display:none">
-            <input type="range" class="w-seek" id="seek" value="0" step="0.1" oninput="seekAud(this.value)">
-            <div class="w-time-row">
-                <span id="t-cur">00:00</span>
-                <span id="t-dur">00:00</span>
+            <div style="margin-bottom:15px">
+                <input type="range" class="w-seek" id="seek" value="0" step="0.1" oninput="seekAud(this.value)">
+                <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:#777;margin-top:5px">
+                    <span id="t-cur">00:00</span><span id="t-dur">00:00</span>
+                </div>
             </div>
-            <div class="w-ctrls">
-                <button class="wc-btn" onclick="prevT()"><i class="fas fa-backward"></i></button>
-                <button class="wc-main" onclick="togglePlay()"><i class="fas fa-play" id="btn-p"></i></button>
-                <button class="wc-btn" onclick="nextT()"><i class="fas fa-forward"></i></button>
+            <div style="display:flex;justify-content:center;gap:30px;align-items:center">
+                <i class="fas fa-backward" style="font-size:1.2rem;cursor:pointer;color:#ccc" onclick="prevT()"></i>
+                <button onclick="togglePlay()" style="width:55px;height:55px;border-radius:50%;background:#fff;border:none;font-size:1.2rem;display:flex;align-items:center;justify-content:center;cursor:pointer"><i class="fas fa-play" id="btn-p"></i></button>
+                <i class="fas fa-forward" style="font-size:1.2rem;cursor:pointer;color:#ccc" onclick="nextT()"></i>
             </div>
         </div>
         <div class="w-queue" id="q-list"></div>
@@ -355,7 +346,7 @@
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-        // CONFIG FIREBASE (TEMPEL ASLI DISINI)
+        // ---- API KEY ASLI DISINI ----
         const firebaseConfig = {
         apiKey: "AIzaSyDkSwr7n2niyN5MFzr6LMOIv-4Vpqa9LlY",
         authDomain: "studio-7547085914-216a7.firebaseapp.com",
@@ -370,7 +361,7 @@
             onAuthStateChanged(auth, u=>{ 
                 if(u){ document.getElementById('u-img').src=u.photoURL; document.getElementById('u-img').style.display='block'; document.getElementById('btn-login').style.display='none'; 
                        document.getElementById('p-img').src=u.photoURL; document.getElementById('p-name').innerText=u.displayName; document.getElementById('p-email').innerText=u.email; 
-                       window.refreshCloud(u, db); 
+                       window.refreshCloud(u, db);
                 } else { document.getElementById('btn-login').style.display='block'; document.getElementById('u-img').style.display='none'; }
                 window.curU = u; window.db = db;
             });
@@ -414,25 +405,21 @@
         function toggleSet(x){ document.getElementById('set-modal').style.display = (x===false) ? 'none' : 'flex'; }
         function closeSet(e){ if(e.target.id=='set-modal') toggleSet(false); }
         function setAccent(col, el){ document.documentElement.style.setProperty('--primary', col); localStorage.setItem('L_ACCENT', col); if(el){ document.querySelectorAll('.c-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); }}
-        function tPerf(){ let p=document.body.getAttribute('data-perf'); document.body.setAttribute('data-perf', p=='fast'?'':'fast'); document.getElementById('perf-btn').classList.toggle('on'); }
+        function tPerf(){ let p=document.body.getAttribute('data-perf'); document.body.setAttribute('data-perf', p=='fast'?'':'fast'); alert("Performance Toggled"); }
         function thm(x){ document.body.setAttribute('data-theme', x); localStorage.setItem('THEME', x); }
         function openProfile() { document.getElementById('user-modal').style.display='flex'; }
-        
-        function openHist(x) { 
-            document.getElementById('hist-modal').style.display=(x===false?'none':'flex'); 
-            if(x!==false) { if(window.curU && window.refreshCloud) window.refreshCloud(window.curU, window.db); else window.showLocal(); }
-        }
+        function openHist(x) { document.getElementById('hist-modal').style.display=(x===false?'none':'flex'); if(x!==false && !window.curU) window.showLocal(); }
         function closeHist(e){ if(e.target.id=='hist-modal') openHist(false); }
 
         window.showLocal = () => {
             let h = JSON.parse(localStorage.getItem('L_HIST')||"[]"), el = document.getElementById('h-lst'), msg = document.getElementById('h-msg');
-            el.innerHTML=""; if(h.length==0) msg.innerText="History Empty.";
+            el.innerHTML=""; if(h.length==0) msg.innerText="History Kosong.";
             else { msg.style.display='none'; h.forEach(x => window.renderHItem(x.f, x.d, new Date(x.ts).toLocaleDateString())); }
         }
         window.renderHItem = (f, d, t) => {
             let b = localStorage.getItem('API') || ""; let lks = ""; 
-            Object.keys(d).forEach(k=>{ let l = b + d[k]; lks += `<a href="${l}" target="_blank" style="margin-left:5px;font-size:0.7rem;color:var(--primary);text-decoration:none;background:rgba(0,0,0,0.05);padding:3px 8px;border-radius:6px;font-weight:700">${k}</a>` });
-            document.getElementById('h-lst').innerHTML+=`<div class="h-item" style="padding:10px 0;border-bottom:1px solid #eee;text-align:left"><div style="display:flex;justify-content:space-between"><span style="font-weight:700;font-size:0.85rem;color:var(--txt-prim)">${f}</span><span style="font-size:0.6rem;color:var(--txt-sec)">${t}</span></div><div style="margin-top:5px">${lks}</div></div>`;
+            Object.keys(d).forEach(k=>{ let l = b + d[k]; lks += `<a href="${l}" target="_blank" style="margin-right:8px;font-size:0.75rem;color:var(--primary);text-decoration:none;font-weight:700;border:1px solid #ddd;padding:4px 8px;border-radius:6px">${k}</a>` });
+            document.getElementById('h-lst').innerHTML+=`<div style="padding:15px 0;border-bottom:1px solid #eee;text-align:left"><div style="display:flex;justify-content:space-between"><span style="font-weight:700;font-size:0.9rem;color:var(--txt-prim)">${f}</span><span style="font-size:0.6rem;color:var(--txt-sec)">${t}</span></div><div style="margin-top:10px">${lks}</div></div>`;
         }
 
         async function cn(b){
@@ -440,21 +427,21 @@
             try{let r=await fetch(v+'/ping'); if(r.ok){ let d=await r.json(); BACKEND=v; localStorage.setItem('API',v); b.innerText="OK"; 
                 document.getElementById('conn-info').style.display='flex';
                 document.getElementById('st-bdg').className = d.device=='GPU'?'st-badge gpu':'st-badge cpu';
-                document.getElementById('st-bdg').innerHTML = d.device=='GPU'?'⚡ GPU Active':'⚠️ CPU Mode';
+                document.getElementById('st-bdg').innerHTML = d.device=='GPU'?'⚡ GPU T4 Active':'⚠️ CPU Mode';
                 document.getElementById('cpu-alert').style.display= d.device=='GPU'?'none':'block';
-            }}catch{if(confirm("Tab?"))window.open(v);b.innerText="Link";}
+            }}catch{if(confirm("Buka Tab?"))window.open(v);b.innerText="Link";}
         }
 
         function sel(m,e){ M=m; document.querySelectorAll('.m-card').forEach(x=>x.classList.remove('active')); e.classList.add('active'); }
         function run(){
-            if(!BACKEND||!F)return alert("Check Input");
-            document.getElementById('wdg').style.display='flex'; document.getElementById('w-l').style.display='block'; document.getElementById('w-ic').style.display='none'; document.getElementById('w-ctr-area').style.display='none'; document.getElementById('q-list').innerHTML=""; document.getElementById('w-t').innerText = "Uploading..."; document.getElementById('w-s').innerText = F.name;
+            if(!BACKEND||!F)return alert("Cek Input");
+            document.getElementById('wdg').style.display='flex'; document.getElementById('w-l').style.display='block'; document.getElementById('w-ic').style.display='none'; document.getElementById('w-ctr-area').style.display='none'; document.getElementById('q-list').classList.remove('open'); document.getElementById('w-t').innerText = "Uploading..."; document.getElementById('w-s').innerText = F.name;
             let fd=new FormData(); fd.append('audio_file',F); fd.append('model_name',M);
             let x=new XMLHttpRequest(); x.onload=()=>{ if(x.status==200) mon(JSON.parse(x.responseText).task_id); }; x.open('POST', BACKEND+'/upload_job'); x.send(fd);
         }
 
         async function mon(id){
-            document.getElementById('w-t').innerText = "Processing...";
+            document.getElementById('w-t').innerText = "Separating...";
             let iv=setInterval(async()=>{
                 try{
                     let r=await fetch(BACKEND+'/check_job/'+id); let d=await r.json();
@@ -468,16 +455,16 @@
             document.getElementById('w-l').style.display='none'; document.getElementById('w-ic').style.display='block'; document.getElementById('w-ctr-area').style.display='block';
             Q=[]; let keys = Object.keys(dt).sort((a,b)=> a.includes('vocal')?-1:1); let qH = "";
             keys.forEach((k, i)=>{
-                let url = BACKEND + dt[k]; let type = k.toLowerCase().includes('vocal') ? 'Vocal' : 'Instrumental'; let dn = cleanName(k) || type; 
+                let url = BACKEND + dt[k]; let type = k.toLowerCase().includes('vocal') ? 'Vocal' : 'Inst'; let dn = cleanName(k) || type; 
                 Q.push({t:dn, u:url, type:type});
-                qH += `<div class="q-row" id="qt-${i}" onclick="playQ(${i})"><div class="q-nm">${dn}</div></div>`;
+                qH += `<div class="q-row" id="qt-${i}" onclick="playQ(${i})"><span style="font-size:0.7rem;opacity:0.6;margin-right:10px">${type}</span><div class="q-nm">${dn}</div></div>`;
             });
             document.getElementById('q-list').innerHTML=qH; document.getElementById('q-list').classList.add('open'); playQ(0);
         }
 
         function playQ(i){
             IDX=i; document.querySelectorAll('.q-row').forEach(e=>e.classList.remove('active')); document.getElementById('qt-'+i).classList.add('active');
-            document.getElementById('w-t').innerText = Q[i].t; document.getElementById('w-s').innerText = Q[i].type;
+            document.getElementById('w-t').innerText = Q[i].t; document.getElementById('w-s').innerText = "Now Playing";
             AU.src = Q[i].u; togglePlay(true);
         }
 
