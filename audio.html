@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lumina V44 | User Profile</title>
+    <title>Lumina V45 | Device Detect</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         :root {
-            /* COLOR THEME */
+            /* COLOR PALETTE */
             --bg-grad: linear-gradient(135deg, #fddbb7 0%, #f7ebd9 50%, #dcfce7 100%);
             --txt-prim: #1f1f1f; --txt-sec: #6b7280;
             --card-bg: #ffffff;
             --nav-bg: rgba(253, 252, 246, 0.9); --glass: blur(15px);
             --acc-btn: #f5f5f4; --acc-act: #18181b; 
             --btn-start: #ffe4cc; --btn-text: #9c4221;
+            
+            --warn-bg: #fef9c3; --warn-txt: #854d0e;
+            --gpu-bg: #dcfce7; --gpu-txt: #166534;
         }
 
         [data-theme="dark"] {
@@ -25,119 +29,136 @@
             --card-bg: #121212; --nav-bg: rgba(24, 24, 27, 0.9);
             --acc-btn: #27272a; --acc-act: #38bdf8;
             --btn-start: #3f3f46; --btn-text: #fff;
+            --warn-bg: #422006; --warn-txt: #fde047;
+            --gpu-bg: #064e3b; --gpu-txt: #6ee7b7;
         }
 
         [data-perf="fast"] { --glass: none; --nav-bg: var(--card-bg); }
 
         * { margin:0; padding:0; box-sizing:border-box; outline:none; -webkit-tap-highlight-color:transparent; }
-        
         body {
             background: var(--bg-grad); background-attachment: fixed; color: var(--txt-prim);
             font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center; padding-bottom: 120px; transition: 0.5s;
+            display: flex; flex-direction: column; align-items: center; padding-bottom: 120px; transition: background 0.5s;
         }
 
-        /* --- NAVBAR RESPONSIVE --- */
+        /* --- NAVBAR RESPONSIVE FIXED --- */
         nav {
             margin-top: 20px; background: var(--nav-bg); backdrop-filter: var(--glass);
-            padding: 8px 10px 8px 20px; border-radius: 50px;
+            padding: 10px 15px 10px 25px; border-radius: 50px;
             display: flex; align-items: center; justify-content: space-between;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.4);
-            z-index: 100; min-width: 400px; max-width: 90%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.4);
+            z-index: 100; min-width: 400px; max-width: 95%; gap: 10px;
         }
         
         .nav-brand { font-weight: 700; font-size: 1.1rem; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 8px; color: var(--txt-prim); }
         .nav-mid { display:flex; gap:15px; flex:1; justify-content:center; }
-        .nav-link { cursor:pointer; font-weight:600; font-size:0.9rem; color:var(--txt-sec); padding:5px 8px; border-radius:12px; }
-        .nav-link.active { color:var(--txt-prim); background:rgba(0,0,0,0.05); }
+        .nav-link { cursor:pointer; font-weight:600; font-size:0.9rem; color:var(--txt-sec); padding:6px 12px; border-radius:15px; transition:0.2s }
+        .nav-link:hover, .nav-link.active { color:var(--txt-prim); background:rgba(0,0,0,0.05); }
         .nav-user { display: flex; gap: 8px; align-items: center; }
         
-        .btn-auth {
-            background: #000; color: #fff; padding: 8px 16px; border-radius: 20px;
-            font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; white-space: nowrap;
-        }
-        
-        /* CLICK TO OPEN PROFILE NOW */
+        .btn-auth { background: #000; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; white-space: nowrap; transition:transform 0.2s }
+        .btn-auth:active { transform:scale(0.95); }
         .user-pic { width: 34px; height: 34px; border-radius: 50%; background: #ccc; display: none; cursor: pointer; border: 2px solid #fff; object-fit: cover; }
         
-        .btn-cog { font-size: 1rem; color: var(--txt-prim); background:none; border:none; padding:5px; cursor:pointer;}
+        /* SETTINGS BUTTON FIXED (VISIBLE MOBILE) */
+        .btn-cog { 
+            width: 34px; height: 34px; border-radius: 50%; border:none; background:transparent;
+            color: var(--txt-prim); cursor: pointer; transition: 0.3s; font-size: 1rem;
+            display: flex !important; /* Force visible */
+            align-items: center; justify-content: center;
+        }
+        .btn-cog:hover { background: rgba(0,0,0,0.05); transform: rotate(45deg); }
 
         @media (max-width: 600px) {
-            nav { width: 92%; min-width: unset; margin-top: 15px; padding: 8px 12px; gap: 5px; }
-            .nav-brand { font-size: 1rem; } .nav-mid { gap: 5px; } 
-            .nav-link { font-size: 0.8rem; padding: 4px 6px; }
-            .btn-auth { padding: 6px 12px; font-size: 0.7rem; } .btn-cog { display: none; }
+            nav { width: 92%; min-width: unset; margin-top: 15px; padding: 10px; }
+            .nav-brand span { display:none } /* Hide text Lumina only keep Icon on tiny screens */
+            .nav-link { font-size: 0.8rem; padding: 4px 8px; }
+            .btn-auth { padding: 6px 12px; font-size: 0.7rem; } 
         }
 
-        /* --- UI COMPONENTS --- */
+        /* --- MAIN CARD & STATUS --- */
         .hero-card {
             margin-top: 25px; background: var(--card-bg); width: 92%; max-width: 500px;
             border-radius: 35px; padding: 35px 25px; text-align: center; 
             box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+            animation: fadeIn 0.5s ease-out;
         }
+        @keyframes fadeIn { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)}}
+
         .av-wrap {
             width: 70px; height: 70px; margin: 0 auto 15px; background: var(--btn-start); color: var(--btn-text);
             border-radius: 50%; font-size: 1.5rem; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.3s; border: 3px solid transparent;
+            cursor: pointer; transition: 0.3s; border: 3px solid transparent; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
-        .av-wrap.ok { background: #10b981; color:#fff; }
+        .av-wrap:hover { transform: scale(1.1) rotate(10deg); } /* Animasi balik lagi */
+        .av-wrap.ok { background: #10b981; color:#fff; animation: popSuccess 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popSuccess { 0%{transform:scale(1)} 50%{transform:scale(1.2)} 100%{transform:scale(1)} }
 
-        .inp-pill { background: var(--acc-btn); border-radius: 12px; padding: 5px; display: flex; margin-bottom: 10px;}
+        .inp-pill { background: var(--acc-btn); border-radius: 14px; padding: 5px; display: flex; margin-bottom: 5px; transition:0.2s}
+        .inp-pill:focus-within { transform:scale(1.02); background:var(--card-bg); box-shadow:0 5px 15px rgba(0,0,0,0.05); border:1px solid var(--txt-prim)}
         .inp-pill input { flex: 1; border: 0; background: transparent; padding: 0 12px; color: var(--txt-prim); font-weight: 600; font-size: 0.85rem;}
-        .inp-pill button { background: var(--card-bg); color: var(--txt-prim); border: 0; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        .inp-pill button { background: var(--card-bg); color: var(--txt-prim); border: 0; padding: 10px 18px; border-radius: 10px; font-weight: 700; cursor: pointer; }
 
+        /* STATUS BADGES & WARNING */
+        #conn-info { margin-bottom: 25px; min-height: 20px; transition:0.3s; display:none; flex-direction:column; align-items:center; gap:8px }
+        .st-badge {
+            font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;
+        }
+        .st-badge.gpu { background: var(--gpu-bg); color: var(--gpu-txt); }
+        .st-badge.cpu { background: var(--warn-bg); color: var(--warn-txt); }
+        .cpu-warn-box {
+            font-size: 0.7rem; background: var(--warn-bg); color: var(--warn-txt);
+            padding: 8px 12px; border-radius: 12px; display: none; line-height: 1.4; border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* COLAB LINK */
         .lnk-colab {
             font-size: 0.75rem; font-weight:600; color: #a1a1aa; text-decoration: none; border-bottom: 1px dashed #d1d5db; 
-            margin-bottom: 25px; display: inline-block;
+            margin-bottom: 20px; display: inline-block; transition:0.2s;
         }
+        .lnk-colab:hover { color: #d97757; border-color: #d97757; }
 
-        /* GRID SELECTIONS */
+        /* CARDS */
         .sec-lbl { text-align: left; font-size: 0.7rem; font-weight: 800; color: #a1a1aa; letter-spacing: 1px; margin-bottom: 8px;}
         .grid-mdl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom:20px }
+        
         .m-card {
-            background: var(--acc-btn); border-radius: 16px; padding: 12px; text-align: left;
-            display: flex; gap: 10px; align-items: center; cursor: pointer; transition: 0.2s; border: 2px solid transparent;
+            background: var(--acc-btn); border-radius: 16px; padding: 14px; text-align: left;
+            display: flex; gap: 10px; align-items: center; cursor: pointer; transition: 0.2s; 
+            border: 2px solid transparent;
         }
+        .m-card:hover { transform: translateY(-3px); } /* Hover animation */
         .m-card.active { background: var(--acc-act); border-color: var(--acc-act); }
         .m-card.active * { color: #fff !important; }
         .m-card.active .ibox { background: #fff !important; color: #000 !important; }
-        .ibox { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; background: #fff; color: #333; }
+        .ibox { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; background: #fff; color: #333; box-shadow: 0 4px 8px rgba(0,0,0,0.05);}
         .mc-t { font-size: 0.75rem; font-weight: 700; color: var(--txt-prim); }
         .mc-s { font-size: 0.65rem; color: var(--txt-sec); }
 
         .btn-go {
-            width: 100%; background: var(--btn-start); color: var(--btn-text); border: 0; padding: 16px; 
+            width: 100%; background: var(--btn-start); color: var(--btn-text); border: 0; padding: 18px; 
             border-radius: 20px; font-size: 0.9rem; font-weight: 800; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
+            display: flex; align-items: center; justify-content: center; gap: 8px; transition:0.3s;
         }
+        .btn-go:hover { transform:scale(1.02); filter: brightness(0.95); }
 
-        /* POPUP UI */
-        .ovl {
-            position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index: 200; 
-            display: none; align-items: center; justify-content: center;
-        }
-        .pop {
-            background: var(--card-bg); width: 90%; max-width: 380px;
-            border-radius: 24px; padding: 25px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            max-height: 80vh; overflow-y: auto; position: relative;
-        }
+        /* POPUP & WIDGET */
+        .ovl { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index: 200; display: none; align-items: center; justify-content: center; }
+        .pop { background: var(--card-bg); width: 90%; max-width: 380px; border-radius: 24px; padding: 25px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); max-height: 80vh; overflow-y: auto; position: relative; animation: popUp 0.3s ease; }
+        @keyframes popUp { from{transform:scale(0.9);opacity:0} to{transform:scale(1);opacity:1}}
         .pop-h { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px; }
-        .ph-t { font-weight:800; font-size:1rem; color: var(--txt-prim); }
+        .ph-t { font-weight:800; font-size:1rem; color:var(--txt-prim)}
         .ph-c { background:none; border:none; font-size:1.5rem; cursor:pointer; color:#aaa; line-height: 1; }
 
-        /* USER PROFILE CARD STYLE */
         .prof-big { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--txt-prim); object-fit:cover; margin-bottom: 15px;}
-        .prof-nm { font-size: 1.2rem; font-weight: 800; color: var(--txt-prim); margin-bottom: 5px; }
+        .prof-nm { font-size: 1.1rem; font-weight: 800; color: var(--txt-prim); margin-bottom: 3px; }
         .prof-em { font-size: 0.8rem; color: var(--txt-sec); }
         .btn-out { width: 100%; padding: 12px; border-radius: 12px; background: #fee2e2; color: #ef4444; border:none; font-weight:700; margin-top: 20px; cursor: pointer;}
-        
-        /* WIDGET */
-        #wdg {
-            position: fixed; bottom: 25px; width: 90%; max-width: 400px;
-            background: #111; color: #fff; padding: 18px; border-radius: 20px;
-            display: none; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 150; border: 1px solid #333;
-        }
+
+        /* WIDGET PLAYER */
+        #wdg { position: fixed; bottom: 25px; width: 90%; max-width: 400px; background: #111; color: #fff; padding: 18px; border-radius: 20px; display: none; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 150; border: 1px solid #333; animation: slideUp 0.4s ease;}
+        @keyframes slideUp{from{transform:translateY(50px);opacity:0}to{transform:translateY(0);opacity:1}}
         .pls { max-height:0; overflow:auto; transition:0.3s; margin-top:0; border-top:1px solid transparent;}
         .pls.show { max-height:220px; margin-top:15px; border-top:1px solid #333; padding-top:10px; }
         .tr { display:flex; justify-content:space-between; font-size:0.85rem; padding:10px 8px; cursor:pointer; color:#bbb; font-weight: 500;}
@@ -145,13 +166,13 @@
         .w-ld { width: 18px; height: 18px; border: 2px solid #555; border-top-color: #1db954; border-radius: 50%; animation: spin 1s infinite linear; }
         @keyframes spin {to{transform:rotate(360deg)}}
         audio { display:none }
-        #set-d { position: absolute; top: 90px; right: 20px; width: 150px; background: var(--card-bg); padding: 15px; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); display:none; z-index:150; }
+        #set-d { position: absolute; top: 90px; right: 20px; width: 150px; background: var(--card-bg); padding: 15px; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); display:none; z-index:150; animation: fadeIn 0.2s }
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
     </style>
 </head>
 <body>
 
     <nav>
-        <!-- BACK TO PORTFOLIO -->
         <div class="nav-brand" onclick="window.location.href='https://lumina-omega-five.vercel.app/'">
             <i class="fas fa-chevron-left"></i> <span>Lumina</span>
         </div>
@@ -162,55 +183,60 @@
         </div>
 
         <div class="nav-user">
-            <!-- CLICK PROFILE PICTURE = OPEN POPUP (Not Logout) -->
             <img src="" id="u-img" class="user-pic" onclick="openProfile()">
-            
             <button id="btn-login" class="btn-auth" onclick="authLogin()">Login</button>
             <button class="btn-cog" onclick="toggleSet()"><i class="fas fa-cog"></i></button>
         </div>
     </nav>
 
-    <!-- 1. SETTINGS DROP -->
+    <!-- SETTINGS DROP -->
     <div id="set-d">
-        <button style="width:100%;height:30px;border-radius:5px;border:1px solid #ddd;background:#eee;margin-bottom:5px;color:#000" onclick="thm('')">Light</button>
-        <button style="width:100%;height:30px;border-radius:5px;border:1px solid #333;background:#222;color:#fff" onclick="thm('dark')">Dark</button>
+        <button style="width:100%;height:35px;border-radius:8px;border:1px solid #ddd;background:#eee;margin-bottom:5px;color:#000;font-weight:600;cursor:pointer" onclick="thm('')">Light Mode</button>
+        <button style="width:100%;height:35px;border-radius:8px;border:1px solid #333;background:#222;color:#fff;font-weight:600;cursor:pointer" onclick="thm('dark')">Dark Mode</button>
     </div>
 
-    <!-- 2. USER PROFILE POPUP (NEW) -->
+    <!-- MODAL PROFIL -->
     <div id="user-modal" class="ovl" onclick="closeProfile(event)">
         <div class="pop">
             <button class="ph-c" style="position:absolute; right:20px; top:15px" onclick="closeProfile(false)">&times;</button>
-            <div style="text-align:center; padding:10px 0;">
+            <div style="text-align:center; padding:15px 0;">
                 <img src="" id="p-img" class="prof-big">
                 <div class="prof-nm" id="p-name">Loading...</div>
                 <div class="prof-em" id="p-email">user@email.com</div>
-                
                 <button class="btn-out" onclick="authLogout()">Sign Out</button>
             </div>
         </div>
     </div>
 
-    <!-- 3. HISTORY POPUP -->
+    <!-- MODAL HISTORY -->
     <div id="hist-modal" class="ovl" onclick="closeHist(event)">
         <div class="pop">
-            <div class="pop-h"><span class="ph-t">Separation History</span><button class="ph-c" onclick="openHist(false)">&times;</button></div>
+            <div class="pop-h"><span class="ph-t">Processing History</span><button class="ph-c" onclick="openHist(false)">&times;</button></div>
             <div id="h-msg" style="text-align:center; padding:20px; color:#aaa; font-size:0.8rem">Loading...</div>
             <div id="h-lst"></div>
         </div>
     </div>
 
-    <!-- 4. MAIN STUDIO UI -->
     <div class="hero-card">
         <div class="av-wrap" onclick="document.getElementById('f').click()">
             <input type="file" id="f" hidden accept="audio/*">
             <i class="fas fa-cloud-upload-alt" id="ico"></i>
         </div>
         <h1 style="margin:5px 0">Studio</h1>
-        <div style="color:var(--txt-sec);margin-bottom:20px;font-size:0.9rem" id="st-sub">Upload audio</div>
+        <div style="color:var(--txt-sec);margin-bottom:20px;font-size:0.9rem" id="st-sub">Upload audio file</div>
 
         <div class="inp-pill">
             <input id="api" placeholder="Cloudflare Link...">
             <button onclick="cn(this)">Connect</button>
+        </div>
+
+        <!-- NEW STATUS BAR -->
+        <div id="conn-info">
+            <div id="st-bdg" class="st-badge"></div>
+            <div id="cpu-alert" class="cpu-warn-box">
+                <i class="fas fa-triangle-exclamation"></i> <b>Warning CPU Mode</b><br>
+                Proses separasi akan sangat lambat (bisa >10 menit). Gunakan GPU T4 di Colab.
+            </div>
         </div>
 
         <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=jswAJ-NK2Aja" target="_blank" class="lnk-colab">Script Colab &nearr;</a>
@@ -242,7 +268,7 @@
         <button class="btn-go" onclick="run()">START PROCESS</button>
     </div>
 
-    <!-- PLAYER -->
+    <!-- PLAYER WIDGET -->
     <div id="wdg">
         <div style="display:flex;align-items:center;gap:15px">
             <div style="width:48px;height:48px;background:#222;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff">
@@ -258,13 +284,12 @@
     </div>
     <audio id="au"></audio>
 
-    <!-- FIREBASE (Safe V43 Logic) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-        // ---- [WAJIB] ISI API KEY ASLI ANDA ----
+        // !!! ISI API KEY ANDA DISINI !!!
         const firebaseConfig = {
         apiKey: "AIzaSyDkSwr7n2niyN5MFzr6LMOIv-4Vpqa9LlY",
         authDomain: "studio-7547085914-216a7.firebaseapp.com",
@@ -273,8 +298,6 @@
         messagingSenderId: "1014659160462",
         appId: "1:1014659160462:web:d9bb29344e36ab031bacdf"
         };
-        // ----------------------------------------
-
         let app, auth, db, curU = null;
 
         try {
@@ -285,39 +308,29 @@
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     curU = user;
-                    // NAVBAR UI
                     document.getElementById('btn-login').style.display='none';
                     let img = document.getElementById('u-img');
                     img.src = user.photoURL; img.style.display='block';
-                    
-                    // PROFILE POPUP UI POPULATE
                     document.getElementById('p-img').src = user.photoURL;
                     document.getElementById('p-name').innerText = user.displayName;
                     document.getElementById('p-email').innerText = user.email;
-
                 } else {
                     curU = null;
                     document.getElementById('btn-login').style.display='block';
                     document.getElementById('u-img').style.display='none';
-                    closeProfile(false); // Close profile if logout
+                    closeProfile(false);
                 }
             });
-        } catch(e) { console.log("Setup firebase key..."); }
+        } catch(e) {}
 
         window.authLogin = async () => {
             const p = new GoogleAuthProvider();
             try { await signInWithPopup(auth, p); } catch(e){ alert(e.message); }
         }
-        
-        window.authLogout = () => { 
-            if(confirm("Sign out?")) signOut(auth); 
-        }
+        window.authLogout = () => { if(confirm("Log Out?")) signOut(auth); }
 
         window.saveHist = async (f, d) => {
-            if(curU && db) {
-                try { await addDoc(collection(db, "history"), { uid:curU.uid, f:f, d:d, ts: new Date().getTime() }); } catch(e) {}
-            }
-            // Local Backup
+            if(curU && db) { try { await addDoc(collection(db, "history"), { uid:curU.uid, f:f, d:d, ts: new Date().getTime() }); } catch(e) {} }
             let h = JSON.parse(localStorage.getItem('L_HIST')||"[]");
             h.unshift({f:f, d:d, ts: Date.now() });
             localStorage.setItem('L_HIST', JSON.stringify(h));
@@ -326,28 +339,18 @@
         window.refreshCloud = async () => {
             const elMsg = document.getElementById('h-msg');
             const elList = document.getElementById('h-lst');
-            
-            // Tampilkan local dulu (biar gak loading blank)
-            window.showLocal();
-
+            window.showLocal(); // Fast fallback
             if(curU && db){
-                elMsg.innerText = "Syncing cloud...";
+                elMsg.innerText = "Syncing...";
                 try {
                     const q = query(collection(db, "history"), where("uid", "==", curU.uid));
                     const s = await getDocs(q);
-                    
-                    if(s.empty) return; // Keep displaying local if cloud empty
-
-                    // Client Sorting (Agar tidak error index)
-                    let all = [];
-                    s.forEach(d => all.push(d.data()));
+                    if(s.empty) return; 
+                    let all = []; s.forEach(d => all.push(d.data()));
                     all.sort((a,b) => b.ts - a.ts); 
-
                     elList.innerHTML=""; elMsg.style.display='none';
-                    all.forEach(d => {
-                        window.renderItem(d.f, d.d, new Date(d.ts).toLocaleDateString());
-                    });
-                } catch(e) { console.log("Cloud sync error (ignoring)"); }
+                    all.forEach(d => window.renderItem(d.f, d.d, new Date(d.ts).toLocaleDateString()));
+                } catch(e) {}
             }
         }
     </script>
@@ -366,35 +369,39 @@
             }
         }
 
-        // --- NEW PROFILE LOGIC ---
-        function openProfile() {
-            document.getElementById('user-modal').style.display='flex';
-        }
-        function closeProfile(e) {
-            if(e===false || e.target.id === 'user-modal') 
-                document.getElementById('user-modal').style.display='none';
+        // STATUS HANDLER (NEW V45)
+        function updateStatus(d) {
+            let inf = document.getElementById('conn-info');
+            let bdg = document.getElementById('st-bdg');
+            let wrn = document.getElementById('cpu-alert');
+            
+            inf.style.display = 'flex';
+            if (d.device === 'GPU') {
+                bdg.className = 'st-badge gpu';
+                bdg.innerHTML = '<i class="fas fa-bolt"></i> Connected (GPU T4)';
+                wrn.style.display = 'none';
+            } else {
+                bdg.className = 'st-badge cpu';
+                bdg.innerHTML = '<i class="fas fa-microchip"></i> Connected (CPU)';
+                wrn.style.display = 'block';
+            }
         }
 
-        function openHist(x) {
-            document.getElementById('hist-modal').style.display=(x===false?'none':'flex');
-            if(x!==false && window.refreshCloud) window.refreshCloud();
-        }
+        // -- CORE FUNCTIONS --
+        function openProfile() { document.getElementById('user-modal').style.display='flex'; }
+        function closeProfile(e) { if(e===false || e.target.id === 'user-modal') document.getElementById('user-modal').style.display='none'; }
+        function openHist(x) { document.getElementById('hist-modal').style.display=(x===false?'none':'flex'); if(x!==false && window.refreshCloud) window.refreshCloud(); }
         function closeHist(e){ if(e.target.id=='hist-modal') openHist(false); }
-
-        // Local render
+        function toggleSet(){ let s=document.getElementById('set-d'); s.style.display=(s.style.display=='block'?'none':'block'); }
+        function thm(x){ document.body.setAttribute('data-theme', x); localStorage.setItem('THEME', x); }
+        function sel(m,e){ M=m; document.querySelectorAll('.m-card').forEach(x=>x.classList.remove('active')); e.classList.add('active'); }
+        
         window.showLocal = () => {
             let h = JSON.parse(localStorage.getItem('L_HIST')||"[]");
             let el = document.getElementById('h-lst');
-            let elMsg = document.getElementById('h-msg');
             el.innerHTML="";
-            if(h.length==0) elMsg.innerText = "No history.";
-            else {
-                elMsg.style.display='none';
-                h.forEach(x => {
-                    let dStr = x.ts ? new Date(x.ts).toLocaleDateString() : "Local";
-                    window.renderItem(x.f, x.d, dStr);
-                });
-            }
+            if(h.length==0) document.getElementById('h-msg').innerText = "No history.";
+            else { document.getElementById('h-msg').style.display='none'; h.forEach(x => { let dStr = x.ts ? new Date(x.ts).toLocaleDateString() : "Local"; window.renderItem(x.f, x.d, dStr); }); }
         }
 
         window.renderItem = (f, d, t) => {
@@ -404,21 +411,21 @@
                 let l = base+d[k];
                 lks+=`<a href="${l}" target="_blank" style="background:#e6fffa;color:#10b981;padding:4px 8px;border-radius:6px;text-decoration:none;font-size:0.6rem;font-weight:700">${k}</a>`
             });
-            document.getElementById('h-lst').innerHTML+=`
-            <div style="padding:10px 0; border-bottom:1px solid #f0f0f0">
-                <div style="display:flex;justify-content:space-between"><span style="font-weight:700;font-size:0.85rem">${f}</span><span style="font-size:0.6rem;color:#ccc">${t}</span></div>
-                <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:5px">${lks}</div>
-            </div>`;
+            document.getElementById('h-lst').innerHTML+=`<div style="padding:10px 0; border-bottom:1px solid #f0f0f0"><div style="display:flex;justify-content:space-between"><span style="font-weight:700;font-size:0.85rem">${f}</span><span style="font-size:0.6rem;color:#ccc">${t}</span></div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:5px">${lks}</div></div>`;
         }
 
-        function toggleSet(){ let s=document.getElementById('set-d'); s.style.display=(s.style.display=='block'?'none':'block'); }
-        function thm(x){ document.body.setAttribute('data-theme', x); localStorage.setItem('THEME', x); }
-        function sel(m,e){ M=m; document.querySelectorAll('.m-card').forEach(x=>x.classList.remove('active')); e.classList.add('active'); }
-        
         async function cn(b){
             let v = document.getElementById('api').value.replace(/\/$/,"");
             b.innerText="..."; 
-            try { let r = await fetch(v+'/ping'); if(r.ok){ BACKEND=v; localStorage.setItem('API_URL',v); b.innerText="OK"; } } 
+            try { 
+                let r = await fetch(v+'/ping'); 
+                if(r.ok){ 
+                    let d = await r.json(); // Get GPU/CPU info
+                    BACKEND=v; localStorage.setItem('API_URL',v); 
+                    b.innerText="OK";
+                    updateStatus(d); // Update Visual Badge
+                } 
+            } 
             catch { if(confirm("Open Tab?")) window.open(v); b.innerText="Link"; }
         }
 
@@ -428,7 +435,6 @@
             document.getElementById('w-l').style.display='block'; document.getElementById('w-ic').style.display='none';
             document.getElementById('pls').classList.remove('show');
             document.getElementById('w-t').innerText="Uploading...";
-            
             let fd=new FormData(); fd.append('audio_file',F); fd.append('model_name',M);
             let x=new XMLHttpRequest();
             x.upload.onprogress=e=>{if(e.lengthComputable)document.getElementById('w-p').innerText=Math.round(e.loaded/e.total*100)+"%";}
