@@ -3,338 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lumina V40 | Studio</title>
+    <title>Lumina Final | Studio</title>
     
-    <!-- FONTS & ICON -->
+    <!-- FONTS & ICONS -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         :root {
-            /* COLOR SCHEME: Pastel Dream */
+            /* COLOR THEME: Pastel Portfolio */
             --bg-grad: linear-gradient(135deg, #fddbb7 0%, #f7ebd9 50%, #dcfce7 100%);
             --txt-prim: #1f1f1f; --txt-sec: #6b7280;
             --card-bg: #ffffff;
-            --nav-bg: rgba(253, 252, 246, 0.75); 
-            --glass-blur: blur(25px);
-            --acc-btn: #f5f5f4; --acc-active: #18181b; 
-            --start-btn: #ffe4cc; --start-txt: #9c4221;
+            --nav-bg: rgba(253, 252, 246, 0.75); --glass: blur(20px);
+            --acc-btn: #f5f5f4; --acc-act: #18181b; 
+            --btn-start: #ffe4cc; --btn-text: #9c4221;
         }
 
+        /* DARK THEME */
         [data-theme="dark"] {
             --bg-grad: linear-gradient(135deg, #18181b 0%, #27272a 100%);
             --txt-prim: #ffffff; --txt-sec: #a1a1aa;
-            --card-bg: #121212; --nav-bg: rgba(24, 24, 27, 0.8);
-            --acc-btn: #27272a; --acc-active: #38bdf8;
-            --start-btn: #3f3f46; --start-txt: #fff;
+            --card-bg: #121212; --nav-bg: rgba(24, 24, 27, 0.85);
+            --acc-btn: #27272a; --acc-act: #38bdf8;
+            --btn-start: #3f3f46; --btn-text: #fff;
         }
 
-        /* PERFORMANCE MODE */
-        [data-perf="fast"] { --glass-blur: none; --nav-bg: var(--card-bg); }
+        [data-perf="fast"] { --glass: none; --nav-bg: var(--card-bg); }
 
         * { margin:0; padding:0; box-sizing:border-box; outline:none; -webkit-tap-highlight-color:transparent; }
-        
         body {
             background: var(--bg-grad); background-attachment: fixed; color: var(--txt-prim);
             font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center; padding-bottom: 120px;
-            transition: background 0.3s;
+            display: flex; flex-direction: column; align-items: center; padding-bottom: 120px; transition: 0.5s;
         }
 
-        /* --- 1. NAVBAR --- */
+        /* NAVBAR */
         nav {
-            margin-top: 30px; background: var(--nav-bg); backdrop-filter: var(--glass-blur);
-            padding: 8px 12px 8px 25px; border-radius: 50px;
-            display: flex; gap: 40px; align-items: center; justify-content: space-between;
+            margin-top: 30px; background: var(--nav-bg); backdrop-filter: var(--glass);
+            padding: 8px 15px 8px 25px; border-radius: 50px;
+            display: flex; gap: 30px; align-items: center; justify-content: space-between;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.4);
-            z-index: 100; min-width: 380px; max-width: 90%;
+            z-index: 100; min-width: 360px; max-width: 90%;
         }
         
-        /* LOGO & HOME */
         .nav-brand { 
-            font-weight: 800; font-size: 1.2rem; cursor: pointer; transition: 0.2s;
+            font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: 0.2s;
             display: flex; align-items: center; gap: 8px; color: var(--txt-prim);
         }
         .nav-brand:hover { opacity: 0.6; }
 
-        /* NAV LINKS */
-        .nav-mid { display:flex; gap:20px; font-weight:600; font-size:0.9rem; color:var(--txt-sec); }
-        .nav-link { cursor:pointer; transition:0.2s; }
-        .nav-link.active, .nav-link:hover { color:var(--txt-prim); }
+        .nav-link { cursor:pointer; font-weight:600; font-size:0.9rem; color:var(--txt-sec); transition:0.2s }
+        .nav-link:hover, .nav-link.active { color:var(--txt-prim); }
 
-        /* USER AREA */
         .nav-user { display: flex; gap: 10px; align-items: center; }
         
         .btn-auth {
-            background: #000; color: #fff; padding: 8px 20px; border-radius: 20px;
-            font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; transition: 0.2s;
+            background: #000; color: #fff; padding: 8px 18px; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 700; cursor: pointer; border: none; transition: 0.2s;
         }
-        .btn-auth:hover { transform: scale(1.05); }
+        .btn-auth:hover { transform: translateY(-1px); }
 
         .user-pic { 
-            width: 34px; height: 34px; border-radius: 50%; background: #ddd; 
+            width: 32px; height: 32px; border-radius: 50%; background: #ccc; 
             object-fit: cover; display: none; cursor: pointer; border: 2px solid #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .btn-set {
-            width: 36px; height: 36px; border-radius: 50%; border:none; background:transparent;
+        .btn-cog {
+            width: 32px; height: 32px; border-radius: 50%; border:none; background:transparent;
             color: var(--txt-prim); cursor: pointer; transition: 0.2s; font-size: 1rem;
             display: flex; align-items: center; justify-content: center;
         }
-        .btn-set:hover { background: rgba(0,0,0,0.05); transform: rotate(90deg); }
+        .btn-cog:hover { background: rgba(0,0,0,0.05); transform: rotate(90deg); }
 
-        /* --- 2. MAIN CARD --- */
+        /* MAIN CARD */
         .hero-card {
-            margin-top: 35px; background: var(--card-bg); width: 100%; max-width: 550px;
-            border-radius: 40px; padding: 45px 35px; text-align: center; 
+            margin-top: 35px; background: var(--card-bg); width: 100%; max-width: 520px;
+            border-radius: 35px; padding: 40px 30px; text-align: center; 
             box-shadow: 0 20px 60px rgba(0,0,0,0.05);
         }
         
         .av-wrap {
-            width: 90px; height: 90px; margin: 0 auto 20px; background: var(--start-btn); color: var(--start-txt);
-            border-radius: 50%; font-size: 2rem; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.2s; border: 4px solid transparent;
+            width: 80px; height: 80px; margin: 0 auto 20px; background: var(--btn-start); color: var(--btn-text);
+            border-radius: 50%; font-size: 1.8rem; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.3s; border: 3px solid transparent;
         }
-        .av-wrap:hover { transform: scale(1.05); border-color: rgba(255,255,255,0.5); }
-        .av-wrap.done { background: #10b981; color:#fff; }
+        .av-wrap:hover { transform: scale(1.05); }
+        .av-wrap.ok { background: #10b981; color:#fff; }
 
-        h1 { font-size: 1.8rem; font-weight: 800; color: var(--txt-prim); margin-bottom:5px; }
-        .sub-t { font-size:0.9rem; color:var(--txt-sec); margin-bottom:20px; }
+        h1 { font-size: 1.6rem; font-weight: 800; color: var(--txt-prim); margin-bottom:5px; }
+        .sub { font-size:0.85rem; color:var(--txt-sec); margin-bottom:25px; }
 
-        .inp-pill { background: var(--acc-btn); border-radius: 12px; padding: 5px; display: flex; margin: 10px 0;}
-        .inp-pill input { flex: 1; border: 0; background: transparent; padding: 0 15px; color: var(--txt-prim); font-weight: 600; }
-        .inp-pill button { background: var(--card-bg); color: var(--txt-prim); border: 0; padding: 10px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .inp-pill { background: var(--acc-btn); border-radius: 12px; padding: 5px; display: flex; margin-bottom: 15px;}
+        .inp-pill input { flex: 1; border: 0; background: transparent; padding: 0 15px; color: var(--txt-prim); font-weight: 600; font-size: 0.9rem;}
+        .inp-pill button { background: var(--card-bg); color: var(--txt-prim); border: 0; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 
-        /* COLAB LINK RESTORED */
-        .lnk-clb {
-            font-size: 0.75rem; color: #a1a1aa; text-decoration: none; display: inline-block;
-            border-bottom: 1px dashed #d1d5db; margin-bottom: 25px; transition: 0.2s;
+        .lnk-colab {
+            font-size: 0.75rem; color: #a1a1aa; text-decoration: none; border-bottom: 1px dashed #d1d5db; 
+            margin-bottom: 30px; display: inline-block; transition:0.2s
         }
-        .lnk-clb:hover { color: #d97757; border-color: #d97757; }
+        .lnk-colab:hover { color: #d97757; border-color: #d97757; }
 
-        /* --- 3. MODEL SELECTION --- */
-        .sec-lbl { text-align: left; font-size: 0.7rem; font-weight: 700; color: #a1a1aa; letter-spacing: 1px; margin-bottom: 12px; margin-top: 10px;}
-        .grid-mdl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom:20px }
+        /* SELECTIONS */
+        .sec-lbl { text-align: left; font-size: 0.7rem; font-weight: 700; color: #a1a1aa; letter-spacing: 1px; margin-bottom: 10px;}
+        .grid-mdl { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom:20px }
         
         .m-card {
-            background: var(--acc-btn); border-radius: 18px; padding: 16px; text-align: left;
+            background: var(--acc-btn); border-radius: 16px; padding: 14px; text-align: left;
             display: flex; gap: 12px; align-items: center; cursor: pointer; transition: 0.2s; 
             border: 2px solid transparent;
         }
-        .m-card.active { background: var(--acc-active); border-color: var(--acc-active); }
-        .m-card.active * { color: #fff !important; }
-        .m-card.active .ic-box { background: #fff !important; } 
+        .m-card.active { background: var(--acc-act); border-color: var(--acc-act); }
+        .m-card.active .mc-t, .m-card.active .mc-s { color: #fff !important; }
+        .m-card.active .ibox { background: #fff !important; color: #000 !important; } /* Invert Fix */
 
-        .ic-box {
-            width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
-            font-size: 1rem; flex-shrink: 0; background: #ffffff; color: #333;
+        .ibox {
+            width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; flex-shrink: 0; background: #fff; color: #333;
         }
-        /* Icon original colors */
-        .i-inst { color: #10b981 !important; } .i-voc { color: #ec4899 !important; } .i-fast { color: #f59e0b !important; }
-        /* When Active (inside logic below) -> Color black */
-        .m-card.active .i-inst, .m-card.active .i-voc, .m-card.active .i-fast { color: #000 !important; }
+        
+        .mc-t { font-size: 0.8rem; font-weight: 700; color: var(--txt-prim); }
+        .mc-s { font-size: 0.65rem; color: var(--txt-sec); }
 
-        .mc-tit { font-size: 0.8rem; font-weight: 700; color: var(--txt-prim); }
-        .mc-sub { font-size: 0.7rem; color: var(--txt-sec); }
-
-        .process-btn {
-            width: 100%; background: var(--start-btn); color: var(--start-txt); border: 0; padding: 18px; 
-            border-radius: 24px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: 0.3s;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
+        .btn-go {
+            width: 100%; background: var(--btn-start); color: var(--btn-text); border: 0; padding: 16px; 
+            border-radius: 20px; font-size: 0.95rem; font-weight: 800; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .process-btn:hover { transform: translateY(-2px); filter: brightness(0.95); }
+        .btn-go:hover { transform: translateY(-2px); filter: brightness(0.95); }
 
-        /* --- 4. POPUPS (HISTORY & SETTINGS) --- */
-        .modal-overlay {
+        /* POPUPS */
+        .ovl {
             position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(5px);
             z-index: 200; display: none; align-items: center; justify-content: center;
         }
-        .pop-card {
-            background: var(--card-bg); width: 90%; max-width: 380px;
-            border-radius: 24px; padding: 25px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative; max-height: 80vh; overflow-y: auto;
+        .pop {
+            background: var(--card-bg); width: 90%; max-width: 350px;
+            border-radius: 24px; padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            max-height: 80vh; overflow-y: auto; position: relative;
+            animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        @keyframes slideUp { from {transform: translateY(20px); opacity:0;} to {transform: translateY(0); opacity:1;}}
+        @keyframes popUp { from {transform: scale(0.9); opacity:0;} to {transform: scale(1); opacity:1;}}
 
-        .pop-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:10px; }
-        .pop-tit { font-weight:800; font-size:1.1rem; color: var(--txt-prim); }
-        .cls-btn { background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--txt-sec); }
+        .pop-h { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px; }
+        .ph-t { font-weight:800; font-size:1rem; }
+        .ph-c { background:none; border:none; font-size:1.5rem; cursor:pointer; color:#aaa; line-height: 1; }
 
-        /* HISTORY LIST ITEM */
-        .h-item { 
-            display:flex; justify-content:space-between; align-items:center; 
-            padding:12px 0; border-bottom:1px solid rgba(0,0,0,0.05); 
-        }
-        .h-info div:first-child { font-weight:700; font-size:0.9rem; color: var(--txt-prim); }
-        .h-info div:last-child { font-size:0.7rem; color:var(--txt-sec); }
-        .h-link { font-size:0.75rem; color:#10b981; text-decoration:none; margin-left:5px; background:rgba(16,185,129,0.1); padding:4px 8px; border-radius:5px;}
+        .h-itm { padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+        .h-nm { font-size: 0.85rem; font-weight: 700; display:block; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .h-dt { font-size: 0.65rem; color: #aaa; }
+        .h-lk { font-size: 0.7rem; color: #10b981; background: #e0fcf2; padding: 3px 8px; border-radius: 5px; text-decoration: none; margin-left: 5px;}
 
-        /* SETTINGS DROPDOWN (SMALL) */
-        #set-drop {
-            position: absolute; top: 85px; right: calc(50% - 190px + 30px); /* Aligned near cog */
-            width: 200px; background: var(--card-bg); padding: 15px; border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15); display:none; z-index: 150;
+        #set-d { position: absolute; top: 85px; right: calc(50% - 150px); width: 180px; background: var(--card-bg); padding: 15px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display:none; z-index:150; }
+
+        /* WIDGET */
+        #wdg {
+            position: fixed; bottom: 25px; width: 90%; max-width: 400px;
+            background: #111; color: #fff; padding: 15px; border-radius: 16px;
+            display: none; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 150; border: 1px solid #333;
         }
-        .thm-btn {
-            height: 35px; width: 100%; margin-bottom: 5px; border-radius: 8px; border:2px solid transparent; cursor: pointer;
-        }
-        .thm-btn.t-pas { background: linear-gradient(to right, #fddbb7, #dcfce7); }
-        .thm-btn.t-drk { background: #333; }
+        .w-ld { width: 18px; height: 18px; border: 2px solid #555; border-top-color: #1db954; border-radius: 50%; animation: spin 1s infinite linear; }
+        @keyframes spin {to{transform:rotate(360deg)}}
+        .pls { max-height:0; overflow:auto; transition:0.3s; margin-top:0; border-top:1px solid transparent;}
+        .pls.show { max-height:200px; margin-top:15px; border-top:1px solid #333; padding-top:10px; }
+        .tr { display:flex; justify-content:space-between; font-size:0.8rem; padding:8px; cursor:pointer; color:#ccc }
+        .tr:hover { color:#fff; background:rgba(255,255,255,0.1); border-radius:5px }
         
-        /* --- 5. PLAYER WIDGET --- */
-        #w-player {
-            position: fixed; bottom: 30px; width: 90%; max-width: 400px;
-            background: #121212; color: #fff; padding: 15px; border-radius: 18px;
-            display: none; box-shadow: 0 25px 50px rgba(0,0,0,0.6); z-index: 150;
-            border: 1px solid #333;
-        }
-        .w-flex { display: flex; align-items: center; gap: 15px; }
-        .w-art { 
-            width: 50px; height: 50px; background: #222; border-radius: 10px; 
-            display:flex; align-items:center; justify-content:center;
-        }
-        .w-meta { flex:1; overflow:hidden; }
-        .w-tit { font-weight: 700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-        .w-sub { font-size: 0.75rem; color: #aaa; }
-        
-        /* Loader */
-        .spinner { width:20px; height:20px; border:3px solid #555; border-top-color:#1db954; border-radius:50%; animation: spin 1s infinite linear;}
-        @keyframes spin {100%{transform:rotate(360deg)}}
-        
-        .pl-box { max-height:0; overflow:auto; transition:0.3s; margin-top:0; }
-        .pl-box.open { max-height:200px; margin-top:15px; border-top:1px solid #333; padding-top:10px; }
-        
-        /* HIDDEN AUDIO */
         audio { display:none }
     </style>
 </head>
 <body>
 
     <nav>
-        <!-- 1. BUTTON HOME (TO PORTFOLIO) -->
-        <div class="nav-brand" onclick="goPortfolio()" title="Back to Portfolio">
+        <!-- BACK TO PORTFOLIO BUTTON -->
+        <div class="nav-brand" onclick="window.location.href='https://portofolio-anda.com'">
             <i class="fas fa-chevron-left"></i> Lumina
         </div>
 
-        <div class="nav-mid">
+        <!-- MENU TENGAH -->
+        <div style="display:flex; gap:20px">
             <span class="nav-link active">Studio</span>
-            <span class="nav-link" onclick="openHistory()">History</span>
+            <span class="nav-link" onclick="openHist()">History</span>
         </div>
 
+        <!-- AUTH & SETTINGS -->
         <div class="nav-user">
-            <!-- Firebase User -->
-            <img src="" id="u-img" class="user-pic" onclick="authLogout()">
+            <!-- Firebase User Picture -->
+            <img src="" id="u-img" class="user-pic" onclick="authLogout()" title="Logout">
             <button id="btn-login" class="btn-auth" onclick="authLogin()">Login</button>
-            
-            <button class="btn-set" onclick="toggleSet()"><i class="fas fa-cog"></i></button>
+            <button class="btn-cog" onclick="toggleSet()"><i class="fas fa-cog"></i></button>
         </div>
     </nav>
 
-    <!-- DROPDOWN SETTINGS -->
-    <div id="set-drop">
-        <div style="font-size:0.7rem; font-weight:700; color:var(--txt-sec); margin-bottom:5px">THEME</div>
-        <button class="thm-btn t-pas" onclick="thm('pastel')"></button>
-        <button class="thm-btn t-drk" onclick="thm('dark')"></button>
-        
-        <div style="margin-top:10px; font-size:0.75rem; display:flex; justify-content:space-between">
-            <span>Lite Mode</span> <input type="checkbox" onchange="perf(this)">
-        </div>
+    <!-- SETTINGS DROP -->
+    <div id="set-d">
+        <div style="font-size:0.7rem; font-weight:700; margin-bottom:5px">THEME</div>
+        <button style="width:100%; height:30px; border-radius:5px; border:1px solid #ccc; background:linear-gradient(45deg, #fddbb7, #dcfce7); cursor:pointer" onclick="thm('')"></button>
+        <button style="width:100%; height:30px; border-radius:5px; border:1px solid #333; background:#222; margin-top:5px; cursor:pointer" onclick="thm('dark')"></button>
     </div>
 
-    <!-- MODAL HISTORY -->
-    <div id="hist-modal" class="modal-overlay" onclick="closeHistory(event)">
-        <div class="pop-card">
-            <div class="pop-head">
-                <span class="pop-tit">Processing History</span>
-                <button class="cls-btn" onclick="openHistory(false)">&times;</button>
+    <!-- HISTORY POPUP -->
+    <div id="hist-modal" class="ovl" onclick="closeHist(event)">
+        <div class="pop">
+            <div class="pop-h">
+                <span class="ph-t">Separation History</span>
+                <button class="ph-c" onclick="openHist(false)">&times;</button>
             </div>
             
-            <div id="hist-msg" style="text-align:center; padding:15px; color:#aaa; font-size:0.8rem">
-                <!-- Message injected by JS -->
-            </div>
-            
-            <div id="hist-content">
-                <!-- List Items injected here -->
-            </div>
+            <div id="h-msg" style="text-align:center; padding:15px; color:#aaa; font-size:0.8rem">Loading...</div>
+            <div id="h-lst"></div>
         </div>
     </div>
 
     <!-- MAIN UI -->
     <div class="hero-card">
+        <!-- UPLOAD CIRCLE -->
         <div class="av-wrap" onclick="document.getElementById('f').click()">
             <input type="file" id="f" hidden accept="audio/*">
             <i class="fas fa-cloud-upload-alt" id="ico"></i>
         </div>
         <h1>Studio</h1>
-        <div class="sub-t" id="sub">Tap icon to upload file</div>
+        <div class="sub" id="st-sub">Upload file audio Anda</div>
 
         <div class="inp-pill">
-            <input id="api" placeholder="Cloudflare Link...">
-            <button onclick="con(this)">Link</button>
+            <input id="api" placeholder="Link Cloudflare...">
+            <button onclick="cn(this)">Connect</button>
         </div>
 
-        <!-- RESTORED COLAB LINK -->
-        <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=jswAJ-NK2Aja" target="_blank" class="lnk-clb">
-            Script Backend (Colab) &nearr;
-        </a>
+        <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=jswAJ-NK2Aja" target="_blank" class="lnk-colab">Open Backend Script (Google Colab) &nearr;</a>
 
-        <!-- INSTRUMENTAL -->
-        <div class="sec-lbl">BEST FOR INSTRUMENTAL</div>
+        <div class="sec-lbl">INSTRUMENTAL</div>
         <div class="grid-mdl">
-            <div class="m-card active" onclick="sel('inst_v1e_plus',this)">
-                <div class="ic-box i-inst"><i class="fas fa-wave-square"></i></div>
-                <div><div class="mc-tit">MelBand V1E+</div><div class="mc-sub">Best Inst</div></div>
+            <div class="m-card active" onclick="sl('inst_v1e_plus',this)">
+                <div class="ibox"><i class="fas fa-wave-square" style="color:#10b981"></i></div>
+                <div><div class="mc-t">MelBand V1E+</div><div class="mc-s">High Quality</div></div>
             </div>
-            <div class="m-card" onclick="sel('Resurrection-Inst',this)">
-                <div class="ic-box i-inst"><i class="fas fa-star"></i></div>
-                <div><div class="mc-tit">Resurrec Inst</div><div class="mc-sub">Classic</div></div>
-            </div>
-        </div>
-        
-        <!-- VOCALS -->
-        <div class="sec-lbl">BEST FOR VOCALS</div>
-        <div class="grid-mdl">
-            <div class="m-card" onclick="sel('Resurrection-v',this)">
-                <div class="ic-box i-voc"><i class="fas fa-microphone"></i></div>
-                <div><div class="mc-tit">Resurrec Voc</div><div class="mc-sub">Detail Voice</div></div>
-            </div>
-            <div class="m-card" onclick="sel('Kim_Vocal_2',this)">
-                <div class="ic-box i-fast"><i class="fas fa-bolt"></i></div>
-                <div><div class="mc-tit">Kim Vocal 2</div><div class="mc-sub">Ultra Fast</div></div>
+            <div class="m-card" onclick="sl('Resurrection-Inst',this)">
+                <div class="ibox"><i class="fas fa-star" style="color:#6366f1"></i></div>
+                <div><div class="mc-t">Resurrec Inst</div><div class="mc-s">Classic ViperX</div></div>
             </div>
         </div>
 
-        <button class="process-btn" onclick="run()">START SEPARATION</button>
+        <div class="sec-lbl">VOCALS</div>
+        <div class="grid-mdl">
+             <div class="m-card" onclick="sl('Resurrection-v',this)">
+                 <div class="ibox"><i class="fas fa-microphone" style="color:#ec4899"></i></div>
+                 <div><div class="mc-t">Resurrec Voc</div><div class="mc-s">Detail Voice</div></div>
+             </div>
+             <div class="m-card" onclick="sl('Kim_Vocal_2',this)">
+                 <div class="ibox"><i class="fas fa-bolt" style="color:#f59e0b"></i></div>
+                 <div><div class="mc-t">Kim Vocal 2</div><div class="mc-s">Fast Process</div></div>
+             </div>
+        </div>
+
+        <button class="btn-go" onclick="run()">START SEPARATION <i class="fas fa-arrow-right"></i></button>
     </div>
 
-    <!-- PLAYER WIDGET -->
-    <div id="w-player">
-        <div class="w-flex">
-            <div class="w-art">
-                <i class="fas fa-music" id="w-ic"></i>
-                <div class="spinner" id="w-ld" style="display:none"></div>
+    <!-- PLAYER -->
+    <div id="wdg">
+        <div style="display:flex;align-items:center;gap:15px">
+            <div style="width:45px;height:45px;background:#222;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem">
+                <i class="fas fa-music" id="w-ic"></i><div class="w-ld" id="w-l" style="display:none"></div>
             </div>
-            <div class="w-meta">
-                <div class="w-tit" id="w-mt">Ready</div>
-                <div class="w-sub" id="w-sb">Waiting...</div>
+            <div style="flex:1">
+                <div style="font-weight:700;font-size:0.9rem" id="w-t">Uploading...</div>
+                <div style="font-size:0.7rem;color:#aaa" id="w-s">Waiting...</div>
             </div>
-            <div style="color:#1db954; font-weight:700; font-size:0.8rem" id="w-pct"></div>
+            <div style="font-weight:700;font-size:0.8rem;color:#1db954" id="w-p"></div>
         </div>
-        <div class="pl-box" id="pl"></div>
+        <div class="pls" id="pls"></div>
     </div>
-    <audio id="core-aud"></audio>
+    
+    <audio id="au"></audio>
 
-    <!-- FIREBASE MODULE -->
+    <!-- FIREBASE ROBUST SCRIPT -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-        /* --- ⚠️ ISI KONFIGURASI DI BAWAH INI DENGAN DATA ASLI ANDA --- */
-       const firebaseConfig = {
+        // ============== SETTING WAJIB GANTI ================= //
+        // ⚠️ COPY DARI FIREBASE CONSOLE PROJECT ANDA ⚠️
+        const firebaseConfig = {
         apiKey: "AIzaSyDkSwr7n2niyN5MFzr6LMOIv-4Vpqa9LlY",
         authDomain: "studio-7547085914-216a7.firebaseapp.com",
         projectId: "studio-7547085914-216a7",
@@ -342,267 +293,203 @@
         messagingSenderId: "1014659160462",
         appId: "1:1014659160462:web:d9bb29344e36ab031bacdf"
         };
-        /* ----------------------------------------------------------- */
+        // ==================================================== //
 
-        // Init vars
-        let app, auth, db, currentUser = null;
+        let app, auth, db, curU = null;
 
-        // Try Initialize
         try {
+            // Validator Sederhana
+            if(firebaseConfig.apiKey.includes("ISI_DENGAN")) {
+                console.warn("⚠️ Firebase belum disetting. Tombol login mungkin mati.");
+                throw new Error("API KEY Belum Diisi di Source Code");
+            }
+
             app = initializeApp(firebaseConfig);
             auth = getAuth(app);
             db = getFirestore(app);
-            
+
+            // Auth State Listener
             onAuthStateChanged(auth, (user) => {
                 if (user) {
-                    currentUser = user;
-                    // Update UI Logged In
-                    document.getElementById('btn-login').style.display = 'none';
-                    const img = document.getElementById('u-img');
-                    img.src = user.photoURL; img.style.display = 'block';
-                    window.renderCloudHistory(); // Auto load if logged in
+                    curU = user;
+                    document.getElementById('btn-login').style.display='none';
+                    let img = document.getElementById('u-img');
+                    img.src = user.photoURL; img.style.display='block';
+                    window.refreshCloud(); // Auto sync
                 } else {
-                    currentUser = null;
-                    // Update UI Logged Out
-                    document.getElementById('btn-login').style.display = 'block';
-                    document.getElementById('u-img').style.display = 'none';
+                    curU = null;
+                    document.getElementById('btn-login').style.display='block';
+                    document.getElementById('u-img').style.display='none';
                 }
             });
 
-        } catch(e) { console.log("Firebase setup pending (Paste keys in code)"); }
+        } catch(e) {
+            console.error("Firebase Init Error:", e);
+            // Binding fungsi dummy agar tombol tidak error JS
+            window.authLogin = () => alert("ERROR: Konfigurasi Firebase belum diisi di kode HTML!\nSilahkan edit file ini.");
+        }
 
-        // --- GLOBAL ACTIONS ---
+        // Global functions for HTML
         window.authLogin = async () => {
-            if(!auth) return alert("API Key Firebase belum diisi di kode HTML!");
+            if(!auth) return alert("Cek Config Firebase!");
             const p = new GoogleAuthProvider();
-            try { await signInWithPopup(auth, p); } catch(e) { console.error(e); }
-        }
-        
-        window.authLogout = () => { if(auth) signOut(auth); }
-
-        window.saveToHistory = async (fileName, resultData) => {
-            // Priority: Cloud if logged in, else LocalStorage
-            if(currentUser && db){
-                try {
-                    await addDoc(collection(db, "lumina_history"), {
-                        uid: currentUser.uid,
-                        file: fileName,
-                        result: resultData,
-                        ts: new Date()
-                    });
-                } catch(e) { console.error("Cloud save err", e); }
-            } else {
-                let h = JSON.parse(localStorage.getItem('L_HIST')||"[]");
-                h.unshift({ file: fileName, result: resultData, ts: new Date() });
-                if(h.length>10) h.pop(); // Keep 10 local
-                localStorage.setItem('L_HIST', JSON.stringify(h));
+            try { await signInWithPopup(auth, p); } catch(e){ 
+                alert("Login Gagal: " + e.message + "\n\nPastikan membuka via Live Server (bukan file://) dan 'Google' enabled di Firebase Console."); 
             }
         }
-
-        window.renderCloudHistory = async () => {
-            if(!currentUser || !db) return;
-            document.getElementById('hist-msg').innerText = "Memuat riwayat cloud...";
-            document.getElementById('hist-content').innerHTML = "";
-            
-            const q = query(collection(db, "lumina_history"), where("uid", "==", currentUser.uid), orderBy("ts", "desc"));
-            const querySnapshot = await getDocs(q);
-            
-            if(querySnapshot.empty) {
-                document.getElementById('hist-msg').innerText = "Belum ada riwayat Cloud.";
-                return;
-            }
-            
-            document.getElementById('hist-msg').style.display = 'none';
-            querySnapshot.forEach((doc) => {
-                let d = doc.data();
-                // Render function shared (see standard script below)
-                window.addHistItemUI(d.file, d.result, new Date(d.ts.seconds*1000).toLocaleDateString());
-            });
-        }
         
-        // Expose render local if logged out
-        window.renderLocalHistory = () => {
+        window.authLogout = () => { if(confirm("Logout?")) signOut(auth); }
+
+        window.saveHist = async (f, d) => {
+            // Save Local first (Always backup)
             let h = JSON.parse(localStorage.getItem('L_HIST')||"[]");
-            document.getElementById('hist-content').innerHTML = "";
-            if(h.length === 0){
-                document.getElementById('hist-msg').innerText = "Belum ada riwayat Lokal. Login untuk sync.";
-                document.getElementById('hist-msg').style.display='block';
-                return;
+            h.unshift({f:f, d:d, t:new Date().toLocaleString()});
+            if(h.length>10)h.pop();
+            localStorage.setItem('L_HIST', JSON.stringify(h));
+
+            // Save Cloud if Logged
+            if(curU && db) {
+                try {
+                    await addDoc(collection(db, "history"), { uid:curU.uid, f:f, d:d, ts: new Date() });
+                    window.refreshCloud(); // Refresh list if open
+                } catch(e) { console.error("Cloud Err", e); }
             }
-            document.getElementById('hist-msg').style.display='none';
-            h.forEach(x => {
-                // Compatibility handling for stored dates
-                let d = x.ts ? new Date(x.ts).toLocaleDateString() : "Local";
-                window.addHistItemUI(x.file, x.result, d);
+        }
+
+        window.refreshCloud = async () => {
+            if(!curU || !db) return;
+            const l = document.getElementById('h-lst');
+            const m = document.getElementById('h-msg');
+            m.innerText = "Syncing...";
+            
+            const q = query(collection(db, "history"), where("uid", "==", curU.uid), orderBy("ts", "desc"));
+            const s = await getDocs(q);
+            
+            if(s.empty) { m.innerText = "Belum ada history di Cloud."; l.innerHTML=""; return; }
+            
+            m.style.display='none'; l.innerHTML="";
+            s.forEach(doc => {
+                let data = doc.data();
+                let time = data.ts ? new Date(data.ts.seconds*1000).toLocaleDateString() : "-";
+                window.renderHItem(data.f, data.d, time);
             });
         }
-        
-        // Sync Logic on Open
-        window.syncHist = () => {
-            if(currentUser) window.renderCloudHistory();
-            else window.renderLocalHistory();
+
+        window.showLocal = () => {
+            const l = document.getElementById('h-lst');
+            const m = document.getElementById('h-msg');
+            let h = JSON.parse(localStorage.getItem('L_HIST')||"[]");
+            l.innerHTML="";
+            
+            if(h.length==0) { m.innerText = "History Lokal Kosong. Login untuk Sync Cloud."; m.style.display='block'; return;}
+            
+            m.innerText = "Menampilkan Local History (Login untuk Simpan Permanen)";
+            h.forEach(x => window.renderHItem(x.f, x.d, x.t.split(',')[0]));
+        }
+
+        // Bridge to refresh when opening popup
+        window.checkHistSource = () => {
+            if(curU) window.refreshCloud();
+            else window.showLocal();
         }
 
     </script>
 
-    <!-- STANDARD LOGIC (Backend interaction) -->
+    <!-- STANDARD LOGIC -->
     <script>
-        let URL = localStorage.getItem('API_U') || "";
-        let MDL = "inst_v1e_plus";
-        let FILE = null;
-        let CURRENT_HOST = ""; // To reconstruct links if stored as relative paths
-
-        window.onload = () => {
-            if(URL){ document.getElementById('api').value = URL; CURRENT_HOST = URL; }
-            document.getElementById('f').onchange = (e) => {
-                if(e.target.files[0]){
-                    FILE = e.target.files[0];
-                    document.getElementById('sub').innerText = FILE.name;
-                    document.getElementById('ico').className = "fas fa-check";
-                    document.querySelector('.av-wrap').classList.add('done');
-                }
-            }
-        };
-
-        // NAVIGATION & MODALS
-        function goPortfolio() { 
-            // GANTI LINK DI SINI DENGAN URL PORTOFOLIO ANDA
-            window.location.href = "https://erga.me/portfolio"; 
-        }
-
-        function toggleSet() { 
-            let s = document.getElementById('set-drop');
-            s.style.display = (s.style.display == 'block') ? 'none' : 'block';
-        }
-        function openHistory(force) {
-            let m = document.getElementById('hist-modal');
-            if(force === false) {
-                m.style.display = 'none';
-            } else {
-                m.style.display = 'flex';
-                if(window.syncHist) window.syncHist();
+        let URL = localStorage.getItem('API_URL')||"", M='inst_v1e_plus', F=null;
+        
+        window.onload=()=>{
+            if(URL)document.getElementById('api').value=URL;
+            let t=localStorage.getItem('THEME'); if(t)thm(t);
+            document.getElementById('f').onchange=e=>{
+                if(e.target.files[0]){ F=e.target.files[0]; 
+                document.getElementById('st-sub').innerText=F.name;
+                document.getElementById('ico').className="fas fa-check"; 
+                document.querySelector('.av-wrap').classList.add('ok');}
             }
         }
-        function closeHistory(e) {
-            if(e.target.id === 'hist-modal') openHistory(false);
-        }
 
-        // SHARED UI HELPER for History Items
-        window.addHistItemUI = (fname, data, dateStr) => {
-            let htmlLinks = "";
-            // Logic for link reconstruction. If stored data is just path, prepend current URL
-            let base = window.CURRENT_HOST || localStorage.getItem('API_U');
-
-            Object.keys(data).forEach(k => {
-                let link = base ? base + data[k] : "#";
-                // Shorten labels
-                let label = k.includes('vocal') ? 'Vox' : 'Inst';
-                htmlLinks += `<a href="${link}" class="h-link" target="_blank">${label}</a>`;
+        // RENDER ITEM HISTORY (SHARED)
+        window.renderHItem = (fname, data, date) => {
+            let lks = "";
+            let base = localStorage.getItem('API_URL') || ""; 
+            Object.keys(data).forEach(k=>{
+                let lnk = base + data[k];
+                lks+=`<a href="${lnk}" class="h-lk" target="_blank">DL</a>`
             });
-
-            let template = `
-            <div class="h-item">
-                <div class="h-info">
-                    <div>${fname}</div>
-                    <div>${dateStr}</div>
-                </div>
-                <div style="display:flex">${htmlLinks}</div>
+            document.getElementById('h-lst').innerHTML+=`
+            <div class="h-itm">
+                <div><span class="h-nm">${fname}</span><span class="h-dt">${date}</span></div>
+                <div>${lks}</div>
             </div>`;
-            
-            document.getElementById('hist-content').innerHTML += template;
         }
 
-        // SETTINGS LOGIC
-        function thm(t) {
-            document.body.setAttribute('data-theme', (t=='dark'?'dark':'light'));
+        // UI ACTIONS
+        function toggleSet(){ let s=document.getElementById('set-d'); s.style.display=s.style.display=='block'?'none':'block'; }
+        function thm(x){ document.body.setAttribute('data-theme', x); localStorage.setItem('THEME', x); }
+        function openHist(x){ 
+            let p=document.getElementById('hist-modal'); 
+            p.style.display=(x===false?'none':'flex');
+            if(x!==false && window.checkHistSource) window.checkHistSource();
         }
-        function perf(c) {
-            document.body.setAttribute('data-perf', (c.checked?'fast':'norm'));
-        }
-        function sel(m, el) {
-            MDL = m;
-            document.querySelectorAll('.m-card').forEach(x => x.classList.remove('active'));
-            el.classList.add('active');
-        }
-
-        async function con(b) {
-            let val = document.getElementById('api').value.replace(/\/$/, "");
-            if(!val) return;
-            b.innerText = "...";
-            try {
-                let r = await fetch(val + '/ping');
-                if(r.ok) {
-                    URL = val; CURRENT_HOST = val; localStorage.setItem('API_U', val);
-                    b.innerText = "Linked";
-                }
-            } catch { 
-                if(confirm("Buka tab?")) window.open(val); 
-                b.innerText = "Link"; 
-            }
+        function closeHist(e){ if(e.target.id=='hist-modal') openHist(false); }
+        
+        function sel(m,e){ M=m; document.querySelectorAll('.m-card').forEach(x=>x.classList.remove('active')); e.classList.add('active'); }
+        async function cn(b){
+            let v=document.getElementById('api').value.replace(/\/$/,"");
+            b.innerText="..."; try{let r=await fetch(v+'/ping');if(r.ok){URL=v;localStorage.setItem('API_URL',v);b.innerText="Connected";}}catch{if(confirm("Fail. Open?"))window.open(v);b.innerText="Link"}
         }
 
         // PROCESS
         function run(){
-            if(!URL || !FILE) return alert("Koneksi / File kosong!");
-            let w = document.getElementById('w-player');
-            w.style.display = 'block';
+            if(!URL||!F)return alert("Cek File/Koneksi");
+            document.getElementById('wdg').style.display='block';
             document.getElementById('w-ic').style.display='none';
-            document.getElementById('w-ld').style.display='block';
-            document.getElementById('w-mt').innerText = "Uploading...";
-            document.getElementById('pl').classList.remove('open');
-            document.getElementById('pl').innerHTML = "";
-
-            let fd = new FormData(); fd.append('audio_file', FILE); fd.append('model_name', MDL);
-            let x = new XMLHttpRequest();
-            x.upload.onprogress = e => { if(e.lengthComputable) document.getElementById('w-pct').innerText=Math.round(e.loaded/e.total*100)+"%"; }
-            x.onload = () => { if(x.status==200) mon(JSON.parse(x.responseText).task_id); else {alert('Err'); w.style.display='none';} }
-            x.open('POST', URL + '/upload_job'); x.send(fd);
-        }
-
-        async function mon(tid) {
-            document.getElementById('w-mt').innerText = "Separating...";
-            document.getElementById('w-pct').innerText = "";
-            let iv = setInterval(async () => {
-                try {
-                    let r = await fetch(URL + '/check_job/' + tid);
-                    let d = await r.json();
-                    if(d.message) document.getElementById('w-sb').innerText = d.message;
-                    if(d.status === 'done') {
-                        clearInterval(iv); done(d.data);
-                        // Trigger save
-                        if(window.saveToHistory) window.saveToHistory(FILE.name, d.data);
-                    }
-                    if(d.status === 'error') {
-                        clearInterval(iv); alert(d.error); document.getElementById('w-player').style.display='none';
-                    }
-                } catch {}
-            }, 2500);
-        }
-
-        function done(dt) {
-            document.getElementById('w-ld').style.display='none';
-            document.getElementById('w-ic').style.display='block';
-            document.getElementById('w-mt').innerText = "Results Ready";
-            document.getElementById('w-sb').innerText = "Download stems below";
+            document.getElementById('w-l').style.display='block';
+            document.getElementById('w-t').innerText="Uploading...";
+            document.getElementById('pls').classList.remove('show');
             
-            let html = "";
-            Object.keys(dt).forEach(k => {
-                let link = URL + dt[k];
-                html += `
-                <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.9rem; border-bottom:1px solid #222; padding:5px;">
-                    <span style="color:#ccc">${k}</span>
-                    <a href="${link}" download target="_blank" style="color:#1db954; font-weight:700; text-decoration:none"><i class="fas fa-download"></i> DL</a>
-                </div>`;
+            let fd=new FormData(); fd.append('audio_file',F); fd.append('model_name',M);
+            let x=new XMLHttpRequest();
+            x.upload.onprogress=e=>{if(e.lengthComputable)document.getElementById('w-p').innerText=Math.round(e.loaded/e.total*100)+"%";}
+            x.onload=()=>{ if(x.status==200) trc(JSON.parse(x.responseText).task_id); };
+            x.open('POST',URL+'/upload_job'); x.send(fd);
+        }
+
+        async function trc(id){
+            document.getElementById('w-t').innerText="Separating..."; document.getElementById('w-p').innerText="";
+            let iv=setInterval(async()=>{
+                try{
+                    let r=await fetch(URL+'/check_job/'+id); let d=await r.json();
+                    if(d.message) document.getElementById('w-s').innerText=d.message;
+                    if(d.status=='done'){ 
+                        clearInterval(iv); done(d.data);
+                        if(window.saveHist) window.saveHist(F.name, d.data); // Save Result
+                    }
+                }catch{}
+            },2500);
+        }
+
+        function done(dt){
+            document.getElementById('w-l').style.display='none';
+            document.getElementById('w-ic').style.display='block';
+            document.getElementById('w-t').innerText="Finished"; document.getElementById('w-s').innerText="Download Below";
+            
+            let h="", el=document.getElementById('pls');
+            Object.keys(dt).forEach(k=>{
+                let u=URL+dt[k];
+                h+=`<div class="tr" onclick="play('${u}','${k}')"><span>${k}</span><a href="${u}" download target="_blank" onclick="event.stopPropagation()" style="color:#10b981"><i class="fas fa-download"></i></a></div>`
             });
-            let p = document.getElementById('pl');
-            p.innerHTML = html;
-            p.classList.add('open');
+            el.innerHTML=h; el.classList.add('show');
+        }
+
+        function play(u,n){
+            document.getElementById('w-t').innerText=n; document.getElementById('w-s').innerText="Now Playing";
+            let a=document.getElementById('au'); a.src=u; a.play();
         }
         
-        // Close popups on outside click
-        window.onclick = function(e) {
-            if(!e.target.closest('#set-drop') && !e.target.closest('.btn-set')) document.getElementById('set-drop').style.display='none';
-        }
+        window.onclick=e=>{ if(!e.target.closest('#set-d') && !e.target.closest('.btn-cog')) document.getElementById('set-d').style.display='none';}
     </script>
 </body>
 </html>
