@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lumina V43 | Mobile Fix</title>
+    <title>Lumina V44 | User Profile</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -39,30 +39,17 @@
 
         /* --- NAVBAR RESPONSIVE --- */
         nav {
-            margin-top: 20px; 
-            background: var(--nav-bg); 
-            backdrop-filter: var(--glass);
-            padding: 8px 10px 8px 20px; 
-            border-radius: 50px;
+            margin-top: 20px; background: var(--nav-bg); backdrop-filter: var(--glass);
+            padding: 8px 10px 8px 20px; border-radius: 50px;
             display: flex; align-items: center; justify-content: space-between;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05); 
-            border: 1px solid rgba(255,255,255,0.4);
-            z-index: 100; 
-            
-            /* Desktop Size */
-            min-width: 400px; 
-            max-width: 90%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.4);
+            z-index: 100; min-width: 400px; max-width: 90%;
         }
         
-        .nav-brand { 
-            font-weight: 700; font-size: 1.1rem; cursor: pointer; white-space: nowrap;
-            display: flex; align-items: center; gap: 8px; color: var(--txt-prim);
-        }
-        
+        .nav-brand { font-weight: 700; font-size: 1.1rem; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 8px; color: var(--txt-prim); }
         .nav-mid { display:flex; gap:15px; flex:1; justify-content:center; }
         .nav-link { cursor:pointer; font-weight:600; font-size:0.9rem; color:var(--txt-sec); padding:5px 8px; border-radius:12px; }
         .nav-link.active { color:var(--txt-prim); background:rgba(0,0,0,0.05); }
-
         .nav-user { display: flex; gap: 8px; align-items: center; }
         
         .btn-auth {
@@ -70,29 +57,19 @@
             font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; white-space: nowrap;
         }
         
-        .user-pic { width: 34px; height: 34px; border-radius: 50%; background: #ccc; display: none; cursor: pointer; border: 2px solid #fff; }
+        /* CLICK TO OPEN PROFILE NOW */
+        .user-pic { width: 34px; height: 34px; border-radius: 50%; background: #ccc; display: none; cursor: pointer; border: 2px solid #fff; object-fit: cover; }
+        
         .btn-cog { font-size: 1rem; color: var(--txt-prim); background:none; border:none; padding:5px; cursor:pointer;}
 
-        /* MEDIA QUERY: HP LAYOUT */
         @media (max-width: 600px) {
-            nav {
-                width: 92%; 
-                min-width: unset; 
-                margin-top: 15px;
-                padding: 8px 12px;
-                gap: 5px; /* Rapatkan gap */
-            }
-            .nav-brand { font-size: 1rem; }
-            .nav-brand i { font-size: 0.9rem; } /* Kecilkan panah */
-            
-            .nav-mid { gap: 5px; } /* Menu tengah rapat */
+            nav { width: 92%; min-width: unset; margin-top: 15px; padding: 8px 12px; gap: 5px; }
+            .nav-brand { font-size: 1rem; } .nav-mid { gap: 5px; } 
             .nav-link { font-size: 0.8rem; padding: 4px 6px; }
-            
-            .btn-auth { padding: 6px 12px; font-size: 0.7rem; }
-            .btn-cog { display: none; } /* Sembunyikan gear di HP agar lega */
+            .btn-auth { padding: 6px 12px; font-size: 0.7rem; } .btn-cog { display: none; }
         }
 
-        /* --- HERO & COMPONENTS --- */
+        /* --- UI COMPONENTS --- */
         .hero-card {
             margin-top: 25px; background: var(--card-bg); width: 92%; max-width: 500px;
             border-radius: 35px; padding: 35px 25px; text-align: center; 
@@ -117,19 +94,14 @@
         /* GRID SELECTIONS */
         .sec-lbl { text-align: left; font-size: 0.7rem; font-weight: 800; color: #a1a1aa; letter-spacing: 1px; margin-bottom: 8px;}
         .grid-mdl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom:20px }
-        
         .m-card {
             background: var(--acc-btn); border-radius: 16px; padding: 12px; text-align: left;
-            display: flex; gap: 10px; align-items: center; cursor: pointer; transition: 0.2s; 
-            border: 2px solid transparent;
+            display: flex; gap: 10px; align-items: center; cursor: pointer; transition: 0.2s; border: 2px solid transparent;
         }
         .m-card.active { background: var(--acc-act); border-color: var(--acc-act); }
         .m-card.active * { color: #fff !important; }
         .m-card.active .ibox { background: #fff !important; color: #000 !important; }
-        .ibox {
-            width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
-            font-size: 0.9rem; flex-shrink: 0; background: #fff; color: #333;
-        }
+        .ibox { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; background: #fff; color: #333; }
         .mc-t { font-size: 0.75rem; font-weight: 700; color: var(--txt-prim); }
         .mc-s { font-size: 0.65rem; color: var(--txt-sec); }
 
@@ -151,9 +123,15 @@
             max-height: 80vh; overflow-y: auto; position: relative;
         }
         .pop-h { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px; }
-        .ph-t { font-weight:800; font-size:1rem; }
+        .ph-t { font-weight:800; font-size:1rem; color: var(--txt-prim); }
         .ph-c { background:none; border:none; font-size:1.5rem; cursor:pointer; color:#aaa; line-height: 1; }
 
+        /* USER PROFILE CARD STYLE */
+        .prof-big { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--txt-prim); object-fit:cover; margin-bottom: 15px;}
+        .prof-nm { font-size: 1.2rem; font-weight: 800; color: var(--txt-prim); margin-bottom: 5px; }
+        .prof-em { font-size: 0.8rem; color: var(--txt-sec); }
+        .btn-out { width: 100%; padding: 12px; border-radius: 12px; background: #fee2e2; color: #ef4444; border:none; font-weight:700; margin-top: 20px; cursor: pointer;}
+        
         /* WIDGET */
         #wdg {
             position: fixed; bottom: 25px; width: 90%; max-width: 400px;
@@ -173,28 +151,46 @@
 <body>
 
     <nav>
-        <!-- BACK BUTTON FIXED -->
+        <!-- BACK TO PORTFOLIO -->
         <div class="nav-brand" onclick="window.location.href='https://lumina-omega-five.vercel.app/'">
             <i class="fas fa-chevron-left"></i> <span>Lumina</span>
         </div>
 
         <div class="nav-mid">
-            <span class="nav-link active" onclick="setView('studio',this)">Studio</span>
+            <span class="nav-link active">Studio</span>
             <span class="nav-link" onclick="openHist()">History</span>
         </div>
 
         <div class="nav-user">
-            <img src="" id="u-img" class="user-pic" onclick="authLogout()" title="Logout">
+            <!-- CLICK PROFILE PICTURE = OPEN POPUP (Not Logout) -->
+            <img src="" id="u-img" class="user-pic" onclick="openProfile()">
+            
             <button id="btn-login" class="btn-auth" onclick="authLogin()">Login</button>
             <button class="btn-cog" onclick="toggleSet()"><i class="fas fa-cog"></i></button>
         </div>
     </nav>
 
+    <!-- 1. SETTINGS DROP -->
     <div id="set-d">
-        <button style="width:100%;height:30px;border-radius:5px;border:1px solid #ddd;background:#eee;margin-bottom:5px" onclick="thm('')">Light</button>
+        <button style="width:100%;height:30px;border-radius:5px;border:1px solid #ddd;background:#eee;margin-bottom:5px;color:#000" onclick="thm('')">Light</button>
         <button style="width:100%;height:30px;border-radius:5px;border:1px solid #333;background:#222;color:#fff" onclick="thm('dark')">Dark</button>
     </div>
 
+    <!-- 2. USER PROFILE POPUP (NEW) -->
+    <div id="user-modal" class="ovl" onclick="closeProfile(event)">
+        <div class="pop">
+            <button class="ph-c" style="position:absolute; right:20px; top:15px" onclick="closeProfile(false)">&times;</button>
+            <div style="text-align:center; padding:10px 0;">
+                <img src="" id="p-img" class="prof-big">
+                <div class="prof-nm" id="p-name">Loading...</div>
+                <div class="prof-em" id="p-email">user@email.com</div>
+                
+                <button class="btn-out" onclick="authLogout()">Sign Out</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. HISTORY POPUP -->
     <div id="hist-modal" class="ovl" onclick="closeHist(event)">
         <div class="pop">
             <div class="pop-h"><span class="ph-t">Separation History</span><button class="ph-c" onclick="openHist(false)">&times;</button></div>
@@ -203,6 +199,7 @@
         </div>
     </div>
 
+    <!-- 4. MAIN STUDIO UI -->
     <div class="hero-card">
         <div class="av-wrap" onclick="document.getElementById('f').click()">
             <input type="file" id="f" hidden accept="audio/*">
@@ -259,16 +256,15 @@
         </div>
         <div class="pls" id="pls"></div>
     </div>
-    
     <audio id="au"></audio>
 
-    <!-- FIREBASE (With Fixed History Logic) -->
+    <!-- FIREBASE (Safe V43 Logic) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-        // ---- TEMPEL CONFIG FIREBASE DISINI (TINDIH API_KEY DUMMY INI) ----
+        // ---- [WAJIB] ISI API KEY ASLI ANDA ----
         const firebaseConfig = {
         apiKey: "AIzaSyDkSwr7n2niyN5MFzr6LMOIv-4Vpqa9LlY",
         authDomain: "studio-7547085914-216a7.firebaseapp.com",
@@ -277,7 +273,7 @@
         messagingSenderId: "1014659160462",
         appId: "1:1014659160462:web:d9bb29344e36ab031bacdf"
         };
-        // ------------------------------------------------------------------
+        // ----------------------------------------
 
         let app, auth, db, curU = null;
 
@@ -289,31 +285,39 @@
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     curU = user;
+                    // NAVBAR UI
                     document.getElementById('btn-login').style.display='none';
-                    document.getElementById('u-img').src = user.photoURL; 
-                    document.getElementById('u-img').style.display='block';
+                    let img = document.getElementById('u-img');
+                    img.src = user.photoURL; img.style.display='block';
+                    
+                    // PROFILE POPUP UI POPULATE
+                    document.getElementById('p-img').src = user.photoURL;
+                    document.getElementById('p-name').innerText = user.displayName;
+                    document.getElementById('p-email').innerText = user.email;
+
                 } else {
                     curU = null;
                     document.getElementById('btn-login').style.display='block';
                     document.getElementById('u-img').style.display='none';
+                    closeProfile(false); // Close profile if logout
                 }
             });
-        } catch(e) { console.log("Firebase setup pending..."); }
+        } catch(e) { console.log("Setup firebase key..."); }
 
         window.authLogin = async () => {
             const p = new GoogleAuthProvider();
             try { await signInWithPopup(auth, p); } catch(e){ alert(e.message); }
         }
-        window.authLogout = () => signOut(auth);
+        
+        window.authLogout = () => { 
+            if(confirm("Sign out?")) signOut(auth); 
+        }
 
         window.saveHist = async (f, d) => {
             if(curU && db) {
-                // Save Cloud
-                try {
-                    await addDoc(collection(db, "history"), { uid:curU.uid, f:f, d:d, ts: new Date().getTime() });
-                } catch(e) {}
+                try { await addDoc(collection(db, "history"), { uid:curU.uid, f:f, d:d, ts: new Date().getTime() }); } catch(e) {}
             }
-            // Always save Local Backup
+            // Local Backup
             let h = JSON.parse(localStorage.getItem('L_HIST')||"[]");
             h.unshift({f:f, d:d, ts: Date.now() });
             localStorage.setItem('L_HIST', JSON.stringify(h));
@@ -323,28 +327,27 @@
             const elMsg = document.getElementById('h-msg');
             const elList = document.getElementById('h-lst');
             
-            // Logic Fix: Load Local First (Immediate), then try Cloud if possible
+            // Tampilkan local dulu (biar gak loading blank)
             window.showLocal();
 
             if(curU && db){
-                elMsg.innerText = "Syncing with Cloud...";
+                elMsg.innerText = "Syncing cloud...";
                 try {
-                    // Fetch Without Ordering to prevent Index Error first
                     const q = query(collection(db, "history"), where("uid", "==", curU.uid));
                     const s = await getDocs(q);
-                    if(s.empty) return; 
+                    
+                    if(s.empty) return; // Keep displaying local if cloud empty
 
-                    // Client Side Sorting (Safe way)
-                    let cloudDocs = [];
-                    s.forEach(doc => cloudDocs.push(doc.data()));
-                    cloudDocs.sort((a,b) => b.ts - a.ts); // Sort Descending
+                    // Client Sorting (Agar tidak error index)
+                    let all = [];
+                    s.forEach(d => all.push(d.data()));
+                    all.sort((a,b) => b.ts - a.ts); 
 
-                    elList.innerHTML=""; // Clear local, replace with cloud
-                    elMsg.style.display = 'none';
-                    cloudDocs.forEach(d => window.renderItem(d.f, d.d, new Date(d.ts).toLocaleDateString()));
-                } catch(e) {
-                    console.log("Cloud sync issue, showing local");
-                }
+                    elList.innerHTML=""; elMsg.style.display='none';
+                    all.forEach(d => {
+                        window.renderItem(d.f, d.d, new Date(d.ts).toLocaleDateString());
+                    });
+                } catch(e) { console.log("Cloud sync error (ignoring)"); }
             }
         }
     </script>
@@ -363,6 +366,22 @@
             }
         }
 
+        // --- NEW PROFILE LOGIC ---
+        function openProfile() {
+            document.getElementById('user-modal').style.display='flex';
+        }
+        function closeProfile(e) {
+            if(e===false || e.target.id === 'user-modal') 
+                document.getElementById('user-modal').style.display='none';
+        }
+
+        function openHist(x) {
+            document.getElementById('hist-modal').style.display=(x===false?'none':'flex');
+            if(x!==false && window.refreshCloud) window.refreshCloud();
+        }
+        function closeHist(e){ if(e.target.id=='hist-modal') openHist(false); }
+
+        // Local render
         window.showLocal = () => {
             let h = JSON.parse(localStorage.getItem('L_HIST')||"[]");
             let el = document.getElementById('h-lst');
@@ -392,16 +411,6 @@
             </div>`;
         }
 
-        function setView(v, el) {
-            document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active'));
-            if(el) el.classList.add('active');
-        }
-        function openHist(x) {
-            let m=document.getElementById('hist-modal');
-            m.style.display=(x===false?'none':'flex');
-            if(x!==false && window.refreshCloud) window.refreshCloud();
-        }
-        function closeHist(e){ if(e.target.id=='hist-modal') openHist(false); }
         function toggleSet(){ let s=document.getElementById('set-d'); s.style.display=(s.style.display=='block'?'none':'block'); }
         function thm(x){ document.body.setAttribute('data-theme', x); localStorage.setItem('THEME', x); }
         function sel(m,e){ M=m; document.querySelectorAll('.m-card').forEach(x=>x.classList.remove('active')); e.classList.add('active'); }
@@ -414,7 +423,7 @@
         }
 
         function run(){
-            if(!BACKEND||!F)return alert("Cek File");
+            if(!BACKEND||!F)return alert("Cek File/Link");
             document.getElementById('wdg').style.display='block';
             document.getElementById('w-l').style.display='block'; document.getElementById('w-ic').style.display='none';
             document.getElementById('pls').classList.remove('show');
