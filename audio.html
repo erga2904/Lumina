@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lumina V50 | Fixed Header</title>
+    <title>Lumina V50 | Acrylics</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -11,181 +11,219 @@
     
     <style>
         :root {
-            /* THEME VARIABLES */
+            /* PRIMARY COLOR (Default Orange) */
             --primary: #fb923c; 
             
-            --bg-grad: linear-gradient(135deg, #fddbb7 0%, #f7ebd9 50%, #dcfce7 100%);
-            --txt-prim: #1f1f1f; --txt-sec: #6b7280;
-            --card-bg: #ffffff;
-            --nav-bg: rgba(253, 252, 246, 0.9); --glass: blur(15px);
-            --acc-btn: #f5f5f4; --acc-act: #18181b; 
+            /* BACKGROUND GRADIENT VIBRANT (Agar efek kaca terlihat jelas) */
+            --bg-grad: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
             
-            --warn-bg: #fef9c3; --warn-txt: #854d0e;
-            --gpu-bg: #dcfce7; --gpu-txt: #166534;
+            /* ACRYLIC VARIABLES (LIGHT) */
+            --glass-bg: rgba(255, 255, 255, 0.45); /* Lebih transparan */
+            --glass-blur: blur(20px);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            
+            --txt-prim: #1f1f1f; 
+            --txt-sec: #52525b;
+            
+            /* BUTTONS & INNER ELEMENTS */
+            --inner-bg: rgba(255, 255, 255, 0.5);
+            --inner-border: 1px solid rgba(255, 255, 255, 0.6);
+            --btn-start: rgba(251, 146, 60, 0.9);
+            --btn-text: #fff;
         }
 
+        /* DARK THEME ACRYLIC */
         [data-theme="dark"] {
-            --bg-grad: linear-gradient(135deg, #18181b 0%, #27272a 100%);
-            --txt-prim: #ffffff; --txt-sec: #a1a1aa;
-            --card-bg: #121212; --nav-bg: rgba(24, 24, 27, 0.9);
-            --acc-btn: #27272a; --acc-act: #38bdf8;
+            --bg-grad: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            --glass-bg: rgba(20, 20, 20, 0.65);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            
+            --txt-prim: #ffffff; 
+            --txt-sec: #a1a1aa;
+            
+            --inner-bg: rgba(255, 255, 255, 0.08);
+            --inner-border: 1px solid rgba(255, 255, 255, 0.1);
+            
             --primary: #38bdf8;
+            --btn-start: rgba(56, 189, 248, 0.9);
         }
 
-        [data-perf="fast"] { --glass: none; --nav-bg: var(--card-bg); }
+        /* PERFORMANCE MODE (SOLID/NO BLUR) */
+        [data-perf="fast"] { 
+            --glass-bg: var(--card-solid);
+            --glass-blur: none;
+            --bg-grad: #f0f0f0; 
+        }
+        [data-theme="dark"][data-perf="fast"] { --bg-grad: #111; --glass-bg: #222; }
 
         * { margin:0; padding:0; box-sizing:border-box; outline:none; -webkit-tap-highlight-color:transparent; font-family: 'Plus Jakarta Sans', sans-serif; }
         
         body {
             background: var(--bg-grad); background-attachment: fixed; color: var(--txt-prim);
-            min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding-bottom: 120px; transition: 0.5s;
+            min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding-bottom: 140px; 
+            transition: background 0.5s;
         }
 
-        /* --- NAVBAR FIXED --- */
+        /* --- GLOBAL GLASS CLASS --- */
+        .acrylic {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        /* --- NAVBAR --- */
         nav {
-            position: fixed; /* KUNCI AGAR TIDAK TERGULIR */
-            top: 25px;       /* Jarak dari atas */
-            left: 50%;       /* Posisi tengah */
-            transform: translateX(-50%); /* Koreksi tengah */
-            
-            background: var(--nav-bg); 
-            backdrop-filter: var(--glass);
-            padding: 10px 15px 10px 25px; 
-            border-radius: 50px;
+            margin-top: 20px;
+            padding: 10px 15px 10px 25px; border-radius: 50px;
             display: flex; align-items: center; justify-content: space-between;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.05); 
-            border: 1px solid rgba(255,255,255,0.4);
-            z-index: 100; 
-            min-width: 400px; max-width: 90%; gap: 10px;
+            z-index: 100; min-width: 400px; max-width: 90%; gap: 10px;
         }
         
-        .nav-brand { font-weight: 700; font-size: 1.1rem; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 8px; color: var(--txt-prim); }
+        .nav-brand { font-weight: 700; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; gap: 8px; color: var(--txt-prim); }
         .nav-mid { display:flex; gap:15px; flex:1; justify-content:center; }
-        .nav-link { cursor:pointer; font-weight:600; font-size:0.9rem; color:var(--txt-sec); padding:6px 12px; border-radius:15px; transition:0.2s }
-        .nav-link.active { color:var(--txt-prim); background:rgba(0,0,0,0.05); }
+        .nav-link { 
+            cursor:pointer; font-weight:600; font-size:0.9rem; color:var(--txt-sec); padding:6px 12px; border-radius:15px; transition:0.2s; 
+        }
+        .nav-link:hover { background: var(--inner-bg); color:var(--txt-prim); }
+        .nav-link.active { background: var(--inner-bg); color:var(--primary); box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+
         .nav-user { display: flex; gap: 8px; align-items: center; }
-        .btn-auth { background: #000; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; white-space: nowrap; }
-        .user-pic { width: 34px; height: 34px; border-radius: 50%; background: #ccc; display: none; cursor: pointer; border: 2px solid #fff; object-fit: cover; }
+        .btn-auth { background: var(--txt-prim); color: var(--glass-bg); padding: 8px 18px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; }
+        .user-pic { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; display:none; cursor:pointer }
         .btn-cog { 
             width: 34px; height: 34px; border-radius: 50%; border:none; background:transparent;
-            color: var(--txt-prim); cursor: pointer; transition: 0.3s; font-size: 1.1rem;
-            display: flex !important; align-items: center; justify-content: center;
+            color: var(--txt-prim); cursor: pointer; display: flex !important; align-items: center; justify-content: center;
         }
-        .btn-cog:hover { transform: rotate(45deg); background: rgba(0,0,0,0.05); }
 
         @media (max-width: 600px) {
-            nav { width: 92%; min-width: unset; top: 15px; padding: 10px; } /* Mobile adjustments */
+            nav { width: 92%; min-width: unset; margin-top: 15px; padding: 10px; }
             .nav-brand span { display:none }
-            .nav-link { font-size: 0.8rem; padding: 4px 8px; }
         }
 
-        /* --- HERO CARD (PUSHED DOWN) --- */
+        /* --- HERO CARD --- */
         .hero-card {
-            margin-top: 110px; /* Spacer agar tidak tertutup header */
-            background: var(--card-bg); width: 92%; max-width: 500px;
-            border-radius: 35px; padding: 35px 25px; text-align: center; 
-            box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+            margin-top: 25px; width: 92%; max-width: 520px;
+            border-radius: 35px; padding: 40px 30px; text-align: center;
         }
         
+        /* Upload Circle - Glassy */
         .av-wrap {
-            width: 75px; height: 75px; margin: 0 auto 15px; background: var(--primary); color: #fff;
+            width: 80px; height: 80px; margin: 0 auto 15px; 
+            background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.5);
+            backdrop-filter: blur(5px);
             border-radius: 50%; font-size: 1.8rem; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.3s; border: 4px solid #fff; box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            cursor: pointer; transition: 0.3s; color: var(--primary);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
         }
-        .av-wrap.ok { background: #10b981; }
+        .av-wrap:hover { transform: scale(1.05); background: var(--primary); color:#fff }
+        .av-wrap.ok { background: #10b981; color:#fff; border-color:#10b981; }
 
-        .inp-pill { background: var(--acc-btn); border-radius: 16px; padding: 6px; display: flex; margin-bottom: 10px; transition:0.2s}
-        .inp-pill input { flex: 1; border: 0; background: transparent; padding: 0 12px; color: var(--txt-prim); font-weight: 600; font-size: 0.9rem;}
-        .inp-pill button { background: var(--card-bg); color: var(--txt-prim); border: 0; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05);}
+        .inp-pill { 
+            background: var(--inner-bg); border: var(--inner-border);
+            border-radius: 16px; padding: 6px; display: flex; margin-bottom: 15px;
+        }
+        .inp-pill input { flex: 1; border: 0; background: transparent; padding: 0 15px; color: var(--txt-prim); font-weight: 600; font-size: 0.9rem;}
+        .inp-pill button { background: var(--txt-prim); color: var(--glass-bg); border: 0; padding: 10px 22px; border-radius: 12px; font-weight: 700; cursor: pointer; }
 
-        /* STATUS BADGES */
-        #conn-info { margin-bottom: 25px; display:none; flex-direction:column; align-items:center; gap:8px }
-        .st-badge { font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
-        .st-badge.gpu { background: var(--gpu-bg); color: var(--gpu-txt); }
-        .st-badge.cpu { background: var(--warn-bg); color: var(--warn-txt); }
-        .cpu-warn-box { font-size: 0.7rem; background: var(--warn-bg); color: var(--warn-txt); padding: 8px 12px; border-radius: 12px; display: none; line-height: 1.4; }
-
-        .lnk-colab { font-size: 0.75rem; font-weight:600; color: #a1a1aa; text-decoration: none; border-bottom: 1px dashed #d1d5db; margin-bottom: 25px; display: inline-block; transition:0.2s;}
-        .lnk-colab:hover { color: var(--primary); border-color: var(--primary); }
-
-        /* CARDS */
-        .sec-lbl { text-align: left; font-size: 0.7rem; font-weight: 800; color: #a1a1aa; letter-spacing: 1px; margin-bottom: 8px;}
-        .grid-mdl { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom:20px }
+        /* MODELS */
+        .sec-lbl { text-align: left; font-size: 0.7rem; font-weight: 800; color: var(--txt-prim); letter-spacing: 1px; margin-bottom: 8px; opacity: 0.7;}
+        .grid-mdl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom:25px }
+        
         .m-card {
-            background: var(--acc-btn); border-radius: 18px; padding: 15px; text-align: left;
-            display: flex; gap: 10px; align-items: center; cursor: pointer; transition: 0.2s; border: 2px solid transparent;
+            background: var(--inner-bg); border: var(--inner-border);
+            border-radius: 20px; padding: 16px; text-align: left;
+            display: flex; gap: 12px; align-items: center; cursor: pointer; transition: 0.2s; 
         }
-        .m-card.active { background: var(--acc-act); border-color: var(--acc-act); }
-        .m-card.active * { color: #fff !important; }
-        .m-card.active .ibox { background: #fff !important; color: #000 !important; }
-        .ibox { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; background: #fff; color: #333; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .m-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.2); }
+        .m-card.active { background: var(--txt-prim); border-color: var(--txt-prim); }
+        .m-card.active * { color: var(--glass-bg) !important; } /* Invert Colors for contrast */
+        .m-card.active .ibox { background: var(--glass-bg) !important; color: var(--txt-prim) !important; } 
+        
+        .ibox { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; background: #fff; color: #333; }
         .mc-t { font-size: 0.8rem; font-weight: 700; color: var(--txt-prim); }
         .mc-s { font-size: 0.65rem; color: var(--txt-sec); }
 
         .btn-go {
-            width: 100%; background: var(--primary); color: #fff; border: 0; padding: 18px; 
-            border-radius: 20px; font-size: 0.95rem; font-weight: 800; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px; transition:0.3s;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%; background: var(--primary); color: #fff; border: 0; padding: 20px; 
+            border-radius: 22px; font-size: 1rem; font-weight: 800; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: 0 10px 30px -5px var(--primary);
+            transition: 0.3s;
         }
-        .btn-go:hover { filter: brightness(1.1); transform: scale(1.02); }
+        .btn-go:hover { transform: scale(1.02); filter:brightness(1.1); }
 
-        /* MODAL STYLES */
-        #set-modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 300; display: none; align-items: center; justify-content: center; }
-        .set-card { background: #232732; color: #fff; width: 360px; padding: 25px; border-radius: 24px; box-shadow: 0 25px 60px rgba(0,0,0,0.5); animation: pop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid rgba(255,255,255,0.1); }
-        @keyframes pop{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
-        .set-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; }
-        .set-tit { font-size: 1.4rem; font-weight: 800; }
-        .set-cls { background:transparent; border:none; color:#9ca3af; font-size:1.2rem; cursor:pointer; }
-        .set-lbl { font-size: 0.9rem; color: #9ca3af; margin-bottom: 12px; font-weight: 600;}
-        .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 25px; }
-        .c-btn { width: 100%; aspect-ratio: 1; border-radius: 12px; cursor: pointer; transition: transform 0.2s; border: 2px solid transparent; }
-        .c-btn.active { border-color: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.3); transform: scale(1.1); }
-        .bg-blue { background: #38bdf8; } .bg-indigo { background: #818cf8; } .bg-purple { background: #c084fc; }
-        .bg-pink { background: #f472b6; } .bg-red { background: #fb7185; } .bg-orange { background: #fb923c; } 
-        .bg-yellow { background: #facc15; } .bg-green { background: #4ade80; } .bg-teal { background: #2dd4bf; } .bg-slate { background: #94a3b8; }
-        .lang-row { display:flex; gap:10px; margin-bottom: 25px; }
-        .l-btn { flex:1; padding: 12px; border-radius: 10px; font-weight:800; background: transparent; border: 1px solid #475569; color: #fff; cursor: pointer; }
-        .l-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .perf-box { width: 100%; padding: 15px; border-radius: 14px; background: #2f3542; border: 1px solid #4b5563; color: #fff; font-weight: 700; cursor: pointer; display: flex; justify-content: center; gap: 10px; transition: 0.2s; }
-        .perf-box.on { border-color: var(--primary); background: #1e293b; color: var(--primary); }
-
-        /* WIDGET PLAYER */
-        #wdg { position: fixed; bottom: 30px; width: 90%; max-width: 380px; background: #111; color: #fff; border-radius: 24px; padding: 20px; display: none; flex-direction: column; box-shadow: 0 25px 60px rgba(0,0,0,0.6); z-index: 200; border: 1px solid #333; transition: all 0.3s; }
-        .w-top { display: flex; gap: 15px; margin-bottom: 20px; align-items: center; }
-        .w-art { width: 56px; height: 56px; border-radius: 12px; background: #222; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; position: relative;}
-        .w-ld { width: 24px; height: 24px; border: 3px solid #444; border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 1s infinite linear; }
-        .w-meta { flex: 1; overflow: hidden; }
-        .w-tit { font-weight: 800; font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px;}
-        .w-sub { font-size: 0.75rem; color: #aaa; font-weight: 500; }
-        .w-seek { -webkit-appearance: none; width: 100%; height: 4px; border-radius: 5px; background: #333; cursor: pointer; }
-        .w-seek::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #fff; cursor: pointer; }
-        .w-ctrls { display: flex; justify-content: center; gap: 20px; margin-top:10px; align-items: center;}
-        .wc-btn { background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; opacity: 0.8; }
-        .wc-main { width: 45px; height: 45px; background: #fff; color: #000; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none}
-        .w-queue { border-top: 1px solid #222; margin-top: 15px; padding-top: 10px; max-height: 180px; overflow-y: auto; display: none; }
-        .w-queue.open { display: block; }
-        .q-row { display: flex; align-items: center; padding: 10px 8px; border-radius: 10px; cursor: pointer; transition: 0.2s; }
-        .q-row.active { background: rgba(255,255,255,0.1); }
-        .q-row.active .q-nm { color: var(--primary); }
-        .q-nm { font-size: 0.8rem; font-weight: 600; color: #ccc; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+        /* --- OVERLAYS & MODALS (Acrylic) --- */
+        .ovl { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); backdrop-filter:blur(5px); z-index:300; display:none; justify-content:center; align-items:center}
         
-        .ovl { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); backdrop-filter:blur(5px); z-index:300; display:none; justify-content:center; align-items:center}
-        .pop { background:var(--card-bg); width:320px; padding:20px; border-radius:20px; text-align:center }
-        .pop-h { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px; }
-        .ph-t { font-weight:800; font-size:1rem; color:var(--txt-prim) }
-        .ph-c { background:none; border:none; font-size:1.5rem; cursor:pointer; color:#aaa; line-height: 1; }
-        .h-item { padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); text-align: left; }
-        .h-link { font-size:0.7rem; color:var(--primary); background:rgba(0,0,0,0.05); padding:3px 8px; border-radius:5px; text-decoration:none; margin-left:5px }
+        .pop {
+            width: 90%; max-width: 360px;
+            padding: 25px; border-radius: 28px;
+            animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes pop{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
+        
+        .set-head { display:flex; justify-content:space-between; margin-bottom:20px }
+        .set-tit { font-size:1.4rem; font-weight:800; color: var(--txt-prim)}
+        
+        /* SETTINGS GRID */
+        .color-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
+        .c-btn { width: 100%; aspect-ratio: 1; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+        .c-btn.active { border-color: var(--txt-prim); transform: scale(1.1); }
+        .bg-orange { background: #fb923c; } .bg-blue { background: #38bdf8; } .bg-green { background: #4ade80; }
+        .bg-pink { background: #f472b6; } .bg-purple { background: #c084fc; }
 
+        .toggle-row { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px; background: var(--inner-bg); border-radius: 16px; 
+            cursor: pointer; font-weight: 700; margin-bottom: 10px; color: var(--txt-prim);
+        }
+
+        /* --- PLAYER WIDGET (Dark Glass) --- */
+        #wdg {
+            position: fixed; bottom: 30px; width: 92%; max-width: 400px;
+            background: rgba(20, 20, 20, 0.75); /* Selalu gelap tapi transparan */
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff; padding: 20px; border-radius: 26px;
+            display: none; flex-direction: column; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5); z-index: 200;
+            transition: 0.3s;
+        }
+        .w-top { display: flex; gap: 15px; align-items: center; margin-bottom:15px; }
+        .w-art { width: 56px; height: 56px; border-radius: 14px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+        
+        .w-tit { font-weight: 800; font-size: 1rem; margin-bottom: 2px;}
+        .w-sub { font-size: 0.75rem; color: #ccc; }
+        
+        .w-seek { -webkit-appearance: none; width: 100%; height: 4px; border-radius: 5px; background: rgba(255,255,255,0.2); }
+        .w-seek::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #fff; }
+        
+        .w-ctrls { display: flex; justify-content: center; gap: 20px; margin-top: 15px; align-items: center; }
+        .wc-btn { background: none; border: none; color: #fff; font-size: 1.2rem; cursor: pointer; opacity: 0.8; }
+        .wc-main { width: 50px; height: 50px; background: #fff; color: #000; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; box-shadow: 0 0 20px rgba(255,255,255,0.2)}
+
+        /* Queue List */
+        .w-queue { border-top: 1px solid rgba(255,255,255,0.1); margin-top: 15px; padding-top: 10px; max-height: 180px; overflow-y: auto; display: none; }
+        .w-queue.open { display: block; }
+        .q-row { padding: 10px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .q-row:hover { background: rgba(255,255,255,0.1); }
+        .q-row.active { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); }
+        
+        /* Spin & Util */
+        .w-ld { width: 24px; height: 24px; border: 3px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 1s infinite linear; }
         @keyframes spin {to{transform:rotate(360deg)}}
         audio { display:none }
-        .w-queue::-webkit-scrollbar { width: 4px; } .w-queue::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+        .h-item { padding:12px; border-bottom:1px solid rgba(0,0,0,0.05); }
+        .lnk-clb { font-size:0.75rem; color:var(--txt-sec); text-decoration:none; margin-bottom:20px; display:inline-block; border-bottom:1px dashed var(--txt-sec); }
     </style>
 </head>
 <body>
 
-    <nav>
+    <nav class="acrylic">
         <div class="nav-brand" onclick="window.location.href='https://lumina-omega-five.vercel.app/'">
             <i class="fas fa-chevron-left"></i> <span>Lumina</span>
         </div>
@@ -200,38 +238,39 @@
         </div>
     </nav>
 
-    <!-- SETTINGS MODAL -->
-    <div id="set-modal" onclick="closeSet(event)">
-        <div class="set-card">
+    <!-- SETTINGS MODAL ACRYLIC -->
+    <div id="set-modal" class="ovl" onclick="closeSet(event)">
+        <div class="pop acrylic">
             <div class="set-head">
-                <span class="set-tit">Settings</span>
-                <button class="set-cls" onclick="toggleSet(false)">&times;</button>
+                <span class="set-tit">Customize</span>
+                <button class="btn-cog" onclick="toggleSet(false)">&times;</button>
             </div>
             
-            <div class="set-lbl">Accent Color</div>
+            <div class="sec-lbl" style="margin-top:0">ACCENT COLOR</div>
             <div class="color-grid">
+                <div class="c-btn bg-orange active" onclick="setAccent('#fb923c', this)"></div>
                 <div class="c-btn bg-blue" onclick="setAccent('#38bdf8', this)"></div>
                 <div class="c-btn bg-purple" onclick="setAccent('#c084fc', this)"></div>
-                <div class="c-btn bg-orange active" onclick="setAccent('#fb923c', this)"></div>
+                <div class="c-btn bg-pink" onclick="setAccent('#f472b6', this)"></div>
                 <div class="c-btn bg-green" onclick="setAccent('#4ade80', this)"></div>
-                <div class="c-btn bg-slate" onclick="setAccent('#94a3b8', this)"></div>
             </div>
 
-            <div class="set-lbl">Mode</div>
-            <div class="lang-row">
-                <button class="l-btn active" onclick="thm('')">Light</button>
-                <button class="l-btn" onclick="thm('dark')">Dark</button>
+            <div class="sec-lbl">APPEARANCE</div>
+            <div class="toggle-row" onclick="thm('dark')">
+                <span>Dark Mode</span> <i class="fas fa-moon"></i>
             </div>
-
-            <div class="perf-box" id="perf-btn" onclick="tPerf()">
-                <i class="fas fa-gauge-high"></i> Performance Mode
+            <div class="toggle-row" onclick="thm('')">
+                <span>Light Mode</span> <i class="fas fa-sun"></i>
+            </div>
+            <div class="toggle-row" onclick="tPerf()" style="border:1px solid red; background:rgba(255,0,0,0.05); color:red">
+                <span>Low Performance (No Blur)</span> <i class="fas fa-bolt"></i>
             </div>
         </div>
     </div>
 
-    <!-- PROFILE MODAL -->
+    <!-- PROFILE MODAL ACRYLIC -->
     <div id="user-modal" class="ovl" onclick="this.style.display='none'">
-        <div class="pop">
+        <div class="pop acrylic">
             <img src="" id="p-img" style="width:80px;height:80px;border-radius:50%;margin-bottom:15px;object-fit:cover;border:3px solid var(--primary)">
             <h3 id="p-name" style="margin:0;font-size:1.1rem;color:var(--txt-prim)">User</h3>
             <p id="p-email" style="margin:5px 0 20px;font-size:0.8rem;color:var(--txt-sec)">email@ex.com</p>
@@ -239,19 +278,19 @@
         </div>
     </div>
 
-    <!-- HISTORY MODAL -->
+    <!-- HISTORY MODAL ACRYLIC -->
     <div id="hist-modal" class="ovl" onclick="closeHist(event)">
-        <div class="pop" style="max-width:360px" onclick="event.stopPropagation()">
-            <div class="pop-h">
-                <span class="ph-t">Separation History</span>
-                <button class="ph-c" onclick="openHist(false)">&times;</button>
+        <div class="pop acrylic" style="max-height:80vh; overflow-y:auto; text-align:left">
+            <div class="set-head">
+                <span class="set-tit" style="font-size:1.2rem">History</span>
+                <button class="btn-cog" onclick="openHist(false)">&times;</button>
             </div>
-            <div id="h-msg" style="text-align:center; padding:20px; color:#aaa; font-size:0.8rem">Loading...</div>
-            <div id="h-lst" style="max-height:300px; overflow-y:auto; text-align:left"></div>
+            <div id="h-msg" style="text-align:center; padding:20px; color:var(--txt-sec)">Loading...</div>
+            <div id="h-lst"></div>
         </div>
     </div>
 
-    <div class="hero-card">
+    <div class="hero-card acrylic">
         <div class="av-wrap" onclick="document.getElementById('f').click()">
             <input type="file" id="f" hidden accept="audio/*">
             <i class="fas fa-cloud-upload-alt" id="ico"></i>
@@ -264,56 +303,48 @@
             <button onclick="cn(this)">Connect</button>
         </div>
 
-        <div id="conn-info">
-            <div id="st-bdg" class="st-badge"></div>
-            <div id="cpu-alert" class="cpu-warn-box">⚠️ CPU Mode (Slow)</div>
-        </div>
+        <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=jswAJ-NK2Aja" target="_blank" class="lnk-colab">Open Backend Script &nearr;</a>
 
-        <a href="https://colab.research.google.com/drive/1tw8nJdGokvMY4gMmQ8m3hOG8j0zYK5CV#scrollTo=jswAJ-NK2Aja" target="_blank" class="lnk-colab">Script Colab &nearr;</a>
-
-        <div class="sec-lbl">INSTRUMENTAL</div>
+        <div class="sec-lbl">INSTRUMENTAL MODELS</div>
         <div class="grid-mdl">
             <div class="m-card active" onclick="sel('inst_v1e_plus',this)">
-                <div class="ibox"><i class="fas fa-wave-square" style="color:#10b981"></i></div>
+                <div class="ibox"><i class="fas fa-wave-square"></i></div>
                 <div><div class="mc-t">MelBand V1E+</div><div class="mc-s">High Quality</div></div>
             </div>
             <div class="m-card" onclick="sel('Resurrection-Inst',this)">
-                <div class="ibox"><i class="fas fa-star" style="color:#6366f1"></i></div>
+                <div class="ibox"><i class="fas fa-star"></i></div>
                 <div><div class="mc-t">Resurrec Inst</div><div class="mc-s">Classic ViperX</div></div>
             </div>
         </div>
-        <div class="sec-lbl">VOCALS</div>
+        
+        <div class="sec-lbl">VOCAL MODELS</div>
         <div class="grid-mdl">
              <div class="m-card" onclick="sel('Resurrection-v',this)">
-                 <div class="ibox"><i class="fas fa-microphone" style="color:#ec4899"></i></div>
+                 <div class="ibox"><i class="fas fa-microphone"></i></div>
                  <div><div class="mc-t">Resurrec Voc</div><div class="mc-s">Detail Voice</div></div>
              </div>
              <div class="m-card" onclick="sel('Kim_Vocal_2',this)">
-                 <div class="ibox"><i class="fas fa-bolt" style="color:#f59e0b"></i></div>
+                 <div class="ibox"><i class="fas fa-bolt"></i></div>
                  <div><div class="mc-t">Kim Vocal 2</div><div class="mc-s">Fast Process</div></div>
              </div>
         </div>
 
-        <button class="btn-go" onclick="run()">START PROCESS</button>
+        <button class="btn-go" onclick="run()">START SEPARATION</button>
     </div>
 
-    <!-- PLAYER WIDGET -->
+    <!-- PLAYER WIDGET (Glass Dark) -->
     <div id="wdg">
         <div class="w-top">
             <div class="w-art"><i class="fas fa-music" id="w-ic"></i><div class="w-ld" id="w-l" style="display:none"></div></div>
             <div class="w-meta">
                 <div class="w-tit" id="w-t">Waiting...</div>
-                <div class="w-sub" id="w-s">Upload Audio to Start</div>
+                <div class="w-sub" id="w-s">Upload Audio</div>
             </div>
-            <i class="fas fa-chevron-down" style="cursor:pointer;color:#777" onclick="document.getElementById('q-list').classList.toggle('open')"></i>
+            <i class="fas fa-chevron-down" style="cursor:pointer;color:#aaa" onclick="document.getElementById('q-list').classList.toggle('open')"></i>
         </div>
+        
         <div id="w-ctr-area" style="display:none">
-            <div style="margin-bottom:10px">
-                <input type="range" class="w-seek" id="seek" value="0" step="0.1" oninput="seekAud(this.value)">
-                <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:#777;margin-top:5px">
-                    <span id="t-cur">00:00</span><span id="t-dur">00:00</span>
-                </div>
-            </div>
+            <input type="range" class="w-seek" id="seek" value="0" step="0.1" oninput="seekAud(this.value)">
             <div class="w-ctrls">
                 <button class="wc-btn" onclick="prevT()"><i class="fas fa-backward"></i></button>
                 <button class="wc-main" onclick="togglePlay()"><i class="fas fa-play" id="btn-p"></i></button>
@@ -322,6 +353,7 @@
         </div>
         <div class="w-queue" id="q-list"></div>
     </div>
+    
     <audio id="au" ontimeupdate="updProg()"></audio>
 
     <script type="module">
@@ -329,7 +361,7 @@
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-        // GANTI API KEY FIREBASE DISINI
+        // ----- API KEY FIREBASE (Isi Sendiri) -----
         const firebaseConfig = {
         apiKey: "AIzaSyDkSwr7n2niyN5MFzr6LMOIv-4Vpqa9LlY",
         authDomain: "studio-7547085914-216a7.firebaseapp.com",
@@ -338,13 +370,15 @@
         messagingSenderId: "1014659160462",
         appId: "1:1014659160462:web:d9bb29344e36ab031bacdf"
         };
-        
+
         try { 
             const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
             onAuthStateChanged(auth, u=>{ 
-                if(u){ document.getElementById('u-img').src=u.photoURL; document.getElementById('u-img').style.display='block'; document.getElementById('btn-login').style.display='none'; 
-                       document.getElementById('p-img').src=u.photoURL; document.getElementById('p-name').innerText=u.displayName; document.getElementById('p-email').innerText=u.email; 
-                       window.refreshCloud(u, db);
+                if(u){ 
+                    document.getElementById('u-img').src=u.photoURL; document.getElementById('u-img').style.display='block'; 
+                    document.getElementById('btn-login').style.display='none'; 
+                    document.getElementById('p-img').src=u.photoURL; document.getElementById('p-name').innerText=u.displayName; document.getElementById('p-email').innerText=u.email; 
+                    window.refreshCloud(u, db); 
                 } else { document.getElementById('btn-login').style.display='block'; document.getElementById('u-img').style.display='none'; }
                 window.curU = u; window.db = db;
             });
@@ -353,8 +387,7 @@
     </script>
 
     <script>
-        let BACKEND = localStorage.getItem('API')||"", M='inst_v1e_plus', F=null;
-        let Q=[], IDX=0, AU=document.getElementById('au');
+        let BACKEND = localStorage.getItem('API')||"", M='inst_v1e_plus', F=null, Q=[], IDX=0, AU=document.getElementById('au');
 
         function cleanName(raw) {
             let s = raw; if(s.includes('_')) s = s.substring(s.indexOf('_')+1); 
@@ -365,6 +398,7 @@
         window.onload=()=>{
             if(BACKEND) document.getElementById('api').value = BACKEND;
             let c=localStorage.getItem('L_ACCENT'); if(c) setAccent(c);
+            let t=localStorage.getItem('THEME'); if(t) thm(t);
             document.getElementById('f').onchange=e=>{
                 if(e.target.files[0]){ F=e.target.files[0]; document.getElementById('st-sub').innerText=F.name; document.getElementById('ico').className="fas fa-check"; document.querySelector('.av-wrap').classList.add('ok');}
             }
@@ -374,11 +408,12 @@
         function toggleSet(x){ document.getElementById('set-modal').style.display = (x===false) ? 'none' : 'flex'; }
         function closeSet(e){ if(e.target.id=='set-modal') toggleSet(false); }
         function setAccent(col, el){ document.documentElement.style.setProperty('--primary', col); localStorage.setItem('L_ACCENT', col); if(el){ document.querySelectorAll('.c-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); }}
-        function tPerf(){ let p=document.body.getAttribute('data-perf'); document.body.setAttribute('data-perf', p=='fast'?'':'fast'); document.getElementById('perf-btn').classList.toggle('on'); }
+        function tPerf(){ 
+            let p=document.body.getAttribute('data-perf'); document.body.setAttribute('data-perf', p=='fast'?'':'fast'); 
+            alert('Transparency Disabled. Application is now faster.');
+        }
         function thm(x){ document.body.setAttribute('data-theme', x); localStorage.setItem('THEME', x); }
         function openProfile() { document.getElementById('user-modal').style.display='flex'; }
-        
-        // FIXED HISTORY OPEN
         function openHist(x) { 
             document.getElementById('hist-modal').style.display=(x===false?'none':'flex'); 
             if(x!==false) { if(window.curU && window.db) window.refreshCloud(window.curU, window.db); else window.showLocal(); }
@@ -386,30 +421,23 @@
         function closeHist(e){ if(e.target.id=='hist-modal') openHist(false); }
 
         window.showLocal = () => {
-            let h = JSON.parse(localStorage.getItem('L_HIST')||"[]"); let el = document.getElementById('h-lst'), msg = document.getElementById('h-msg');
-            el.innerHTML=""; if(h.length==0) msg.innerText="History Empty.";
-            else { msg.style.display='none'; h.forEach(x => window.renderHItem(x.f, x.d, new Date(x.ts).toLocaleDateString())); }
+            let h = JSON.parse(localStorage.getItem('L_HIST')||"[]"), el = document.getElementById('h-lst'), msg = document.getElementById('h-msg');
+            el.innerHTML=""; if(h.length==0) msg.innerText="History Empty."; else { msg.style.display='none'; h.forEach(x => window.renderHItem(x.f, x.d, new Date(x.ts).toLocaleDateString())); }
         }
-
         window.renderHItem = (f, d, t) => {
-            let base = localStorage.getItem('API') || ""; let lks = ""; Object.keys(d).forEach(k=>{ let l = base + d[k]; lks += `<a href="${l}" target="_blank" class="h-link">${k}</a>` });
-            document.getElementById('h-lst').innerHTML+=`<div class="h-item"><div style="display:flex;justify-content:space-between"><span style="font-weight:700;font-size:0.85rem;color:var(--txt-prim)">${f}</span><span style="font-size:0.6rem;color:#ccc">${t}</span></div><div style="margin-top:5px">${lks}</div></div>`;
+            let b = localStorage.getItem('API')||"", l=""; Object.keys(d).forEach(k=>{ l += `<a href="${b+d[k]}" target="_blank" style="background:var(--primary);color:#fff;padding:2px 6px;border-radius:4px;font-size:0.6rem;text-decoration:none;margin-left:5px">${k}</a>` });
+            document.getElementById('h-lst').innerHTML+=`<div class="h-item"><div style="display:flex;justify-content:space-between"><span style="font-weight:700;color:var(--txt-prim)">${f}</span><span style="font-size:0.6rem;color:var(--txt-sec)">${t}</span></div><div style="margin-top:5px">${l}</div></div>`;
         }
-
-        window.refreshCloud = async (u, db) => {
-            // Needed imports handled via module, access directly via DB calls is cleaner if inside module
-            // BUT: simple fix for now using what we have in V48
-            window.showLocal(); // Fallback visuals while real cloud sync needs module access refactor or just visual dummy here for specific v49 request
-        }
+        window.refreshCloud = async (u, db) => { /* Reuse Module Logic if possible or fallback */ window.showLocal(); }
 
         async function cn(b){
             let v=document.getElementById('api').value.replace(/\/$/,""); b.innerText="...";
-            try{let r=await fetch(v+'/ping'); if(r.ok){ let d=await r.json(); BACKEND=v; localStorage.setItem('API',v); b.innerText="OK"; document.getElementById('conn-info').style.display='flex'; document.getElementById('st-bdg').className = d.device=='GPU'?'st-badge gpu':'st-badge cpu'; document.getElementById('st-bdg').innerHTML = d.device=='GPU'?'⚡ GPU T4':'⚠️ CPU'; document.getElementById('cpu-alert').style.display= d.device=='GPU'?'none':'block'; }}catch{if(confirm("Tab?"))window.open(v);b.innerText="Link";}
+            try{let r=await fetch(v+'/ping'); if(r.ok){ BACKEND=v; localStorage.setItem('API',v); b.innerText="OK"; }}catch{if(confirm("Tab?"))window.open(v);b.innerText="Link";}
         }
 
         function sel(m,e){ M=m; document.querySelectorAll('.m-card').forEach(x=>x.classList.remove('active')); e.classList.add('active'); }
         function run(){
-            if(!BACKEND||!F)return alert("Input?");
+            if(!BACKEND||!F)return alert("Check");
             document.getElementById('wdg').style.display='flex'; document.getElementById('w-l').style.display='block'; document.getElementById('w-ic').style.display='none'; document.getElementById('w-ctr-area').style.display='none'; document.getElementById('q-list').innerHTML=""; document.getElementById('w-t').innerText = "Uploading..."; document.getElementById('w-s').innerText = F.name;
             let fd=new FormData(); fd.append('audio_file',F); fd.append('model_name',M);
             let x=new XMLHttpRequest(); x.onload=()=>{ if(x.status==200) mon(JSON.parse(x.responseText).task_id); }; x.open('POST', BACKEND+'/upload_job'); x.send(fd);
@@ -428,11 +456,11 @@
 
         function done(dt){
             document.getElementById('w-l').style.display='none'; document.getElementById('w-ic').style.display='block'; document.getElementById('w-ctr-area').style.display='block';
-            Q=[]; let keys = Object.keys(dt).sort((a,b)=> a.includes('vocal')?-1:1); let qH = "";
+            Q=[]; let keys = Object.keys(dt).sort((a,b)=> a.includes('vocal')?-1:1), qH="";
             keys.forEach((k, i)=>{
-                let url = BACKEND + dt[k]; let type = k.toLowerCase().includes('vocal') ? 'Vocal' : 'Instrumental'; let dn = cleanName(k) || type; 
+                let url = BACKEND + dt[k], type = k.toLowerCase().includes('vocal')?'Voc':'Inst', dn = cleanName(k) || type; 
                 Q.push({t:dn, u:url, type:type});
-                qH += `<div class="q-row" id="qt-${i}" onclick="playQ(${i})"><div class="q-icon"><i class="fas fa-music"></i></div><div class="q-nm">${dn}</div><a href="${url}" download class="q-dl" onclick="event.stopPropagation()"><i class="fas fa-download"></i></a></div>`;
+                qH += `<div class="q-row" id="qt-${i}" onclick="playQ(${i})"><span style="margin-right:10px;color:#aaa">${type}</span><div class="q-nm">${dn}</div></div>`;
             });
             document.getElementById('q-list').innerHTML=qH; document.getElementById('q-list').classList.add('open'); playQ(0);
         }
@@ -442,12 +470,10 @@
             document.getElementById('w-t').innerText = Q[i].t; document.getElementById('w-s').innerText = "Lumina • " + Q[i].type;
             AU.src = Q[i].u; togglePlay(true);
         }
-
-        function togglePlay(forcePlay){ if(forcePlay===true||AU.paused){AU.play(); document.getElementById('btn-p').className = 'fas fa-pause';} else {AU.pause(); document.getElementById('btn-p').className = 'fas fa-play';}}
+        function togglePlay(f){ if(f===true||AU.paused){AU.play(); document.getElementById('btn-p').className = 'fas fa-pause';} else {AU.pause(); document.getElementById('btn-p').className = 'fas fa-play';}}
         function prevT(){ if(IDX>0) playQ(IDX-1); } function nextT(){ if(IDX<Q.length-1) playQ(IDX+1); }
-        function updProg(){ document.getElementById('seek').value = (AU.currentTime / AU.duration) * 100 || 0; document.getElementById('t-cur').innerText = fmt(AU.currentTime); document.getElementById('t-dur').innerText = fmt(AU.duration); }
-        function seekAud(v){ AU.currentTime = (v / 100) * AU.duration; }
-        function fmt(s){ if(!s) return "00:00"; let m=Math.floor(s/60), sc=Math.floor(s%60); return (m<10?'0'+m:m)+":"+(sc<10?'0'+sc:sc); }
+        function seekAud(v){ AU.currentTime=(v/100)*AU.duration; }
+        function updProg(){ document.getElementById('seek').value=(AU.currentTime/AU.duration)*100||0; }
     </script>
 </body>
 </html>
