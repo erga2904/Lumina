@@ -321,14 +321,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-                const firebaseConfig = {
-        apiKey: "AIzaSyDkSwr7n2niyN5MFzr6LMOIv-4Vpqa9LlY",
-        authDomain: "studio-7547085914-216a7.firebaseapp.com",
-        projectId: "studio-7547085914-216a7",
-        storageBucket: "studio-7547085914-216a7.firebasestorage.app",
-        messagingSenderId: "1014659160462",
-        appId: "1:1014659160462:web:d9bb29344e36ab031bacdf"
-        };
+        const firebaseConfig = { apiKey: "API_KEY", authDomain: "a.firebaseapp.com", projectId: "a", storageBucket: "a", messagingSenderId: "1", appId: "1" };
         try { 
             const app = initializeApp(firebaseConfig); const auth = getAuth(app);
             onAuthStateChanged(auth, u=>{ 
